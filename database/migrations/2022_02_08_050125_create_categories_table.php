@@ -19,10 +19,10 @@ class CreateCategoriesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('image')->nullable();
             $table->boolean('status')->default(1);
-            $table->boolean('is_new')->default(0);
+            $table->boolean('is_highlight')->default(0);
             $table->string('slug');
             $table->timestamps();
-            $table->softDeletes();
+            // $table->softDeletes();
         });
     }
 

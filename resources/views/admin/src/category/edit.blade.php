@@ -29,8 +29,6 @@
                                     <label>Hình ảnh :</label>
                                     <div class="input-group" id="divMainUpload">
                                         <div class="custom-file">
-                                            {{-- <input type="file" class="custom-file-input" name="image"  accept="image/*">
-                                            <label class="custom-file-label"></label> --}}
                                             <input class="custom-file-input2" type="file" id="image" name="image" />
                                         </div>
                                     </div>
@@ -47,23 +45,15 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="form-check-label mb-2 font-weight-bold">Is new :</label>
+                                            <label class="form-check-label mb-2 font-weight-bold">Nổi bật :</label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="is_new" @if ($category->is_new == 1) checked @endif>
+                                                <input class="form-check-input" type="checkbox" name="is_highlight" @if ($category->is_highlight == 1) checked @endif>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-primary mr-3">
-                                    <i class="fa fa-save"></i>
-                                    Tạo mới</button>
-                                <button type="reset" class="btn btn-secondary">
-                                    <i class="fa fa-remove"></i>
-                                    Làm mới
-                                </button>
-                            </div>
+                            @include('admin.src.components.card-footer-edit')
                         </form>
                     </div>
                 </div>

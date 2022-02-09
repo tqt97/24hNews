@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 class Admin extends Authenticatable
@@ -41,4 +42,23 @@ class Admin extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function formatCreateAt()
+    {
+        return \Carbon\Carbon::parse($this->created_at)->format('d/m/Y');
+    }
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_users', 'user_id', 'role_id')->withTimestamps();
+    }
+    public function checkPermissionAccess($pemissionCheck)
+    {
+        $roles = auth()->user()->roles;
+        foreach ($roles as $role) {
+            $permissions = $role->permissions;
+            if ($permissions->contains('key_code', $pemissionCheck)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -15,8 +15,9 @@ function actionDelete(event){
     }).then((result) => {
         if (result.value) {
             $.ajax({
-                type: 'GET',
+                type: 'DELETE',
                 url: urlRequest,
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function (data) {
                     if (data.code == 200) {
                         that.parent().parent().remove();

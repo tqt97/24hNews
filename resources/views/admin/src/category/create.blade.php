@@ -17,25 +17,18 @@
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Tên danh mục :</label>
                                     <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-                                        placeholder="Điền tên danh mục" autofocus required>
+                                        value="{{ old('name') }}" placeholder="Điền tên danh mục" autofocus required>
                                     @error('name')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
                                 </div>
-                                {{-- <p class="btn btn-primary mb-3" id="showUploadImageDiv">
-                                    <i class="fa fa-image"></i>
-                                    Thêm hình ảnh
-                                </p> --}}
                                 <div class="form-group">
                                     <label>Hình ảnh :</label>
                                     <div class="input-group" id="divMainUpload">
                                         <div class="custom-file">
-                                            {{-- <input type="file" class="custom-file-input" name="image" accept="image/*"
-                                                onchange="readURL(this);"> --}}
                                             <input class="custom-file-input2" type="file" id="image" name="image" />
-                                            {{-- <label class="custom-file-label"></label> --}}
                                         </div>
                                     </div>
                                     <div class="my-3">
@@ -54,23 +47,15 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="form-check-label mb-2 font-weight-bold">Is new :</label>
+                                            <label class="form-check-label mb-2 font-weight-bold">Nổi bật :</label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="is_new">
+                                                <input class="form-check-input" type="checkbox" name="is_highlight">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-primary mr-3">
-                                    <i class="fa fa-save"></i>
-                                    Tạo mới</button>
-                                <button type="reset" class="btn btn-secondary">
-                                    <i class="fa fa-remove"></i>
-                                    Làm mới
-                                </button>
-                            </div>
+                            @include('admin.src.components.card-footer-create')
                         </form>
                     </div>
                 </div>

@@ -26,7 +26,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="{{ route('admin.tag.index') }}" class="nav-link {{ (request()->segment(2) == 'tag') ? 'active' : '' }}">
             <i class="nav-icon fas fa-tags"></i>
             <p>
                 Quản lý tags
@@ -50,10 +50,26 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="{{ route('admin.user.index') }}" class="nav-link {{ (request()->segment(2) == 'user') ? 'active' : '' }}">
             <i class="nav-icon fas fa-user-alt"></i>
             <p>
                 Quản lý người dùng
+            </p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('admin.role.index') }}" class="nav-link {{ (request()->segment(2) == 'role') ? 'active' : '' }}">
+            <i class="nav-icon fa fa-check-square"></i>
+            <p>
+                Quản lý vai trò
+            </p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('admin.permission.index') }}" class="nav-link {{ (request()->segment(2) == 'permission') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-plus-circle"></i>
+            <p>
+                Thêm quyền
             </p>
         </a>
     </li>

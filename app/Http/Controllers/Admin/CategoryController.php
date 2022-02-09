@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateCategoryRequest;
-use App\Http\Requests\EditCategoryRequest;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,18 +30,19 @@ class CategoryController extends Controller
     {
         return view('admin.src.category.create');
     }
-    public function store(CreateCategoryRequest $request)
+    public function store(StoreCategoryRequest $request)
     {
         $data = [
             'name' => $request->name,
             'user_id' => Auth::user()->id,
-            'is_new' => $request->is_new ? 1 : 0,
+            'is_highlight' => $request->is_highlight ? 1 : 0,
             'status' => $request->status ? 1 : 0,
         ];
         $dataImage = $this->storeImageUpload($request, 'image', 'category');
         if (!empty($dataImage)) {
             $data['image'] = $dataImage['image'];
         }
+        // dd($data);
         $this->category->create($data);
         return redirect()->route('admin.category.index')->with([
             'alert-type' => 'success',
@@ -54,20 +55,20 @@ class CategoryController extends Controller
         return view('admin.src.category.edit', compact('category'));
     }
 
-    public function update(EditCategoryRequest $request, $id)
+    public function update(UpdateCategoryRequest $request, $id)
     {
         $category = $this->category->findOrFail($id);
         $data = [
             'name' => $request->name,
             'user_id' => Auth::user()->id,
-            'is_new' => $request->is_new ? 1 : 0,
+            'is_highlight' => $request->is_highlight ? 1 : 0,
             'status' => $request->status ? 1 : 0,
         ];
         if ($request->hasFile('image')) {
             if ($category->image) {
                 unlink("upload/category/" . $category->image);
             }
-            $dataImage = $this->storeImageUpload($request, 'image', 'category');
+            $dataImage = $this->updateImageUpload($request, 'image', 'category');
             if (!empty($dataImage)) {
                 $data['image'] = $dataImage['image'];
             } else {
