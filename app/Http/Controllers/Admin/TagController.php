@@ -72,13 +72,9 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Tag $tag)
     {
-        $tag = $this->tag->findOrFail($id);
         return view('admin.src.tag.edit', compact('tag'));
-        // return response()->json([
-        //     'data' => $tag
-        // ]);
     }
 
     /**
@@ -88,16 +84,15 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTagRequest $request, $id)
+    public function update(UpdateTagRequest $request, Tag $tag)
     {
-        $this->tag->findOrFail($id)->update([
+        $tag->update([
             'name' => $request->name,
         ]);
         return redirect()->route('admin.tag.index')->with([
             'alert-type' => 'success',
             'message' => 'Thêm tag thành công'
         ]);
-        // return response()->json(['success' => true]);
     }
 
     /**
@@ -106,8 +101,8 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Tag $tag)
     {
-        return $this->deleteModelTrait($id, $this->tag);
+        return $this->deleteModelTrait($tag);
     }
 }

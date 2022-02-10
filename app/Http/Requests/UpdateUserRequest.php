@@ -26,7 +26,10 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => 'required',
+            'email' => ['required', Rule::unique('admins')->ignore($this->user->id)],
+            'image' =>  ['mimes:jpg,bmp,png,jpeg,gif,webp,svg', 'dimensions:max-width=500,max_height=500'],
+            'address' =>  'string',
+            'phone' =>  'regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
 
         ];
     }

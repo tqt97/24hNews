@@ -8,13 +8,14 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\Admin;
 use App\Models\Role;
 use App\Traits\DeleteModelTrait;
+use App\Traits\StorageImageTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
-    use DeleteModelTrait;
+    use DeleteModelTrait, StorageImageTrait;
     private $user;
     private $role;
     public function __construct(Admin $user, Role $role)
@@ -54,16 +55,21 @@ class UserController extends Controller
     {
         try {
             DB::beginTransaction();
-            $user = $this->user->create([
-                'name' => $request->name,
-                'email' => $request->email,
+            $data = [
                 'password' => bcrypt($request->password),
-            ]);
+            ];
+            $dataImage = $this->storeImageUpload($request, 'image', 'user');
+            if ($dataImage) {
+                $data['image'] = $dataImage['image'];
+            } else {
+                $data['image'] = 'default.jpg';
+            }
+            $user = $this->user->create($request->validated() + $data);
             $user->roles()->attach($request->role_id);
             DB::commit();
             return redirect()->route('admin.user.index')->with([
                 'alert-type' => 'success',
-                'message' => 'Thêm người dùng thành công 🎉🎉🎉'
+                'message' => 'Thêm người dùng thành công'
             ]);
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -88,9 +94,8 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Admin $user)
     {
-        $user = $this->user->findOrFail($id);
         $roles = $this->role->all();
         $rolesOfUser = $user->roles;
         return view('admin.src.user.edit', compact('user', 'roles', 'rolesOfUser'));
@@ -103,15 +108,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUserRequest $request, $id)
+    public function update(UpdateUserRequest $request, Admin $user)
     {
         try {
             DB::beginTransaction();
-            $user = $this->user->findOrFail($id);
-            $data = [
-                'name' => $request->name,
-                'email' => $request->email,
-            ];
+            $data = [];
             if ($request->password) {
                 $request->validate([
                     'password' => 'required',
@@ -119,12 +120,23 @@ class UserController extends Controller
                 ]);
                 $data['password'] = bcrypt($request->password);
             }
-            $user->update($data);
+            if ($request->hasFile('image')) {
+                if ($user->image) {
+                    unlink("upload/user/" . $user->image);
+                }
+                $dataImage = $this->updateImageUpload($request, 'image', 'user');
+                if (!empty($dataImage)) {
+                    $data['image'] = $dataImage['image'];
+                } else {
+                    $data['image'] = $user->image;
+                }
+            }
+            $user->update($data + $request->validated());
             $user->roles()->sync($request->role_id);
             DB::commit();
             return redirect()->route('admin.user.index')->with([
                 'alert-type' => 'success',
-                'message' => 'Cập nhật người dùng thành công 🎉🎉🎉'
+                'message' => 'Cập nhật người dùng thành công'
             ]);
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -138,8 +150,8 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Admin $user)
     {
-        return $this->deleteModelTrait($id, $this->user);
+        return $this->deleteModelHasImageTrait($user, 'user');
     }
 }

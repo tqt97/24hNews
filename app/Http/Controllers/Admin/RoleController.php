@@ -79,10 +79,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Role $role)
     {
         $permissionsParent = $this->permission->where('parent_id', 0)->get();
-        $role = $this->role->find($id);
         $pemissionsChecked = $role->permissions;
         return view('admin.src.role.edit', compact('permissionsParent', 'role', 'pemissionsChecked'));
     }
@@ -94,10 +93,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Role $role)
     {
 
-        $role = $this->role->find($id);
         $role->update([
             'name' => $request->name,
             'display_name' => $request->display_name
@@ -105,7 +103,7 @@ class RoleController extends Controller
         $role->permissions()->sync($request->permission_id);
         return redirect()->route('admin.role.index')->with([
             'alert-type' => 'success',
-            'message' => 'Cập nhật vai trò thành công 🎉🎉🎉'
+            'message' => 'Cập nhật vai trò thành công'
         ]);
     }
 
@@ -115,8 +113,8 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
-        return $this->deleteModelTrait($id, $this->role);
+        return $this->deleteModelTrait($role);
     }
 }

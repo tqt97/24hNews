@@ -11,7 +11,7 @@ class Category extends Model
 {
     use HasFactory, Sluggable;
 
-    protected $fillable = ['name', 'user_id', 'image', 'is_highlight', 'status', 'slug'];
+    protected $fillable = ['name', 'user_id', 'parent_id','image', 'is_highlight', 'status', 'slug'];
 
     public function user()
     {
@@ -21,7 +21,14 @@ class Category extends Model
     {
         return $this->hasMany(Post::class, 'category_id', 'id');
     }
-
+    public function categories()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
+    public function childItems()
+    {
+        return $this->hasMany(Category::class, 'parent_id')->with('categories');
+    }
     public function imageUrl()
     {
         return "/upload/category/" . $this->image;

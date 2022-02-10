@@ -55,9 +55,13 @@
                                             <td>{{ $post->view_count }}</td>
                                             <td>
                                                 @if ($post->is_highlight == 1)
-                                                    <span class="badge badge-pill badge-success">Nổi bật</span>
+                                                    <span class="badge badge-pill badge-success">
+                                                        <i class="fa fa-check"></i>
+                                                    </span>
                                                 @else
-                                                    <span class="badge badge-pill badge-secondary">x</span>
+                                                    <span class="badge badge-pill badge-danger">
+                                                        <i class="fa fa-times"></i>
+                                                    </span>
                                                 @endif
                                             </td>
                                             <td>

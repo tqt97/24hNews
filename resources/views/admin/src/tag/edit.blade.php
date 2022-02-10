@@ -10,13 +10,15 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card card-primary-outline">
+                    <div class="card card-primary card-outline">
                         <form action="{{ route('admin.tag.update',$tag->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="card-body">
+                                @include('admin.src.components.warning-top')
+
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Tên tag :</label>
+                                    <label for="exampleInputEmail1">Tên tag <code>*</code> :</label>
                                     <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
                                        value="{{ $tag->name }}" autofocus required>
                                     @error('name')

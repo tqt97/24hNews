@@ -67,7 +67,7 @@
                                             </td>
                                             <td>{{ $category->formatCreateAt() }}</td>
                                             <td>
-                                                @can('category-edit')
+                                                @can('category-update')
                                                     <a href="{{ route('admin.category.edit', $category->id) }}"
                                                         class="btn btn-outline-primary mr-2">
                                                         <i class="fa fa-edit"></i>
@@ -101,7 +101,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Expandable Table Tree</h3>
+                            <h3 class="card-title">Danh mục</h3>
                         </div>
                         <!-- ./card-header -->
                         <div class="card-body p-0">

@@ -12,16 +12,17 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card card-primary-outline">
+                    <div class="card card-primary card-outline">
                         <form action="{{ route('admin.post.update', $post->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="card-body">
+                                @include('admin.src.components.warning-top')
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Tên bài viết :</label>
+                                            <label for="exampleInputEmail1">Tên bài viết <code>*</code> :</label>
                                             <input type="text" name="title"
                                                 class="form-control @error('title') is-invalid @enderror"
                                                 value="{{ $post->title }}" placeholder="Điền tên bài viết" autofocus
@@ -35,15 +36,12 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Chọn danh mục :</label>
+                                            <label>Chọn danh mục <code>*</code> :</label>
                                             <select
                                                 class="form-control select2_category @error('category_id') is-invalid @enderror"
                                                 name="category_id">
                                                 <option></option>
-                                                @foreach ($categories as $category)
-                                                    <option value="{{ $category->id }}" @if ($post->category_id == $category->id) selected  @endif>
-                                                        {{ $category->name }}</option>
-                                                @endforeach
+                                                {!! $htmlOption !!}
                                             </select>
                                             @error('category_id')
                                                 <span class="invalid-feedback" role="alert">
@@ -54,7 +52,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Hình ảnh :</label>
+                                    <label>Hình ảnh <code>*</code> :</label>
                                     <div class="input-group" id="divMainUpload">
                                         <div class="custom-file">
                                             <input class="form-control" type="file" id="image" name="image"
@@ -64,12 +62,12 @@
 
                                 </div>
                                 <div class="form-group">
-                                    <label>Mô tả ngắn :</label>
+                                    <label>Mô tả ngắn <code>*</code> :</label>
                                     <textarea class="form-control" id="description"
                                         name="description">{!! $post->description !!}</textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label>Chi tiết bài viết :</label>
+                                    <label>Chi tiết bài viết <code>*</code> :</label>
                                     <textarea class="form-control @error('content') is-invalid @enderror" id="content"
                                         name="content">{!! $post->content !!}</textarea>
                                     @error('content')
@@ -79,15 +77,12 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label>Tags</label>
+                                    <label>Tags :</label>
                                     <select class="select2_tag" multiple="multiple" name="tags[]"
                                         data-placeholder="Thêm tag cho bài viết" style="width: 100%;">
                                         @foreach ($post->tags as $tag)
                                             <option value="{{ $tag->id }}" selected>{{ $tag->name }}</option>
                                         @endforeach
-                                        {{-- @foreach ($tags as $tag)
-                                            <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-                                        @endforeach --}}
                                     </select>
                                 </div>
                                 <div class="row">
@@ -95,8 +90,9 @@
                                         <div class="form-group">
                                             <label class="form-check-label mb-2 font-weight-bold">Trạng thái :</label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="status"
-                                                    @if ($post->status == 1) checked @endif>
+                                                <input type="hidden" name="status" value="0">
+                                                <input class="form-check-input" type="checkbox" name="status" value="1"
+                                                    {{ old('status') || $post->status ? 'checked' : '' }}>
                                                 <label class="form-check-label">Hiện</label>
                                             </div>
                                         </div>
@@ -105,8 +101,10 @@
                                         <div class="form-group">
                                             <label class="form-check-label mb-2 font-weight-bold">Nổi bật :</label>
                                             <div class="form-check">
+                                                <input type="hidden" name="is_highlight" value="0">
                                                 <input class="form-check-input" type="checkbox" name="is_highlight"
-                                                    @if ($post->is_highlight == 1) checked @endif>
+                                                    value="1"
+                                                    {{ old('is_highlight') || $post->is_highlight ? 'checked' : '' }}>
                                             </div>
                                         </div>
                                     </div>

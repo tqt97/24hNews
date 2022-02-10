@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\PostImage;
 use App\Models\PostTag;
 use App\Models\Tag;
+use App\Recursives\CategoryRecursive;
 use App\Traits\DeleteModelTrait;
 use App\Traits\StorageImageTrait;
 use Illuminate\Http\Request;
@@ -24,19 +26,22 @@ class PostController extends Controller
     private $postImage;
     private $tag;
     private $postTag;
+    private $categoryRecursive;
 
     public function __construct(
         Category $category,
         Post $post,
         PostImage $postImage,
         Tag $tag,
-        PostTag $postTag
+        PostTag $postTag,
+        CategoryRecursive $categoryRecursive
     ) {
         $this->category = $category;
         $this->post = $post;
         $this->postImage = $postImage;
         $this->tag = $tag;
         $this->postTag = $postTag;
+        $this->categoryRecursive = $categoryRecursive;
     }
 
 
@@ -58,9 +63,10 @@ class PostController extends Controller
      */
     public function create()
     {
-        $categories = $this->category->all();
+        // $categories = $this->category->all();
         $tags = $this->tag->all();
-        return view('admin.src.post.create', compact('categories', 'tags'));
+        $htmlOption = $this->categoryRecursive->categoryCreateRecursive();
+        return view('admin.src.post.create', compact('tags', 'htmlOption'));
     }
 
     /**
@@ -73,26 +79,20 @@ class PostController extends Controller
     {
         try {
             DB::beginTransaction();
+
             $data = [
-                'title' => $request->title,
-                'category_id' => $request->category_id,
-                'description' => $request->description,
-                'content' => $request->content,
-                'user_id' => Auth::user()->id,
-                'is_highlight' => $request->is_highlight ? 1 : 0,
-                'status' => $request->status ? 1 : 0,
+                'user_id' =>  auth()->id(),
             ];
+
             $dataImage = $this->storeImageUpload($request, 'image', 'post');
             if (!empty($dataImage)) {
                 $data['image'] = $dataImage['image'];
             }
-            $post = $this->post->create($data);
+            $post = $this->post->create($data + $request->validated());
 
-            // Insert tags for post
             $tagIds = [];
             if (!empty($request->tags)) {
                 foreach ($request->tags as $tagItem) {
-                    // Insert to tags
                     $tagInstance = $this->tag->firstOrCreate(['name' => $tagItem]);
                     $tagIds[] = $tagInstance->id;
                 }
@@ -130,9 +130,9 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = $this->post->findOrFail($id);
-        $categories = $this->category->all();
+        $htmlOption = $this->categoryRecursive->categoryEditRecursive($post->category_id);
         $tags = $this->tag->all();
-        return view('admin.src.post.edit', compact('post', 'categories', 'tags'));
+        return view('admin.src.post.edit', compact('post', 'htmlOption', 'tags'));
     }
 
     /**
@@ -142,21 +142,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Post $post, UpdatePostRequest $request)
     {
         try {
             DB::beginTransaction();
-            $post = $this->post->findOrFail($id);
-
-            $data = [
-                'title' => $request->title,
-                'category_id' => $request->category_id,
-                'description' => $request->description,
-                'content' => $request->content,
-                'user_id' => Auth::user()->id,
-                'is_highlight' => $request->is_highlight ? 1 : 0,
-                'status' => $request->status ? 1 : 0,
-            ];
+            $data = [];
             if ($request->hasFile('image')) {
                 if ($post->image) {
                     unlink("upload/post/" . $post->image);
@@ -168,13 +158,11 @@ class PostController extends Controller
                     $data['image'] = $post->image;
                 }
             }
-            $this->post->findOrFail($id)->update($data);
+            $post->update($data + $request->validated());
 
-            // Insert tags for post
             $tagIds = [];
             if (!empty($request->tags)) {
                 foreach ($request->tags as $tagItem) {
-                    // Insert to tags
                     $tagInstance = $this->tag->firstOrCreate(['name' => $tagItem]);
                     $tagIds[] = $tagInstance->id;
                 }
@@ -198,9 +186,8 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        return $this->deleteModelHasImageTrait($id, $this->post, 'post');
-
+        return $this->deleteModelHasImageTrait($post, 'post');
     }
 }

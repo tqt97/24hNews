@@ -6,14 +6,13 @@ use Illuminate\Support\Facades\Log;
 
 trait DeleteModelTrait
 {
-    public function deleteModelHasImageTrait($id, $model, $folderName)
+    public function deleteModelHasImageTrait($model, $folderName)
     {
         try {
-            $obj = $model->findOrFail($id);
-            if ($obj->image) {
-                unlink("upload/" . $folderName . "/" . $obj->image);
+            if ($model->image) {
+                unlink("upload/" . $folderName . "/" . $model->image);
             }
-            $obj->delete();
+            $model->delete();
             return response()->json([
                 'code' => 200,
                 'message' => 'success'
@@ -26,10 +25,10 @@ trait DeleteModelTrait
             ], 500);
         }
     }
-    public function deleteModelTrait($id, $model)
+    public function deleteModelTrait($model)
     {
         try {
-            $model->find($id)->delete();
+            $model->delete();
             return response()->json([
                 'code' => 200,
                 'message' => 'success'

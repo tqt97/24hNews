@@ -30,6 +30,7 @@
                                         <th>ID</th>
                                         <th>Tên người dùng</th>
                                         <th>Email</th>
+                                        <th>Điện thoại</th>
                                         <th>Ngày tạo</th>
                                         <th>Thao tác </th>
                                     </tr>
@@ -40,6 +41,7 @@
                                             <td>{{ $user->id }}</td>
                                             <td>{{ $user->name }}</td>
                                             <td>{{ $user->email }}</td>
+                                            <td>{{ $user->phone }}</td>
                                             <td>{{ $user->formatCreateAt() }}</td>
                                             <td>
                                                 <a href="{{ route('admin.user.edit', $user->id) }}"
@@ -54,7 +56,7 @@
                                         </tr>
                                     @empty
                                         <tr style="text-align: center">
-                                            <td colspan="6">Data is empty !</td>
+                                            <td colspan="7">Data is empty !</td>
                                         </tr>
                                     @endforelse
                                 </tbody>

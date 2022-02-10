@@ -10,32 +10,38 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card card-primary-outline">
+                    <div class="card card-primary card-outline">
                         <form action="{{ route('admin.role.store') }}" method="POST">
                             @csrf
                             <div class="card-body">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>Tên vai trò :</label>
-                                        <input type="text" class="form-control" name="name" placeholder="Nhập tên vai trò"
-                                            value="{{ old('name') }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Mô tả vai trò :</label>
-                                        <textarea class="form-control" name="display_name"
-                                            rows="2">{{ old('display_name') }}</textarea>
+                                @include('admin.src.components.warning-top')
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Tên vai trò <code>*</code>:</label>
+                                            <input type="text" class="form-control" name="name"
+                                                placeholder="Nhập tên vai trò" value="{{ old('name') }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Mô tả vai trò <code>*</code>:</label>
+                                            <textarea class="form-control" name="display_name"
+                                                rows="2">{{ old('display_name') }}</textarea>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <label>
-                                                <input type="checkbox" class="checkall">
-                                                CHỌN TẤT CẢ
-                                            </label>
-                                        </div>
-                                        @foreach ($permissionsParent as $permissionsParentItem)
-                                            <div class="card border-primary mb-3 col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>
+                                            <input type="checkbox" class="checkall">
+                                            CHỌN TẤT CẢ
+                                        </label>
+                                    </div>
+
+                                    {{-- <div class="col-sm-6"> --}}
+                                    @foreach ($permissionsParent as $permissionsParentItem)
+                                        <div class=" mb-3 col-md-6">
+                                            <div class="card card-primary card-outline">
                                                 <div class="card-header">
                                                     <label>
                                                         <input type="checkbox" value="" class="checkbox_wrapper">
@@ -48,18 +54,20 @@
                                                             <h5 class="card-title">
                                                                 <label>
                                                                     <input type="checkbox" name="permission_id[]"
-                                                                        class="checkbox_childrent"
+                                                                        class="checkbox_childrent input-check"
                                                                         value="{{ $permissionsChildrentItem->id }}">
                                                                 </label>
-                                                                {{ $permissionsChildrentItem->name }}
+                                                                <span class="ml-2">{{ $permissionsChildrentItem->name }}</span>
                                                             </h5>
                                                         </div>
                                                     @endforeach
                                                 </div>
                                             </div>
-                                        @endforeach
-                                    </div>
+                                        </div>
+                                    @endforeach
+                                    {{-- </div> --}}
                                 </div>
+
                             </div>
                             @include('admin.src.components.card-footer-create')
                         </form>

@@ -10,21 +10,22 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card card-primary-outline">
+                    <div class="card card-primary card-outline">
                         <form action="{{ route('admin.role.update', $role->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="card-body">
+                                @include('admin.src.components.warning-top')
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>Tên vai trò :</label>
+                                        <label>Tên vai trò <code>*</code> :</label>
                                         <input type="text" class="form-control" name="name" placeholder="Nhập tên vai trò"
                                             value="{{ $role->name }}">
 
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Mô tả vai trò :</label>
+                                        <label>Mô tả vai trò <code>*</code> :</label>
 
                                         <textarea class="form-control" name="display_name"
                                             rows="4">{{ $role->display_name }}</textarea>

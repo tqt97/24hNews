@@ -25,6 +25,9 @@ class StoreCategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:categories,name',
+            'parent_id' => 'required',
+            'is_highlight' => ['required', 'boolean'],
+            'status' => ['required', 'boolean'],
         ];
     }
     public function messages()
@@ -32,6 +35,7 @@ class StoreCategoryRequest extends FormRequest
         return [
             'name.required' => 'Tên danh mục không được để trống',
             'name.unique' => 'Tên danh mục không được trùng',
+            'parent_id.required' => 'Danh mục không được để trống',
         ];
     }
 }

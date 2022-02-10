@@ -21,7 +21,7 @@ class Admin extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'password','phone','address','image','status'
     ];
 
     /**
@@ -46,16 +46,20 @@ class Admin extends Authenticatable
     {
         return \Carbon\Carbon::parse($this->created_at)->format('d/m/Y');
     }
+    public function imageUrl()
+    {
+        return "/upload/user/" . $this->image;
+    }
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'role_users', 'user_id', 'role_id')->withTimestamps();
     }
-    public function checkPermissionAccess($pemissionCheck)
+    public function checkPermissionAccess($permissionCheck)
     {
         $roles = auth()->user()->roles;
         foreach ($roles as $role) {
             $permissions = $role->permissions;
-            if ($permissions->contains('key_code', $pemissionCheck)) {
+            if ($permissions->contains('key_code', $permissionCheck)) {
                 return true;
             }
         }

@@ -6,8 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Recursives\CategoryRecursive;
 use App\Traits\DeleteModelTrait;
 use App\Traits\StorageImageTrait;
 
@@ -15,55 +14,52 @@ use App\Traits\StorageImageTrait;
 class CategoryController extends Controller
 {
     use DeleteModelTrait, StorageImageTrait;
+    private $categoryRecursive;
     private $category;
 
-    public function __construct(Category $category)
+    public function __construct(Category $category, CategoryRecursive $categoryRecursive)
     {
         $this->category = $category;
+        $this->categoryRecursive = $categoryRecursive;
     }
+
     public function index()
     {
         $categories = $this->category->latest()->paginate(10);
         return view('admin.src.category.index', compact('categories'));
     }
+
     public function create()
     {
-        return view('admin.src.category.create');
+        $htmlOption = $this->categoryRecursive->categoryCreateRecursive();
+        return view('admin.src.category.create', compact('htmlOption'));
     }
+
     public function store(StoreCategoryRequest $request)
     {
         $data = [
-            'name' => $request->name,
-            'user_id' => Auth::user()->id,
-            'is_highlight' => $request->is_highlight ? 1 : 0,
-            'status' => $request->status ? 1 : 0,
+            'user_id' => auth()->id(),  // auth()->id() || Auth::user()->id
         ];
         $dataImage = $this->storeImageUpload($request, 'image', 'category');
         if (!empty($dataImage)) {
             $data['image'] = $dataImage['image'];
         }
-        // dd($data);
-        $this->category->create($data);
+        Category::create($request->validated() + $data);
         return redirect()->route('admin.category.index')->with([
             'alert-type' => 'success',
             'message' => 'Thêm danh mục thành công'
         ]);
     }
-    public function edit($id)
+
+    public function edit(Category $category)
     {
-        $category = $this->category->findOrFail($id);
-        return view('admin.src.category.edit', compact('category'));
+        $htmlOption = $this->categoryRecursive->categoryEditRecursive($category->parent_id);
+        return view('admin.src.category.edit', compact('category', 'htmlOption'));
     }
 
-    public function update(UpdateCategoryRequest $request, $id)
+    public function update(Category $category, UpdateCategoryRequest $request)
     {
-        $category = $this->category->findOrFail($id);
-        $data = [
-            'name' => $request->name,
-            'user_id' => Auth::user()->id,
-            'is_highlight' => $request->is_highlight ? 1 : 0,
-            'status' => $request->status ? 1 : 0,
-        ];
+        $data = [];
         if ($request->hasFile('image')) {
             if ($category->image) {
                 unlink("upload/category/" . $category->image);
@@ -75,14 +71,14 @@ class CategoryController extends Controller
                 $data['image'] = $category->image;
             }
         }
-        $category->update($data);
+        $category->update($request->validated() + $data);
         return redirect()->route('admin.category.index')->with([
             'alert-type' => 'success',
             'message' => 'Cập nhật danh mục thành công'
         ]);
     }
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        return $this->deleteModelHasImageTrait($id, $this->category, 'category');
+        return $this->deleteModelHasImageTrait($category, 'category');
     }
 }

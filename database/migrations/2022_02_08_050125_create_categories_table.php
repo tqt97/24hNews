@@ -17,6 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('parent_id')->default(0);
             $table->string('image')->nullable();
             $table->boolean('status')->default(1);
             $table->boolean('is_highlight')->default(0);

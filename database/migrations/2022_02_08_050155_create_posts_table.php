@@ -24,9 +24,9 @@ class CreatePostsTable extends Migration
             $table->string('slug');
             $table->boolean('status')->default(1);
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('category_id');
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->timestamps();
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+
             // $table->softDeletes();
         });
     }
