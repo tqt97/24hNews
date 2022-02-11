@@ -19,7 +19,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Tên danh mục <code>*</code> :</label>
+                                            <label">Tên danh mục <code>*</code> :</label>
                                             <input type="text" name="name"
                                                 class="form-control @error('name') is-invalid @enderror"
                                                 value="{{ old('name') }}" placeholder="Điền tên danh mục" autofocus

@@ -24,10 +24,8 @@ class StorePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' =>  ['required', 'string'],
-            'image' =>  ['required', 'mimes:jpg,bmp,png,jpeg,gif,webp,svg', 'dimensions:max-width=1500,max_height=1500'],
+            'title' =>  ['required', 'string','unique:posts,title'],
             'content' =>  'required',
-            'category_id' =>  'required',
             'description' =>  'required',
             'is_highlight' =>  ['required', 'boolean'],
             'status' =>  ['required', 'boolean'],
@@ -37,10 +35,8 @@ class StorePostRequest extends FormRequest
     {
         return [
             'title.required' => 'Tên bài viết không được để trống',
-            'image.required' => 'Hình ảnh không được để trống',
             'content.required' => 'Nội dung không được để trống',
             'description.required' => 'Mô tả ngắn không được để trống',
-            'category_id.required' => 'Tên danh mục không được để trống',
         ];
     }
 }

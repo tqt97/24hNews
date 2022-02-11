@@ -13,6 +13,9 @@
     @endif
     <section class="content">
         <div class="container-fluid">
+            {{-- <x-form.alert>
+                <strong>Whoops!</strong> Something went wrong!
+            </x-form.alert> --}}
             <div class="row">
                 <div class="col-lg-3 col-6">
                     <!-- small box -->

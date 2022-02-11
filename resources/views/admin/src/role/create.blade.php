@@ -20,13 +20,23 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Tên vai trò <code>*</code>:</label>
-                                            <input type="text" class="form-control" name="name"
-                                                placeholder="Nhập tên vai trò" value="{{ old('name') }}">
+                                            <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                                name="name" placeholder="Nhập tên vai trò" value="{{ old('name') }}">
+                                            @error('name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </div>
                                         <div class="form-group">
                                             <label>Mô tả vai trò <code>*</code>:</label>
-                                            <textarea class="form-control" name="display_name"
-                                                rows="2">{{ old('display_name') }}</textarea>
+                                            <textarea class="form-control @error('display_name') is-invalid @enderror"
+                                                name="display_name" rows="2">{{ old('display_name') }}</textarea>
+                                            @error('display_name')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -49,15 +59,16 @@
                                                     <b>Module {{ $permissionsParentItem->name }}</b>
                                                 </div>
                                                 <div class="row">
-                                                    @foreach ($permissionsParentItem->permissionsChildrent as $permissionsChildrentItem)
+                                                    @foreach ($permissionsParentItem->permissionsChildren as $permissionsChildrenItem)
                                                         <div class="card-body text-primary col-md-3">
                                                             <h5 class="card-title">
                                                                 <label>
                                                                     <input type="checkbox" name="permission_id[]"
                                                                         class="checkbox_childrent input-check"
-                                                                        value="{{ $permissionsChildrentItem->id }}">
+                                                                        value="{{ $permissionsChildrenItem->id }}">
                                                                 </label>
-                                                                <span class="ml-2">{{ $permissionsChildrentItem->name }}</span>
+                                                                <span
+                                                                    class="ml-2">{{ $permissionsChildrenItem->name }}</span>
                                                             </h5>
                                                         </div>
                                                     @endforeach

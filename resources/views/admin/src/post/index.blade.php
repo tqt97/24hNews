@@ -26,13 +26,11 @@
                         <div class="card-body table-responsive p-0">
                             <table class="table table-hover table-bordered table-stripeda text-nowrap">
                                 <thead>
+                                    <td colspan="7">Tổng số bài viết: <b>{{ $posts->count() }}</b> </td>
                                     <tr style="text-align:center;background-color:rgb(244 246 249)">
                                         <th>ID</th>
                                         <th>Tên bài viết</th>
-                                        <th>Hình ảnh</th>
                                         <th>Danh mục</th>
-                                        <th>Người tạo</th>
-                                        <th>Lượt xem</th>
                                         <th>Nổi bật</th>
                                         <th>Trạng thái</th>
                                         <th>Ngày tạo</th>
@@ -40,19 +38,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($posts as $post)
+                                    @forelse ($posts as $key=> $post)
                                         <tr style="text-align:center">
-                                            <td>{{ $post->id }}</td>
-                                            <td>{{ $post->title }}</td>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $post->limitTitle() }}</td>
+                                            {{-- <td>
+                                                <img src="{{ $post->getFirstMediaUrl('image_post', 'small') }}"
+                                                    alt="{{ $post->name }}">
+                                            </td> --}}
                                             <td>
-                                                @if ($post->image)
-                                                    <img src="{{ $post->imageUrl() }}" alt="{{ $post->name }}"
-                                                        width="70px">
-                                                @endif
+                                                @foreach ($post->categories as $item)
+                                                    <span class="badge badge-warning">{{ $item->name }}</span>
+                                                @endforeach
                                             </td>
-                                            <td>{{ $post->category->name }}</td>
-                                            <td>{{ $post->user->name }}</td>
-                                            <td>{{ $post->view_count }}</td>
                                             <td>
                                                 @if ($post->is_highlight == 1)
                                                     <span class="badge badge-pill badge-success">
@@ -71,13 +69,13 @@
                                                     <span class="badge badge-pill badge-secondary">Ẩn</span>
                                                 @endif
                                             </td>
-                                            <td>{{ $post->created_at }}</td>
+                                            <td>{{ $post->formatCreateAt() }}</td>
                                             <td>
                                                 <a href="{{ route('admin.post.edit', $post->id) }}"
-                                                    class="btn btn-outline-primary mr-2">
+                                                    class="btn btn-outline-primary mr-2 btn-sm">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
-                                                <a href="" class="btn btn-outline-danger action_delete"
+                                                <a href="" class="btn btn-outline-danger btn-sm action_delete"
                                                     data-url="{{ route('admin.post.destroy', $post->id) }}">
                                                     <i class="fa fa-trash-alt"></i>
                                                 </a>
@@ -93,7 +91,7 @@
                         </div>
                         <div class="mt-2 col-xs-12">
                             <div class="float-right mr-1">
-                                {{ $posts->links() }}
+                                {{-- {{ $posts->links() }} --}}
                             </div>
                         </div>
                     </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdatePostRequest extends FormRequest
 {
@@ -24,10 +25,8 @@ class UpdatePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' =>  ['required', 'string'],
-            'image' =>  ['mimes:jpg,bmp,png,jpeg,gif,webp,svg', 'dimensions:max-width=1500,max_height=1500'],
+            'title' =>  ['required', 'string',Rule::unique('posts')->ignore($this->post->id)],
             'content' =>  'required',
-            'category_id' =>  'required',
             'description' =>  'required',
             'is_highlight' =>  ['required', 'boolean'],
             'status' =>  ['required', 'boolean'],
@@ -37,10 +36,9 @@ class UpdatePostRequest extends FormRequest
     {
         return [
             'title.required' => 'Tên bài viết không được để trống',
-            'image.dimensions' => 'Hình ảnh không đúng kích thước',
+            'title.unique' => 'Tên đã tồn tại',
             'content.required' => 'Nội dung không được để trống',
             'description.required' => 'Mô tả ngắn không được để trống',
-            'category_id.required' => 'Tên danh mục không được để trống',
         ];
     }
 }

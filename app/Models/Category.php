@@ -11,15 +11,15 @@ class Category extends Model
 {
     use HasFactory, Sluggable;
 
-    protected $fillable = ['name', 'user_id', 'parent_id','image', 'is_highlight', 'status', 'slug'];
+    protected $fillable = ['name', 'author_id', 'parent_id', 'is_highlight', 'status', 'slug'];
 
-    public function user()
+    public function author()
     {
-        return $this->belongsTo(Admin::class, 'user_id', 'id');
+        return $this->belongsTo(Admin::class,'author_id');
     }
-    public function post()
+    public function posts()
     {
-        return $this->hasMany(Post::class, 'category_id', 'id');
+        return $this->belongsToMany(Post::class,'post_category');
     }
     public function categories()
     {

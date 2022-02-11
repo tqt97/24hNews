@@ -21,7 +21,7 @@ class Admin extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password','phone','address','image','status'
+        'password', 'phone', 'address', 'image', 'status'
     ];
 
     /**
@@ -48,11 +48,11 @@ class Admin extends Authenticatable
     }
     public function imageUrl()
     {
-        return "/upload/user/" . $this->image;
+        return "/upload/admin/" . $this->image;
     }
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'role_users', 'user_id', 'role_id')->withTimestamps();
+        return $this->belongsToMany(Role::class )->withTimestamps();
     }
     public function checkPermissionAccess($permissionCheck)
     {

@@ -6,12 +6,10 @@ use Illuminate\Support\Facades\Log;
 
 trait DeleteModelTrait
 {
-    public function deleteModelHasImageTrait($model, $folderName)
+    public function deleteModelHasImageTrait($model, $collection)
     {
         try {
-            if ($model->image) {
-                unlink("upload/" . $folderName . "/" . $model->image);
-            }
+            $model->clearMediaCollection($collection);
             $model->delete();
             return response()->json([
                 'code' => 200,

@@ -19,17 +19,24 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Tên vai trò <code>*</code> :</label>
-                                        <input type="text" class="form-control" name="name" placeholder="Nhập tên vai trò"
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" placeholder="Nhập tên vai trò"
                                             value="{{ $role->name }}">
-
+                                        @error('name')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group">
                                         <label>Mô tả vai trò <code>*</code> :</label>
-
-                                        <textarea class="form-control" name="display_name"
+                                        <textarea class="form-control @error('display_name') is-invalid @enderror" name="display_name"
                                             rows="4">{{ $role->display_name }}</textarea>
-
+                                        @error('display_name')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
 
 
@@ -49,19 +56,19 @@
                                                     <label>
                                                         <input type="checkbox" value="" class="checkbox_wrapper">
                                                     </label>
-                                                   <b> Module {{ $permissionsParentItem->name }}</b>
+                                                    <b> Module {{ $permissionsParentItem->name }}</b>
                                                 </div>
                                                 <div class="row">
-                                                    @foreach ($permissionsParentItem->permissionsChildrent as $permissionsChildrentItem)
+                                                    @foreach ($permissionsParentItem->permissionsChildren as $permissionsChildrenItem)
                                                         <div class="card-body text-primary col-md-3">
                                                             <h5 class="card-title">
                                                                 <label>
                                                                     <input type="checkbox" name="permission_id[]"
-                                                                        {{ $pemissionsChecked->contains('id', $permissionsChildrentItem->id) ? 'checked' : '' }}
+                                                                        {{ $pemissionsChecked->contains('id', $permissionsChildrenItem->id) ? 'checked' : '' }}
                                                                         class="checkbox_childrent"
-                                                                        value="{{ $permissionsChildrentItem->id }}">
+                                                                        value="{{ $permissionsChildrenItem->id }}">
                                                                 </label>
-                                                                {{ $permissionsChildrentItem->name }}
+                                                                {{ $permissionsChildrenItem->name }}
                                                             </h5>
                                                         </div>
                                                     @endforeach

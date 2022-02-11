@@ -22,8 +22,8 @@ function actionDelete(event){
                     if (data.code == 200) {
                         that.parent().parent().remove();
                         Swal.fire(
-                            'Deleted!',
-                            'Your file has been deleted.',
+                            'Đã xóa !',
+                            'Bản ghi đã bị xóa.',
                             'success'
                         )
                     }

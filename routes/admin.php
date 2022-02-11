@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\Auth\LoginController;
@@ -11,7 +12,6 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TagController;
-use App\Http\Controllers\Admin\UserController;
 
 // ******************************** Authentication Admin Routes ****************************************
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('admin.login');
@@ -56,7 +56,7 @@ Route::group(['as' => 'admin.', 'middleware' => ['admin.auth']], function () {
         // 'category' => CategoryController::class,
         'post' => PostController::class,
         'tag' => TagController::class,
-        'user' => UserController::class,
+        'admins' => AdminController::class,
         'role' => RoleController::class,
     ]);
 

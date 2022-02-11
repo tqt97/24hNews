@@ -23,11 +23,10 @@ class CreatePostsTable extends Migration
             $table->boolean('is_highlight')->default(0);
             $table->string('slug');
             $table->boolean('status')->default(1);
-            $table->unsignedBigInteger('user_id');
-            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            $table->foreignId('author_id')->constrained('admins');
             $table->timestamps();
-
             // $table->softDeletes();
+
         });
     }
 

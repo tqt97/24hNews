@@ -8,12 +8,11 @@ use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Recursives\CategoryRecursive;
 use App\Traits\DeleteModelTrait;
-use App\Traits\StorageImageTrait;
 
 
 class CategoryController extends Controller
 {
-    use DeleteModelTrait, StorageImageTrait;
+    use DeleteModelTrait;
     private $categoryRecursive;
     private $category;
 
@@ -25,7 +24,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $categories = $this->category->latest()->paginate(10);
+        $categories = $this->category->with('author')->latest()->paginate(10);
         return view('admin.src.category.index', compact('categories'));
     }
 
@@ -37,14 +36,8 @@ class CategoryController extends Controller
 
     public function store(StoreCategoryRequest $request)
     {
-        $data = [
-            'user_id' => auth()->id(),  // auth()->id() || Auth::user()->id
-        ];
-        $dataImage = $this->storeImageUpload($request, 'image', 'category');
-        if (!empty($dataImage)) {
-            $data['image'] = $dataImage['image'];
-        }
-        Category::create($request->validated() + $data);
+        Category::create($request->validated() + ['author_id' => auth()->id()]);
+
         return redirect()->route('admin.category.index')->with([
             'alert-type' => 'success',
             'message' => 'Thêm danh mục thành công'
@@ -59,19 +52,8 @@ class CategoryController extends Controller
 
     public function update(Category $category, UpdateCategoryRequest $request)
     {
-        $data = [];
-        if ($request->hasFile('image')) {
-            if ($category->image) {
-                unlink("upload/category/" . $category->image);
-            }
-            $dataImage = $this->updateImageUpload($request, 'image', 'category');
-            if (!empty($dataImage)) {
-                $data['image'] = $dataImage['image'];
-            } else {
-                $data['image'] = $category->image;
-            }
-        }
-        $category->update($request->validated() + $data);
+        $category->update($request->validated());
+        
         return redirect()->route('admin.category.index')->with([
             'alert-type' => 'success',
             'message' => 'Cập nhật danh mục thành công'
@@ -79,6 +61,6 @@ class CategoryController extends Controller
     }
     public function destroy(Category $category)
     {
-        return $this->deleteModelHasImageTrait($category, 'category');
+        return $this->deleteModelTrait($category);
     }
 }

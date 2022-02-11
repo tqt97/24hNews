@@ -18,8 +18,7 @@ class CreatePermissionsTable extends Migration
             $table->string('name');
             $table->string('display_name');
             $table->string('key_code');
-            $table->unsignedBigInteger('parent_id')->default(0);
-            // $table->foreign('parent_id')->references('id')->on('permissions');
+            $table->integer('parent_id')->default(0);
             $table->timestamps();
         });
     }

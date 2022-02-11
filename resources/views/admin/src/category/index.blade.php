@@ -15,7 +15,7 @@
                 @endif
                 <div class="col-12">
                     <div class="card">
-                        @can('category-create')
+                        {{-- @can('category-create') --}}
                             <div class="card-header">
                                 <a href="{{ route('admin.category.create') }}" style="color:#fff">
                                     <btn class="btn btn-primary">
@@ -24,7 +24,7 @@
                                     </btn>
                                 </a>
                             </div>
-                        @endcan
+                        {{-- @endcan --}}
                         <div class="card-body table-responsive p-0">
                             <table class="table table-hover table-bordered table-stripeda text-nowrap">
                                 <thead>
@@ -50,7 +50,7 @@
                                                         width="70px">
                                                 @endif
                                             </td>
-                                            <td>{{ $category->user->name }}</td>
+                                            <td>{{ $category->author->name }}</td>
                                             <td>
                                                 @if ($category->is_highlight == 1)
                                                     <span class="badge badge-pill badge-success">Nổi bật</span>
@@ -67,18 +67,18 @@
                                             </td>
                                             <td>{{ $category->formatCreateAt() }}</td>
                                             <td>
-                                                @can('category-update')
+                                                {{-- @can('category-update') --}}
                                                     <a href="{{ route('admin.category.edit', $category->id) }}"
                                                         class="btn btn-outline-primary mr-2">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
-                                                @endcan
-                                                @can('category-delete')
+                                                {{-- @endcan --}}
+                                                {{-- @can('category-delete') --}}
                                                     <a href="" class="btn btn-outline-danger action_delete"
                                                         data-url="{{ route('admin.category.destroy', $category->id) }}">
                                                         <i class="fa fa-trash-alt"></i>
                                                     </a>
-                                                @endcan
+                                                {{-- @endcan --}}
                                             </td>
                                         </tr>
                                     @empty

@@ -50,7 +50,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('admin.user.index') }}" class="nav-link {{ (request()->segment(2) == 'user') ? 'active' : '' }}">
+        <a href="{{ route('admin.admins.index') }}" class="nav-link {{ (request()->segment(2) == 'admins') ? 'active' : '' }}">
             <i class="nav-icon fas fa-user-alt"></i>
             <p>
                 Quản lý người dùng

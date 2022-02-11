@@ -22,9 +22,6 @@
                                     Thêm mới
                                 </btn>
                             </a>
-                            {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
-                                Thêm tag
-                            </button> --}}
                         </div>
                         <div class="card-body table-responsive p-0">
                             <table class="table table-hover table-bordered table-stripeda text-nowrap">

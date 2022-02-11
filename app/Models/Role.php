@@ -8,11 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+    protected $fillable = ['name', 'display_name'];
+    public function admins()
+    {
+        return $this->belongsToMany(Admin::class,'admin_role','role_id', 'admin_id');
 
+    }
     public function permissions()
     {
-        return $this->belongsToMany(Permission::class, 'permission_roles', 'role_id', 'permission_id');
+        return $this->belongsToMany(Permission::class,'role_permission')->withTimestamps();
     }
 
     public function formatCreateAt()

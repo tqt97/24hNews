@@ -34,18 +34,13 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Chọn danh mục <code>*</code> :</label>
-                                            <select
-                                                class="form-control select2_category @error('category_id') is-invalid @enderror"
-                                                name="category_id">
-                                                <option></option>
-                                                {!! $htmlOption !!}
+                                            <label>Chọn danh mục bài viết <code>*</code> :</label>
+                                            <select class="select2_category" multiple="multiple" name="categories[]"
+                                                style="width: 100%;" required>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endforeach
                                             </select>
-                                            @error('category_id')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -54,7 +49,7 @@
                                     <div class="input-group" id="divMainUpload">
                                         <div class="custom-file">
                                             <input class="form-control @error('image') is-invalid @enderror" type="file"
-                                                id="image" name="image" accept="image/*" placeholder="Chọn hình ảnh" />
+                                                id="image" name="image" accept="image/*" />
                                         </div>
                                         @error('image')
                                             <span class="invalid-feedback" role="alert">
@@ -89,7 +84,7 @@
                                     <select class="select2_tag" multiple="multiple" name="tags[]"
                                         data-placeholder="Thêm tag cho bài viết" style="width: 100%;">
                                         @foreach ($tags as $tag)
-                                            <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                            <option value="{{ $tag->name }}">{{ $tag->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -121,10 +116,12 @@
 
             $(".select2_tag").select2({
                 tags: true,
+                allowClear: true,
                 tokenSeparators: [',', ' ']
             });
             $(".select2_category").select2({
-                placeholder: "--- Chọn danh mục bài viết ---",
+                placeholder: "Chọn danh mục bài viết",
+                tokenSeparators: [',', ' '],
                 allowClear: true
             });
             $('#description').summernote({

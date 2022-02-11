@@ -35,7 +35,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="form-group">
+                                        {{-- <div class="form-group">
                                             <label>Chọn danh mục <code>*</code> :</label>
                                             <select
                                                 class="form-control select2_category @error('category_id') is-invalid @enderror"
@@ -48,6 +48,18 @@
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                             @enderror
+                                        </div> --}}
+                                        <div class="form-group">
+                                            <label>Chọn danh mục bài viết <code>*</code> :</label>
+                                            <select class="select2_category" multiple="multiple" name="categories[]"
+                                                style="width: 100%;">
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}"
+                                                        {{ $categoryOfPost->contains('id', $category->id) ? 'selected' : '' }}>
+                                                        {{ $category->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -80,8 +92,11 @@
                                     <label>Tags :</label>
                                     <select class="select2_tag" multiple="multiple" name="tags[]"
                                         data-placeholder="Thêm tag cho bài viết" style="width: 100%;">
-                                        @foreach ($post->tags as $tag)
-                                            <option value="{{ $tag->id }}" selected>{{ $tag->name }}</option>
+                                        @foreach ($tags as $tag)
+                                            <option value="{{ $tag->name }}"
+                                                {{ $tagOfPost->contains('id', $tag->id) ? 'selected' : '' }}>
+                                                {{ $tag->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
