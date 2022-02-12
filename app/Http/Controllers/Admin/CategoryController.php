@@ -24,8 +24,14 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $categories = $this->category->with('author')->latest()->paginate(10);
-        return view('admin.src.category.index', compact('categories'));
+        // $categories = $this->category->all();
+
+        $highlights = $this->category->all()->sortBy('is_highlight')->pluck('is_highlight')->unique();
+        $status = $this->category->all()->sortBy('status')->pluck('status')->unique();
+
+        // $htmlOption = $this->categoryRecursive->categoryListRecursive();
+
+        return view('admin.src.category.index',compact('status','highlights'));
     }
 
     public function create()
@@ -53,7 +59,7 @@ class CategoryController extends Controller
     public function update(Category $category, UpdateCategoryRequest $request)
     {
         $category->update($request->validated());
-        
+
         return redirect()->route('admin.category.index')->with([
             'alert-type' => 'success',
             'message' => 'Cập nhật danh mục thành công'

@@ -1,3 +1,5 @@
-<div class="alert alert-danger">
-    {{ $slot }}
-</div>
+@error('{{ $slot }}')
+    <span class="invalid-feedback" role="alert">
+        <strong> {{ $slot }}</strong>
+    </span>
+@enderror

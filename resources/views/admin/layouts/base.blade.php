@@ -5,15 +5,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <title>@yield('title')</title>
-
-    <!-- Google Font: Source Sans Pro -->
+    <title>Quản trị hệ thống - @yield('title')</title>
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset('admin/plugins/fontawesome-free/css/all.min.css') }}">
-    <!-- Theme style -->
     @yield('styles')
+    <style>
+        #datatable_filter {
+            display: none;
+        }
+
+    </style>
     <link rel="stylesheet" href="{{ asset('admin/dist/css/adminlte.min.css') }}">
 </head>
 
@@ -26,22 +28,22 @@
         </div>
         @include('admin.layouts.partials.footer')
     </div>
-    <!-- REQUIRED SCRIPTS -->
-
-    <!-- jQuery -->
     <script src="{{ asset('admin/plugins/jquery/jquery.min.js') }}"></script>
-    <!-- Bootstrap 4 -->
     <script src="{{ asset('admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <!-- AdminLTE App -->
     <script src="{{ asset('admin/dist/js/adminlte.min.js') }}"></script>
-    <script src="{{ asset('admin/dist/js/demo.js') }}"></script>
     <script src="{{ asset('admin/plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script>
-        // $.ajaxSetup({
-        //     headers: {
-        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //     }
-        // })
+        $.extend(true, $.fn.dataTable.defaults, {
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.11.4/i18n/vi.json"
+            },
+            "processing": true,
+            "serverSide": true,
+        });
+    </script>
+    <script>
         $(document).ready(function() {
             var Toast = Swal.mixin({
                 toast: true,

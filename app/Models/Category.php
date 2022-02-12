@@ -13,13 +13,18 @@ class Category extends Model
 
     protected $fillable = ['name', 'author_id', 'parent_id', 'is_highlight', 'status', 'slug'];
 
+    protected $dates = [
+        'created_at',
+        'updated_at',
+    ];
+
     public function author()
     {
-        return $this->belongsTo(Admin::class,'author_id');
+        return $this->belongsTo(Admin::class, 'author_id');
     }
     public function posts()
     {
-        return $this->belongsToMany(Post::class,'post_category');
+        return $this->belongsToMany(Post::class, 'post_category');
     }
     public function categories()
     {
@@ -33,10 +38,16 @@ class Category extends Model
     {
         return "/upload/category/" . $this->image;
     }
-    public function formatCreateAt()
-    {
-        return \Carbon\Carbon::parse($this->created_at)->format('d/m/Y');
-    }
+    // public function formatCreateAt()
+    // {
+    //     return \Carbon\Carbon::parse($this->created_at)->format('d/m/Y');
+    // }
+    // public function getFormattedDateAttribute()
+    // {
+    //     return $this->date->format('Y-m-d H:i:s');
+    // }
+
+    // protected $appends = ['formatted_date'];
     public function sluggable(): array
     {
         return [

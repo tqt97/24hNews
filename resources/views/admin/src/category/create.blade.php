@@ -20,15 +20,16 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label">Tên danh mục <code>*</code> :</label>
-                                            <input type="text" name="name"
-                                                class="form-control @error('name') is-invalid @enderror"
-                                                value="{{ old('name') }}" placeholder="Điền tên danh mục" autofocus
-                                                required>
-                                            @error('name')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
+                                                <input type="text" name="name"
+                                                    class="form-control @error('name') is-invalid @enderror"
+                                                    value="{{ old('name') }}" placeholder="Điền tên danh mục" autofocus
+                                                    required>
+                                                @error('name')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -41,7 +42,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label>Hình ảnh :</label>
                                     <div class="input-group" id="divMainUpload">
                                         <div class="custom-file">
@@ -51,7 +52,7 @@
                                     <div class="my-3">
                                         <img id="blah" src="" width="150px" height="auto" />
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="row">
                                     <div class="col-sm-6">
                                         @include('admin.src.components.form.status-create')

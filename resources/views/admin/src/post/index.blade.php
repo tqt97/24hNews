@@ -1,18 +1,17 @@
 @extends('admin.layouts.base')
 @section('title', 'Quản lý bài viết')
-
+@section('styles')
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/plugins/select2/css/select2.min.css') }}">
+@endsection
 @section('content')
     @include('admin.layouts.partials.header',[$title = 'Danh sách bài viết', $current_page = 'Danh mục'])
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                @if (session('success'))
-                    <div>
-                        <div class="alert alert-success" role="alert">
-                            {{ session('success') }}
-                        </div>
-                    </div>
-                @endif
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
@@ -23,76 +22,62 @@
                                 </btn>
                             </a>
                         </div>
-                        <div class="card-body table-responsive p-0">
-                            <table class="table table-hover table-bordered table-stripeda text-nowrap">
+                        <div class="card-body table-responsive p-2">
+                            <div class="row">
+                                <div class="form-group col-sm-2">
+                                    <select class="col-sm form-control select2_date" name="filter-date" id="filter-date">
+                                        <option value="">Lọc theo ngày</option>
+                                        <option value="7">7 ngày trước</option>
+                                        <option value="14">14 ngày trước</option>
+                                        <option value="30">30 ngày trước</option>
+                                        <option value="60">60 ngày trước</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-2">
+                                    <input type="text" class="form-control select2 filter-input"
+                                        placeholder="Tìm kiếm theo ID" data-column="0">
+                                </div>
+                                <div class="form-group col-sm-2">
+                                    <input type="text" class="form-control filter-input" placeholder="Tìm kiếm theo tên"
+                                        data-column="1">
+                                </div>
+                                <div class="form-group col-sm-2">
+                                    <select data-column="2" class="form-control select2_highlight filter-select"
+                                        style="width:100%">
+                                        <option value=""></option>
+                                        @foreach ($highlights as $item)
+                                            <option value="{{ $item }}">
+                                                {{ $item == 1 ? 'Nổi bật' : 'Không' }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-2">
+                                    <select data-column="3" class="form-control select2_status filter-select"
+                                        style="width:100%">
+                                        <option value="">-- Tìm kiếm theo trạng thái --</option>
+                                        @foreach ($status as $item)
+                                            <option value="{{ $item }}">
+                                                {{ $item == 1 ? 'Hiện' : 'Ẩn' }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <table class="table table-hover table-border text-nowrap" id="datatable">
                                 <thead>
-                                    <td colspan="7">Tổng số bài viết: <b>{{ $posts->count() }}</b> </td>
-                                    <tr style="text-align:center;background-color:rgb(244 246 249)">
+                                    <tr style="text-align:center">
                                         <th>ID</th>
                                         <th>Tên bài viết</th>
-                                        <th>Danh mục</th>
                                         <th>Nổi bật</th>
                                         <th>Trạng thái</th>
                                         <th>Ngày tạo</th>
                                         <th>Thao tác </th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @forelse ($posts as $key=> $post)
-                                        <tr style="text-align:center">
-                                            <td>{{ $key + 1 }}</td>
-                                            <td>{{ $post->limitTitle() }}</td>
-                                            {{-- <td>
-                                                <img src="{{ $post->getFirstMediaUrl('image_post', 'small') }}"
-                                                    alt="{{ $post->name }}">
-                                            </td> --}}
-                                            <td>
-                                                @foreach ($post->categories as $item)
-                                                    <span class="badge badge-warning">{{ $item->name }}</span>
-                                                @endforeach
-                                            </td>
-                                            <td>
-                                                @if ($post->is_highlight == 1)
-                                                    <span class="badge badge-pill badge-success">
-                                                        <i class="fa fa-check"></i>
-                                                    </span>
-                                                @else
-                                                    <span class="badge badge-pill badge-danger">
-                                                        <i class="fa fa-times"></i>
-                                                    </span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if ($post->status == 1)
-                                                    <span class="badge badge-pill badge-success">Hiện</span>
-                                                @else
-                                                    <span class="badge badge-pill badge-secondary">Ẩn</span>
-                                                @endif
-                                            </td>
-                                            <td>{{ $post->formatCreateAt() }}</td>
-                                            <td>
-                                                <a href="{{ route('admin.post.edit', $post->id) }}"
-                                                    class="btn btn-outline-primary mr-2 btn-sm">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                                <a href="" class="btn btn-outline-danger btn-sm action_delete"
-                                                    data-url="{{ route('admin.post.destroy', $post->id) }}">
-                                                    <i class="fa fa-trash-alt"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr style="text-align: center">
-                                            <td colspan="10">Data is empty !</td>
-                                        </tr>
-                                    @endforelse
+                                <tbody style="text-align:center">
                                 </tbody>
                             </table>
-                        </div>
-                        <div class="mt-2 col-xs-12">
-                            <div class="float-right mr-1">
-                                {{-- {{ $posts->links() }} --}}
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -102,4 +87,109 @@
 @endsection
 @section('scripts')
     <script type="text/javascript" src="{{ asset('admin/dist/js/deleteModel.js') }}"></script>
+    <script src="{{ asset('admin/plugins/select2/js/select2.full.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            const table = $('#datatable').DataTable({
+                "ajax": {
+                    "url": "{{ route('api.posts.index') }}",
+                    "data": function(d) {
+                        d.date_filter = $('#filter-date').val();
+                    }
+                },
+                "columns": [{
+                        'data': 'id',
+                    },
+                    {
+                        'data': 'title',
+                    },
+                    {
+                        'data': 'is_highlight',
+                    },
+                    {
+                        'data': 'status',
+                    },
+                    {
+                        'data': 'created_at',
+                    },
+                ],
+                "pageLength": 10,
+                "lengthMenu": [10, 15, 25, 50, 75, 100],
+                "order": [
+                    [4, 'desc']
+                ],
+                columnDefs: [{
+                        targets: 2,
+                        render: function(data, type, row) {
+                            return `${row.is_highlight == 1 ? '<span class="badge badge-success"><i class="fa fa-check"></i></span>' : '<span class="badge badge-secondary"><i class="fa fa-times"></span>'}`;
+                        }
+                    },
+                    {
+                        targets: 3,
+                        render: function(data, type, row) {
+                            return `${row.status == 1 ? '<span class="badge badge-success"><i class="fa fa-check"></i></span>' : '<span class="badge badge-secondary"><i class="fa fa-times"></span>'}`;
+                        }
+                    },
+                    {
+                        targets: 4,
+                        render: function(data, type, row) {
+                            var d = new Date(row.created_at);
+                            var options = {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            };
+                            // return `${ d.getDate() }-${ d.getMonth() + 1 }-${ d.getFullYear()  }`;
+                            return `${ d.toLocaleDateString('vi-Vi',options) }`;
+                        }
+                    },
+                    {
+                        targets: 5,
+                        render: function(data, type, row) {
+                            var urlEdit = '{{ route('admin.post.edit', ':id') }}';
+                            var urlDestroy = '{{ route('admin.post.destroy', ':id') }}';
+                            urlEdit = urlEdit.replace(':id', row.id);
+                            urlDestroy = urlDestroy.replace(':id', row.id);
+                            return '<a href="' + urlEdit +
+                                '" class="btn btn-outline-primary mr-2 btn-sm"><i class="fas fa-edit"></i></a>' +
+                                '<a href="" class="btn btn-outline-danger btn-sm action_delete" data-target="#deleteModal" data-url="' +
+                                urlDestroy + '"><i class="fas fa-trash-alt"></i></a>';
+                        }
+                    },
+
+                ]
+            });
+            $('.filter-input').keyup(function() {
+                table.column($(this).data('column'))
+                    .search($(this).val())
+                    .draw();
+            });
+            $('.filter-select').change(function() {
+                table.column($(this).data('column'))
+                    .search($(this).val())
+                    .draw();
+            });
+            $('#filter-date').change(function() {
+                table.draw();
+            });
+            $(function() {
+                $(".select2_status").select2({
+                    placeholder: "-- Tìm kiếm theo trạng thái --",
+                    tokenSeparators: [',', ' '],
+                    allowClear: true
+                });
+                $(".select2_highlight").select2({
+                    placeholder: "-- Tìm kiếm theo nổi bật --",
+                    tokenSeparators: [',', ' '],
+                    allowClear: true
+                });
+                $(".select2_date").select2({
+                    placeholder: "-- Tìm kiếm theo ngày --",
+                    allowClear: true
+                });
+            });
+        });
+    </script>
 @endsection

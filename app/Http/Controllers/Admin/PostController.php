@@ -32,11 +32,12 @@ class PostController extends Controller
     }
     public function index()
     {
-        $posts = $this->post->with('categories')->latest()->paginate(10);
+        // $posts = $this->post->all();
 
-        $categories = $this->category->with('categories');
+        $highlights = $this->post->all()->sortBy('is_highlight')->pluck('is_highlight')->unique();
+        $status = $this->post->all()->sortBy('status')->pluck('status')->unique();
 
-        return view('admin.src.post.index', compact('posts', 'categories'));
+        return view('admin.src.post.index', compact('highlights', 'status'));
     }
     public function create()
     {
@@ -81,7 +82,7 @@ class PostController extends Controller
 
         $categories = $this->category->all();
         $categoryOfPost = $post->categories;
-        
+
         return view('admin.src.post.edit', compact('post', 'tags', 'tagOfPost', 'categories', 'categoryOfPost'));
     }
     public function update(Post $post, UpdatePostRequest $request)

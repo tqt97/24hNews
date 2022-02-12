@@ -18,9 +18,13 @@ class Post extends Model  implements HasMedia
     use HasFactory, Sluggable,  InteractsWithMedia;
 
     protected $fillable = [
-        'title', 'description', 'content', 'image', 'view_count', 'is_highlight', 'slug', 'author_id', 'category_id', 'status'
+        'title', 'description', 'content', 'view_count', 'is_highlight', 'slug', 'author_id', 'category_id', 'status'
     ];
 
+    public function getFormattedDateAttribute()
+    {
+        return $this->created_at->format('Y-m-d H:i:s');
+    }
     public function author()
     {
         return $this->belongsTo(Admin::class);
