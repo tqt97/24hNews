@@ -10,7 +10,7 @@ class PermissionController extends Controller
 {
     public function index()
     {
-        return view('admin.src.permission.create');
+        return view('admin.permission.create');
     }
     public function store(Request $request)
     {
@@ -28,9 +28,6 @@ class PermissionController extends Controller
                 'key_code' => $request->module_parent . '_' . $value
             ]);
         }
-        return redirect()->back()->with([
-            'alert-type' => 'success',
-            'message' => 'Thêm quyền thành công'
-        ]);
+        return redirect()->back()->with($permission->alertSuccess('store'));
     }
 }

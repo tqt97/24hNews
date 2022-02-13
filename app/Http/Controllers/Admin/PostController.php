@@ -8,24 +8,19 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
-use App\Traits\DeleteModelTrait;
-use App\Traits\HandleTag;
-use App\Traits\UploadMedia;
+use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
-    use DeleteModelTrait, UploadMedia, HandleTag;
     private $category;
     private $post;
     private $tag;
 
-    public function __construct(
-        Category $category,
-        Post $post,
-        Tag $tag
-    ) {
+    public function __construct(Category $category, Post $post, Tag $tag)
+    {
         $this->category = $category;
         $this->post = $post;
         $this->tag = $tag;
@@ -33,17 +28,16 @@ class PostController extends Controller
     public function index()
     {
         // $posts = $this->post->all();
-
         $highlights = $this->post->all()->sortBy('is_highlight')->pluck('is_highlight')->unique();
         $status = $this->post->all()->sortBy('status')->pluck('status')->unique();
 
-        return view('admin.src.post.index', compact('highlights', 'status'));
+        return view('admin.post.index', compact('highlights', 'status'));
     }
     public function create()
     {
         $tags = $this->tag->all();
         $categories = $this->category->all();
-        return view('admin.src.post.create', compact('tags', 'categories'));
+        return view('admin.post.create', compact('tags', 'categories'));
     }
     public function store(StorePostRequest $request)
     {
@@ -52,20 +46,30 @@ class PostController extends Controller
 
             $post = $this->post->create($request->validated() + ['author_id' => auth()->id()]);
 
-            $this->storeMedia($request, $post, 'image', 'image_post');
+            $post->storeImage($request, $post, 'image', 'image_post');
+
+
+            // $post->addMedia(storage_path('app/public/avatars/tmp/' . $request->avatar . '/' . $temporaryFile->filename))
+            // ->toMediaCollection('avatars');
+
+            $temporaryFile = TemporaryFile::where('folder', $request->avatar)->first();
+            if ($temporaryFile) {
+                $post->addMedia(storage_path('app/public/avatars/tmp/' . $request->avatar . '/' . $temporaryFile->filename))
+                    ->toMediaCollection('avatars');
+                // rmdir(storage_path('app/public/avatars/tmp/' . $request->avatar));
+                Storage::deleteDirectory(storage_path('app/public/avatars/tmp/' . $request->avatar));
+                $temporaryFile->delete();
+            }
 
             if (isset($request->categories)) {
                 $post->categories()->attach($request->categories);
             }
 
-            $post->tags()->attach($this->storeTag($request));
+            $post->tags()->attach($post->storeTag($request));
 
             DB::commit();
 
-            return redirect()->route('admin.post.index')->with([
-                'alert-type' => 'success',
-                'message' => 'Thêm bài viết thành công'
-            ]);
+            return redirect()->route('admin.posts.index')->with($post->alertSuccess('store'));
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
@@ -83,7 +87,7 @@ class PostController extends Controller
         $categories = $this->category->all();
         $categoryOfPost = $post->categories;
 
-        return view('admin.src.post.edit', compact('post', 'tags', 'tagOfPost', 'categories', 'categoryOfPost'));
+        return view('admin.post.edit', compact('post', 'tags', 'tagOfPost', 'categories', 'categoryOfPost'));
     }
     public function update(Post $post, UpdatePostRequest $request)
     {
@@ -92,20 +96,17 @@ class PostController extends Controller
 
             $post->update($request->validated());
 
-            $this->updateMedia($request, $post, 'image', 'image_post');
+            $post->updateImage($request, $post, 'image', 'image_post');
 
             if (isset($request->categories)) {
                 $post->categories()->sync($request->categories);
             }
 
-            $post->tags()->sync($this->storeTag($request));
+            $post->tags()->sync($post->storeTag($request));
 
             DB::commit();
 
-            return redirect()->route('admin.post.index')->with([
-                'alert-type' => 'success',
-                'message' => 'Sửa bài viết thành công'
-            ]);
+            return redirect()->route('admin.posts.index')->with($post->alertSuccess('update'));
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
@@ -113,6 +114,6 @@ class PostController extends Controller
     }
     public function destroy(Post $post)
     {
-        return $this->deleteModelHasImageTrait($post, 'image_post');
+        return $post->destroyModelHasImage($post, 'image_post');
     }
 }

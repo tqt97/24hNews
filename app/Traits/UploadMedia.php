@@ -6,7 +6,7 @@ use Storage;
 
 trait UploadMedia
 {
-    public function storeMedia($request, $model, $fieldName, $collection)
+    public function storeImage($request, $model, $fieldName, $collection)
     {
         if ($request->hasFile($fieldName)) {
             $model->addMediaFromRequest($fieldName)
@@ -16,7 +16,7 @@ trait UploadMedia
         }
     }
 
-    public function updateMedia($request, $model, $fileName, $collection)
+    public function updateImage($request, $model, $fileName, $collection)
     {
 
         if ($request->hasFile($fileName)) {

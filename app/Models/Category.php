@@ -3,11 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Cviebrock\EloquentSluggable\Sluggable;
 
-class Category extends Model
+class Category extends BaseModel
 {
     use HasFactory, Sluggable;
 
@@ -17,7 +15,6 @@ class Category extends Model
         'created_at',
         'updated_at',
     ];
-
     public function author()
     {
         return $this->belongsTo(Admin::class, 'author_id');

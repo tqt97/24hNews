@@ -12,6 +12,7 @@
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "sopamo/laravel-filepond": "^0.6.2",
         "spatie/laravel-medialibrary": "^9.0.0",
         "unisharp/laravel-filemanager": "^2.3",
         "yajra/laravel-datatables": "^1.5",
@@ -19,6 +20,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
+        "barryvdh/laravel-ide-helper": "^2.12",
         "beyondcode/laravel-query-detector": "^1.5",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",

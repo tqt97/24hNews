@@ -1,24 +1,14 @@
-@extends('admin.layouts.base')
+@extends('layouts.admin')
 @section('title', 'Trang tổng quan')
 
 @section('content')
-    {{-- @include('admin.layouts.partials.header',[$title = 'Trang tổng quan', $current_page = '']) --}}
-    {{-- <h1>{{ auth()->user()->name }}</h1> --}}
     <br>
     <br>
-    @if (session('success'))
-        <div class="alert alert-success" role="alert">
-            {{ session('success') }}
-        </div>
-    @endif
+
     <section class="content">
         <div class="container-fluid">
-            {{-- <x-form.alert>
-                <strong>Whoops!</strong> Something went wrong!
-            </x-form.alert> --}}
             <div class="row">
                 <div class="col-lg-3 col-6">
-                    <!-- small box -->
                     <div class="small-box bg-info">
                         <div class="inner">
                             <h3>150</h3>

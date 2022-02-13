@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Log;
 
 trait DeleteModelTrait
 {
-    public function deleteModelHasImageTrait($model, $collection)
+    public function destroyModelHasImage($model, $collection)
     {
         try {
             $model->clearMediaCollection($collection);
@@ -23,7 +23,7 @@ trait DeleteModelTrait
             ], 500);
         }
     }
-    public function deleteModelTrait($model)
+    public function destroyModel($model)
     {
         try {
             $model->delete();

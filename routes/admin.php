@@ -12,7 +12,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TagController;
-use Yajra\DataTables\Facades\DataTables;
+use App\Http\Controllers\Admin\UploadController;
 
 // ******************************** Authentication Admin Routes ****************************************
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('admin.login');
@@ -32,15 +32,16 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('
 Route::group(['as' => 'admin.', 'middleware' => ['admin.auth']], function () {
 
     Route::get('dashboard', DashboardController::class)->name('dashboard');
+    Route::post('upload', [UploadController::class,'store'])->name('upload');
 
-    Route::prefix('category')->group(function () {
-        Route::get('', [CategoryController::class, 'index'])->name('category.index')->middleware('can:category-read');
-        Route::get('create', [CategoryController::class, 'create'])->name('category.create')->middleware('can:category-create');
-        Route::post('store', [CategoryController::class, 'store'])->name('category.store');
-        Route::get('edit/{category}', [CategoryController::class, 'edit'])->name('category.edit')->middleware('can:category-update');
-        Route::put('update/{category}', [CategoryController::class, 'update'])->name('category.update');
-        Route::delete('destroy/{category}', [CategoryController::class, 'destroy'])->name('category.destroy')->middleware('can:category-delete');
-    });
+    // Route::prefix('categories')->group(function () {
+    //     Route::get('', [CategoryController::class, 'index'])->name('categories.index')->middleware('can:category-read');
+    //     Route::get('create', [CategoryController::class, 'create'])->name('categories.create')->middleware('can:category-create');
+    //     Route::post('store', [CategoryController::class, 'store'])->name('categories.store');
+    //     Route::get('edit/{category}', [CategoryController::class, 'edit'])->name('categories.edit')->middleware('can:category-update');
+    //     Route::put('update/{category}', [CategoryController::class, 'update'])->name('categories.update');
+    //     Route::delete('destroy/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy')->middleware('can:category-delete');
+    // });
     // Route::resource('category', CategoryController::class);
 
     // Route::prefix('post')->group(function () {
@@ -54,17 +55,17 @@ Route::group(['as' => 'admin.', 'middleware' => ['admin.auth']], function () {
     // Route::resource('post', PostController::class);
 
     Route::resources([
-        // 'category' => CategoryController::class,
-        'post' => PostController::class,
-        'tag' => TagController::class,
+        'categories' => CategoryController::class,
+        'posts' => PostController::class,
+        'tags' => TagController::class,
         'admins' => AdminController::class,
-        'role' => RoleController::class,
+        'roles' => RoleController::class,
     ]);
 
-    Route::prefix('permission')->group(function () {
-        Route::get('/', [PermissionController::class, 'index'])->name('permission.index');
+    Route::prefix('permissions')->group(function () {
+        Route::get('/', [PermissionController::class, 'index'])->name('permissions.index');
         // Route::get('create', [PermissionController::class, 'create'])->name('permission.create');
-        Route::post('store', [PermissionController::class, 'store'])->name('permission.store');
+        Route::post('store', [PermissionController::class, 'store'])->name('permissions.store');
     });
 
     // Route::prefix('comment')->group(function () {

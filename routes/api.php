@@ -20,3 +20,6 @@ use Illuminate\Support\Facades\Route;
 // });
 Route::get('/v1/categories', [ApiController::class, 'getCategories'])->name('api.categories.index');
 Route::get('/v1/posts', [ApiController::class, 'getPosts'])->name('api.posts.index');
+Route::get('/v1/tags', [ApiController::class, 'getTags'])->name('api.tags.index');
+Route::get('/v1/admins', [ApiController::class, 'getAdmins'])->name('api.admins.index');
+Route::get('/v1/roles', [ApiController::class, 'getRoles'])->name('api.roles.index');

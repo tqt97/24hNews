@@ -3,19 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Support\Str;
-
-class Post extends Model  implements HasMedia
+use App\Traits\HandleTag;
+use App\Traits\UploadMedia;
+class Post extends BaseModel  implements HasMedia
 {
     const LIMIT_TITLE = 50;
     const LIMIT_DESCRIPTION = 150;
 
-    use HasFactory, Sluggable,  InteractsWithMedia;
+    use HasFactory, Sluggable,  InteractsWithMedia, HandleTag, UploadMedia;
 
     protected $fillable = [
         'title', 'description', 'content', 'view_count', 'is_highlight', 'slug', 'author_id', 'category_id', 'status'
@@ -35,7 +35,7 @@ class Post extends Model  implements HasMedia
     }
     public function tags()
     {
-        return $this->belongsToMany(Tag::class,'post_tag')->withTimestamps();
+        return $this->belongsToMany(Tag::class, 'post_tag')->withTimestamps();
     }
 
     public function comment()
@@ -44,19 +44,29 @@ class Post extends Model  implements HasMedia
     }
     public function registerMediaConversions(Media $media = null): void
     {
-        $this->addMediaConversion('small')
-            ->width(80)
-            ->height(80)
-            ->withResponsiveImages();
-        $this->addMediaConversion('thumb')
-            ->width(400)
-            ->height(300)
-            ->withResponsiveImages();
-        $this->addMediaConversion('main')
-            ->width(800)
-            ->height(600)
-            ->withResponsiveImages();
+        $this->addMediaConversion('thumb-50')
+            ->width(50)
+            ->height(50);
+
+        $this->addMediaConversion('thumb-100')
+            ->width(100)
+            ->height(100);
     }
+    // public function registerMediaConversions(Media $media = null): void
+    // {
+    //     $this->addMediaConversion('small')
+    //         ->width(80)
+    //         ->height(80)
+    //         ->withResponsiveImages();
+    //     $this->addMediaConversion('thumb')
+    //         ->width(400)
+    //         ->height(300)
+    //         ->withResponsiveImages();
+    //     $this->addMediaConversion('main')
+    //         ->width(800)
+    //         ->height(600)
+    //         ->withResponsiveImages();
+    // }
     public function limitTitle()
     {
         return Str::limit($this->title,  self::LIMIT_TITLE);

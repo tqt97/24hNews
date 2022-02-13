@@ -26,11 +26,10 @@ trait StorageImageTrait
                     $image = Str::random(2) . "-" . $name_file;
                 }
                 $file->move("upload/" . $folderName, $image);
-                $dataUploadTrait = [
+                $data = [
                     'image' => $image,
-
                 ];
-                return $dataUploadTrait;
+                return $data;
             }
         }
         return null;
@@ -46,7 +45,7 @@ trait StorageImageTrait
             strcasecmp($extension, 'png') == 0 ||
             strcasecmp($extension, 'jpeg') == 0
         ) {
-            $image = Str::random(2) . "-" . $name_file;
+            $image =$name_file;
             if (file_exists("upload/" . $folderName . "/" . $image)) {
                 $image = Str::random(2) . "-" . $name_file;
             }

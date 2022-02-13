@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use Storage;
+use App\Models\Tag;
 
 trait HandleTag
 {
@@ -12,7 +12,7 @@ trait HandleTag
         if (!empty($request->tags)) {
             $tags = $request->tags;
             foreach ($tags as $item) {
-                $tag = $this->tag->firstOrCreate(['name' => $item]);
+                $tag = Tag::firstOrCreate(['name' => $item]);
                 $tagIds[] = $tag->id;
             }
         }

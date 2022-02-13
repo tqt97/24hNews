@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Traits\AlertTrait;
+use App\Traits\DeleteModelTrait;
+use App\Traits\StorageImageTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,7 +14,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Admin extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, AlertTrait, DeleteModelTrait, StorageImageTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -52,7 +55,7 @@ class Admin extends Authenticatable
     }
     public function roles()
     {
-        return $this->belongsToMany(Role::class )->withTimestamps();
+        return $this->belongsToMany(Role::class)->withTimestamps();
     }
     public function checkPermissionAccess($permissionCheck)
     {
