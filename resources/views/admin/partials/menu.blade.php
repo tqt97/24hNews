@@ -10,7 +10,7 @@
 
     </li>
     <li class="nav-item ">
-        <a href="{{ route('admin.categories.index') }}" class="nav-link {{ (request()->segment(2) == 'category') ? 'active' : '' }}">
+        <a href="{{ route('admin.categories.index') }}" class="nav-link {{ (request()->segment(2) == 'categories') ? 'active' : '' }}">
             <i class="nav-icon fas fa-th"></i>
             <p>
                 Quản lý danh mục
@@ -18,7 +18,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('admin.posts.index') }}" class="nav-link {{ (request()->segment(2) == 'post') ? 'active' : '' }}">
+        <a href="{{ route('admin.posts.index') }}" class="nav-link {{ (request()->segment(2) == 'posts') ? 'active' : '' }}">
             <i class="nav-icon fa fa-book-open"></i>
             <p>
                 Quản lý bài viết
@@ -26,7 +26,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('admin.tags.index') }}" class="nav-link {{ (request()->segment(2) == 'tag') ? 'active' : '' }}">
+        <a href="{{ route('admin.tags.index') }}" class="nav-link {{ (request()->segment(2) == 'tags') ? 'active' : '' }}">
             <i class="nav-icon fas fa-tags"></i>
             <p>
                 Quản lý tags
@@ -34,7 +34,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="{{ route('admin.comments.index') }}" class="nav-link {{ (request()->segment(2) == 'comments') ? 'active' : '' }}">
             <i class="nav-icon fas fa-comment-alt"></i>
             <p>
                 Quản lý bình luận
@@ -42,7 +42,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="{{ route('admin.contacts.index') }}" class="nav-link {{ (request()->segment(2) == 'contacts') ? 'active' : '' }}">
             <i class="nav-icon fas fa-address-book"></i>
             <p>
                 Quản lý liên hệ
@@ -58,7 +58,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('admin.roles.index') }}" class="nav-link {{ (request()->segment(2) == 'role') ? 'active' : '' }}">
+        <a href="{{ route('admin.roles.index') }}" class="nav-link {{ (request()->segment(2) == 'roles') ? 'active' : '' }}">
             <i class="nav-icon fa fa-check-square"></i>
             <p>
                 Quản lý vai trò
@@ -66,7 +66,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('admin.permissions.index') }}" class="nav-link {{ (request()->segment(2) == 'permission') ? 'active' : '' }}">
+        <a href="{{ route('admin.permissions.index') }}" class="nav-link {{ (request()->segment(2) == 'permissions') ? 'active' : '' }}">
             <i class="nav-icon fas fa-plus-circle"></i>
             <p>
                 Thêm quyền

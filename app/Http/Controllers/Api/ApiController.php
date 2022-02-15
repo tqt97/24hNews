@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Category;
+use App\Models\Comment;
+use App\Models\Contact;
 use App\Models\Post;
 use App\Models\Role;
 use App\Models\Tag;
@@ -55,6 +57,24 @@ class ApiController extends Controller
     public function getRoles()
     {
         $query = Role::select('id', 'name', 'display_name', 'created_at');
+        if (request('date_filter')) {
+            $filter_date = now()->subDays(request('date_filter'))->toDateString();
+            $query->where('created_at', '>=', $filter_date);
+        }
+        return datatables($query)->toJson();
+    }
+    public function getContacts()
+    {
+        $query = Contact::select('id', 'name', 'email', 'phone', 'created_at');
+        if (request('date_filter')) {
+            $filter_date = now()->subDays(request('date_filter'))->toDateString();
+            $query->where('created_at', '>=', $filter_date);
+        }
+        return datatables($query)->toJson();
+    }
+    public function getComments()
+    {
+        $query = Comment::select('id', 'content', 'status', 'created_at');
         if (request('date_filter')) {
             $filter_date = now()->subDays(request('date_filter'))->toDateString();
             $query->where('created_at', '>=', $filter_date);

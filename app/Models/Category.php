@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Support\Collection;
 
 class Category extends BaseModel
 {
@@ -23,18 +24,24 @@ class Category extends BaseModel
     {
         return $this->belongsToMany(Post::class, 'post_category');
     }
-    public function categories()
+    public function childrens()
     {
-        return $this->hasMany(Category::class, 'parent_id');
+        return $this->hasMany(Category::class, 'parent_id', 'id');
     }
-    public function childItems()
+    public function allChildrens()
     {
-        return $this->hasMany(Category::class, 'parent_id')->with('categories');
+        return $this->childs()->with('childrens');
     }
+    public function scopeGetCategory()
+    {
+        return $this->where('status', 1);
+    }
+
     public function imageUrl()
     {
         return "/upload/category/" . $this->image;
     }
+
     // public function formatCreateAt()
     // {
     //     return \Carbon\Carbon::parse($this->created_at)->format('d/m/Y');

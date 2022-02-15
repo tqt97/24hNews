@@ -99,7 +99,7 @@
                     [4, 'desc']
                 ],
                 columnDefs: [{
-                        targets: 5,
+                        targets: 4,
                         render: function(data, type, row) {
                             var d = new Date(row.created_at);
                             var options = {

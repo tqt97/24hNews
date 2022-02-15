@@ -62,8 +62,8 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-envelope mr-2"></i> Hồ sơ
+                <a href="{{ route('admin.profiles.edit', auth()->user()->id) }}" class="dropdown-item">
+                    <i class="fas fa-user mr-2"></i> Hồ sơ
                 </a>
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item">

@@ -52,11 +52,6 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="mt-2 col-xs-12">
-                            <div class="float-right mr-1">
-                                {{ $roles->links() }}
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -44,20 +44,19 @@ class PostController extends Controller
         try {
             DB::beginTransaction();
 
-            $post = $this->post->create($request->validated() + ['author_id' => auth()->id()]);
+            $post = Post::create($request->validated() + ['author_id' => auth()->id()]);
 
-            $post->storeImage($request, $post, 'image', 'image_post');
+            // $post->storeImage($request, $post, 'image', 'image_post');
 
 
             // $post->addMedia(storage_path('app/public/avatars/tmp/' . $request->avatar . '/' . $temporaryFile->filename))
             // ->toMediaCollection('avatars');
-
-            $temporaryFile = TemporaryFile::where('folder', $request->avatar)->first();
+            // dd($request->all() );
+            $temporaryFile = TemporaryFile::where('folder', $request->image)->first();
             if ($temporaryFile) {
-                $post->addMedia(storage_path('app/public/avatars/tmp/' . $request->avatar . '/' . $temporaryFile->filename))
-                    ->toMediaCollection('avatars');
-                // rmdir(storage_path('app/public/avatars/tmp/' . $request->avatar));
-                Storage::deleteDirectory(storage_path('app/public/avatars/tmp/' . $request->avatar));
+                $post->addMedia(storage_path('app/public/images/tmp/' . $request->image . '/' . $temporaryFile->filename))
+                    ->toMediaCollection('image_post');
+                rmdir(storage_path('app/public/images/tmp/' . $request->image));
                 $temporaryFile->delete();
             }
 

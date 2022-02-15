@@ -134,12 +134,12 @@
                 placeholder: "--- Chọn danh mục bài viết ---",
                 allowClear: true
             });
-            $('#description').summernote({
-                height: 80,
-                codemirror: {
-                    theme: 'monokai'
-                }
-            });
+            // $('#description').summernote({
+            //     height: 80,
+            //     codemirror: {
+            //         theme: 'monokai'
+            //     }
+            // });
             $('#content').summernote({
                 height: 150,
                 codemirror: {

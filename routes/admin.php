@@ -7,9 +7,12 @@ use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\ForgotPasswordController;
 use App\Http\Controllers\Admin\Auth\ResetPasswordController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\admin\CommentController;
+use App\Http\Controllers\admin\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UploadController;
@@ -32,7 +35,7 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('
 Route::group(['as' => 'admin.', 'middleware' => ['admin.auth']], function () {
 
     Route::get('dashboard', DashboardController::class)->name('dashboard');
-    Route::post('upload', [UploadController::class,'store'])->name('upload');
+    Route::post('upload', [UploadController::class, 'store'])->name('upload');
 
     // Route::prefix('categories')->group(function () {
     //     Route::get('', [CategoryController::class, 'index'])->name('categories.index')->middleware('can:category-read');
@@ -64,21 +67,25 @@ Route::group(['as' => 'admin.', 'middleware' => ['admin.auth']], function () {
 
     Route::prefix('permissions')->group(function () {
         Route::get('/', [PermissionController::class, 'index'])->name('permissions.index');
-        // Route::get('create', [PermissionController::class, 'create'])->name('permission.create');
         Route::post('store', [PermissionController::class, 'store'])->name('permissions.store');
     });
+    Route::prefix('profiles')->group(function () {
+        Route::get('edit/{id}', [ProfileController::class, 'edit'])->name('profiles.edit');
+        Route::put('update/{id}', [ProfileController::class, 'updateInformation'])->name('profiles.update.information');
+        Route::put('image/{id}', [ProfileController::class, 'updateImage'])->name('profiles.update.image');
+        Route::put('password/{id}', [ProfileController::class, 'updatePassword'])->name('profiles.update.password');
+    });
+    Route::prefix('comments')->group(function () {
+        Route::get('', [CommentController::class, 'index'])->name('comments.index');
+        Route::get('edit/{comment}', [CommentController::class, 'edit'])->name('comments.edit');
+        Route::put('update/{comment}', [CommentController::class, 'update'])->name('comments.update');
+        Route::delete('delete/{comment}', [CommentController::class, 'delete'])->name('comments.destroy');
+    });
 
-    // Route::prefix('comment')->group(function () {
-    //     Route::get('', [CommentController::class, 'index'])->name('comment.index');
-    //     Route::get('edit/{id}', [CommentController::class, 'edit'])->name('comment.edit');
-    //     Route::put('update/{id}', [CommentController::class, 'update'])->name('comment.update');
-    //     Route::get('delete/{id}', [CommentController::class, 'delete'])->name('comment.delete');
-    // });
-
-    // Route::prefix('contact')->group(function () {
-    //     Route::get('/', [ContactController::class, 'index'])->name('contact.index');
-    //     Route::get('delete/{id}', [ContactController::class, 'delete'])->name('contact.delete');
-    // });
+    Route::prefix('contacts')->group(function () {
+        Route::get('/', [ContactController::class, 'index'])->name('contacts.index');
+        Route::delete('delete/{contact}', [ContactController::class, 'delete'])->name('contacts.destroy');
+    });
 
     // Route::prefix('user')->group(function () {
     //     Route::get('', [UserController::class, 'index'])->name('user.index');

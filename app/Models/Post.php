@@ -10,6 +10,9 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Support\Str;
 use App\Traits\HandleTag;
 use App\Traits\UploadMedia;
+use Illuminate\Support\Facades\Cache;
+use Spatie\MediaLibrary\MediaCollections\File;
+
 class Post extends BaseModel  implements HasMedia
 {
     const LIMIT_TITLE = 50;
@@ -18,7 +21,7 @@ class Post extends BaseModel  implements HasMedia
     use HasFactory, Sluggable,  InteractsWithMedia, HandleTag, UploadMedia;
 
     protected $fillable = [
-        'title', 'description', 'content', 'view_count', 'is_highlight', 'slug', 'author_id', 'category_id', 'status'
+        'title','avatar', 'description', 'content', 'view_count', 'is_highlight', 'slug', 'author_id', 'category_id', 'status'
     ];
 
     public function getFormattedDateAttribute()
@@ -27,7 +30,7 @@ class Post extends BaseModel  implements HasMedia
     }
     public function author()
     {
-        return $this->belongsTo(Admin::class);
+        return $this->belongsTo(Admin::class, 'author_id');
     }
     public function categories()
     {
@@ -38,10 +41,12 @@ class Post extends BaseModel  implements HasMedia
         return $this->belongsToMany(Tag::class, 'post_tag')->withTimestamps();
     }
 
-    public function comment()
+    public function comments()
     {
         return $this->hasMany(Comment::class);
     }
+    //     ->useFallbackUrl('/images/anonymous-user.jpg')
+    // ->useFallbackPath(public_path('/images/anonymous-user.jpg'));
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb-50')
@@ -52,21 +57,53 @@ class Post extends BaseModel  implements HasMedia
             ->width(100)
             ->height(100);
     }
-    // public function registerMediaConversions(Media $media = null): void
+
+    public function getAuthorNameAttribute()
+    {
+        return Cache::remember('author_name', 15, function () {
+            return $this->author->name;
+        });
+    }
+    public function getPostImageAttribute()
+    {
+        return Cache::remember('image_post', 15, function () {
+            return $this->getFirstMediaUrl('image_post', 'thumb-100');
+        });
+    }
+    public function getPostCategoryAttribute()
+    {
+        return Cache::remember('post_categories', 15, function () {
+            return $this->categories;
+        });
+    }
+    public function getPostTagAttribute()
+    {
+        return Cache::remember('post_tags', 15, function () {
+            return $this->tags;
+        });
+    }
+    public function getCommentCountAttribute()
+    {
+        return Cache::remember('comment_count', 15, function () {
+            return $this->comments->count();
+        });
+    }
+    // public function scopeSearchCategory()
     // {
-    //     $this->addMediaConversion('small')
-    //         ->width(80)
-    //         ->height(80)
-    //         ->withResponsiveImages();
-    //     $this->addMediaConversion('thumb')
-    //         ->width(400)
-    //         ->height(300)
-    //         ->withResponsiveImages();
-    //     $this->addMediaConversion('main')
-    //         ->width(800)
-    //         ->height(600)
-    //         ->withResponsiveImages();
+    //     return $this->when(request('category_id'), function ($query) {
+    //         return $query->whereHas('categories', function ($q) {
+    //             return $q->where('id', request('category_id'));
+    //         });
+    //     });
     // }
+    public function scopeGetPost()
+    {
+        return $this->where('status', 1);
+    }
+    public function scopeHighlightPost()
+    {
+        return $this->where('status', 1)->where('is_highlight', 1);
+    }
     public function limitTitle()
     {
         return Str::limit($this->title,  self::LIMIT_TITLE);
@@ -99,10 +136,6 @@ class Post extends BaseModel  implements HasMedia
     //     return $tags;
     // }
 
-    public function imageUrl()
-    {
-        return "/upload/post/" . $this->image;
-    }
     public function formatCreateAt()
     {
         return \Carbon\Carbon::parse($this->created_at)->format('d/m/Y');
