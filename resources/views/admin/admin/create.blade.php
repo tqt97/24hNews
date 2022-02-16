@@ -1,10 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Thêm người dùng')
-@section('styles')
-    <link href="{{ asset('admin/dist/css/handleUploadImageSingle.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('admin/plugins/select2/css/select2.min.css') }}">
-@endsection
+@push('title')
+    {{ __('Thêm thông tin người dùng') }}
+@endpush
+@push('styles')
+    @include('admin.partials.filepond-style')
+@endpush
 @section('content')
     <div class="content">
         @include('admin.partials.header',[$title = 'Thêm mới người dùng', $current_page = 'Thêm người dùng'])
@@ -53,7 +54,7 @@
                                             <label>Địa chỉ :</label>
                                             <input type="text" name="address"
                                                 class="form-control @error('address') is-invalid @enderror"
-                                                value="{{ old('address') }}" placeholder="Nhập địa chỉ" >
+                                                value="{{ old('address') }}" placeholder="Nhập địa chỉ">
                                             @error('address')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -66,7 +67,7 @@
                                             <label>Điện thoại :</label>
                                             <input type="text" name="phone"
                                                 class="form-control @error('phone') is-invalid @enderror"
-                                                value="{{ old('phone') }}" placeholder="Nhập số điện thoại" >
+                                                value="{{ old('phone') }}" placeholder="Nhập số điện thoại">
                                             @error('phone')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -112,16 +113,13 @@
 
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label>Ảnh đại diện:</label>
-                                    <div class="input-group" id="divMainUpload">
-                                        <div class="custom-file">
-                                            {{-- <input  type="hidden" name="image" value="default.png"/> --}}
-                                            <input class="file-input" type="file" id="image" name="image" />
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Hình đại diện :</label>
+                                            <input type="file" name="image" id="image" multiple data-max-files="1"
+                                                data-max-files-message="Chỉ được chọn 1 file" accept="image/*" />
                                         </div>
-                                    </div>
-                                    <div class="my-3">
-                                        <img id="blah" src="" width="150px" height="auto" />
                                     </div>
                                 </div>
                             </div>
@@ -133,9 +131,9 @@
         </div>
     </div>
 @endsection
-@section('scripts')
-    <script src="{{ asset('admin/dist/js/handleUploadImageSingle.js') }}"></script>
-    <script src="{{ asset('admin/plugins/select2/js/select2.full.min.js') }}"></script>
+@push('scripts')
+    @include('admin.partials.filepond-script')
+
     <script>
         $(function() {
             $(".select2_role").select2({
@@ -144,4 +142,4 @@
             });
         });
     </script>
-@endsection
+@endpush

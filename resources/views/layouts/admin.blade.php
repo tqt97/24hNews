@@ -4,13 +4,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {{-- <meta name="csrf-token" content="{{ csrf_token() }}" /> --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Quản trị hệ thống - @yield('title')</title>
+    <meta name="rating" content="adult" />
+    <meta http-equiv="Content-Type" content="" charset="" />
+    <meta name="description" content="Hệ thống quản trị website">
+    <meta name="keywords" content="Laravel, blog, tin tức, quản trị hệ thống">
+    <meta name="author" content="tqt97">
+    <title>@stack('title') - Quản trị hệ thống </title>
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="{{ asset('admin/plugins/fontawesome-free/css/all.min.css') }}">
-    @yield('styles')
+    <link rel="stylesheet" href="{{ asset('admin/plugins/select2/css/select2.min.css') }}">
+
+    @stack('styles')
     <style>
         #datatable_filter {
             display: none;
@@ -29,13 +35,14 @@
         </div>
         @include('admin.partials.footer')
     </div>
-    {{-- <script src="{{ asset('admin/plugins/jquery/jquery.min.js') }}"></script> --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src="{{ asset('admin/plugins/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('admin/dist/js/adminlte.min.js') }}"></script>
     <script src="{{ asset('admin/plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/select2/js/select2.full.min.js') }}"></script>
+
     <script>
         $.extend(true, $.fn.dataTable.defaults, {
             "language": {
@@ -93,7 +100,7 @@
             @endif
         });
     </script>
-    @yield('scripts')
+    @stack('scripts')
 </body>
 
 </html>

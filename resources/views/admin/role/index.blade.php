@@ -1,8 +1,10 @@
 @extends('layouts.admin')
-@section('title', 'Quản lý vai trò')
-@section('styles')
+@push('title')
+    {{ __('Quản lý vai trò') }}
+@endpush
+@push('styles')
     @include('admin.partials.style-list')
-@endsection
+@endpush
 @section('content')
     @include('admin.partials.header',[$title = 'Danh sách vai trò', $current_page = 'Danh mục'])
     <section class="content">
@@ -58,7 +60,7 @@
         </div>
     </section>
 @endsection
-@section('scripts')
+@push('scripts')
     @include('admin.partials.script-list')
     <script>
         $(document).ready(function() {
@@ -146,4 +148,4 @@
             });
         });
     </script>
-@endsection
+@endpush

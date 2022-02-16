@@ -7,6 +7,7 @@ use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
 use App\Models\Admin;
 use App\Models\Role;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -36,21 +37,13 @@ class AdminController extends Controller
     {
         try {
             DB::beginTransaction();
-            $data = [
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'address' => $request->address,
-                'password' => bcrypt($request->password),
-            ];
-            $dataImage = $this->admin->storeImageUpload($request, 'image', 'admin');
-            if ($dataImage) {
-                $data['image'] = $dataImage['image'];
-            } else {
-                $data['image'] = 'default.jpg';
-            }
-            $admin = $this->admin->create($data);
+
+            $admin = $this->admin->create($request->validated() + ['password' => bcrypt($request->password)]);
+
             $admin->roles()->attach($request->role_id);
+
+            $admin->addFilePondMedia($request, $admin, 'admins');
+
             DB::commit();
             return redirect()->route('admin.admins.index')->with($admin->alertSuccess('store'));
         } catch (\Exception $exception) {
@@ -62,10 +55,13 @@ class AdminController extends Controller
     {
         //
     }
-    public function edit(Admin $admin)
+    public function edit(Admin $admin, Request $request)
     {
         $roles = $this->role->all();
+
         $roleOfAdmin = $admin->roles;
+
+
         return view('admin.admin.edit', compact('admin', 'roles', 'roleOfAdmin'));
     }
     public function update(UpdateAdminRequest $request, Admin $admin)
@@ -85,20 +81,14 @@ class AdminController extends Controller
                 ]);
                 $data['password'] = bcrypt($request->password);
             }
-            if ($request->hasFile('image')) {
-                // if ($admin->image) {
-                //     unlink("upload/admin/" . $admin->image);
-                // }
-                $dataImage = $admin->storeImageUpload($request, 'image', 'admin');
-                if (!empty($dataImage)) {
-                    $data['image'] = $dataImage['image'];
-                } else {
-                    $data['image'] = $admin->image;
-                }
-            }
+
             // dd($data);
             $admin->update($data);
+
             $admin->roles()->sync($request->role_id);
+
+            $admin->editFilePondMedia($request, $admin, 'admins');
+
             DB::commit();
             return redirect()->route('admin.admins.index')->with($admin->alertSuccess('update'));
         } catch (\Exception $exception) {
@@ -108,6 +98,6 @@ class AdminController extends Controller
     }
     public function destroy(Admin $admin)
     {
-        return $admin->destroyModel($admin);
+        return $admin->destroyModelHasImage($admin, 'admins');
     }
 }

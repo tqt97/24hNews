@@ -1,10 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Cập nhật thông tin Admin')
-@section('styles')
-    <link rel="stylesheet" href="{{ asset('admin/plugins/select2/css/select2.min.css') }}">
-    <link href="{{ asset('admin/dist/css/handleUploadImageSingle.css') }}" rel="stylesheet">
-@endsection
+@push('title')
+    {{ __('Cập nhật thông tin') }}
+@endpush
+@push('styles')
+
+@endpush
 @section('content')
     <div class="content">
         @include('admin.partials.header',[$title = 'Cập nhật thông tin Admin', $current_page = 'Cập nhật'])
@@ -148,7 +149,7 @@
     </div>
     </div>
 @endsection
-@section('scripts')
+@push('scripts')
     <script src="{{ asset('admin/plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('admin/dist/js/handleUploadImageSingle.js') }}"></script>
 
@@ -160,4 +161,4 @@
             });
         });
     </script>
-@endsection
+@endpush

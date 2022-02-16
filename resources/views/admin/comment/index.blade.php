@@ -1,10 +1,12 @@
 @extends('layouts.admin')
-@section('title', 'Quản lý bình luận')
-@section('styles')
+@push('title')
+    {{ __('Quản lý bình luận') }}
+@endpush
+@push('styles')
     @include('admin.partials.style-list')
-@endsection
+@endpush
 @section('content')
-    @include('admin.partials.header',[$title = 'Danh sách bình luận', $current_page = 'Danh sách'])
+    @include('admin.partials.header',[$title = 'Quản lý bình luận', $current_page = 'Danh sách'])
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -51,7 +53,7 @@
         </div>
     </section>
 @endsection
-@section('scripts')
+@push('scripts')
     @include('admin.partials.script-list')
     <script>
         $(document).ready(function() {
@@ -144,4 +146,4 @@
             });
         });
     </script>
-@endsection
+@endpush

@@ -1,3 +1,6 @@
+@php
+    $admin = Auth::user();
+@endphp
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="l" class="brand-link">
         <img src="{{ asset('admin/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
@@ -8,7 +11,7 @@
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{ auth()->user()->imageUrl() }}" class="img-circle elevation-2"                    >
+                <img src="{{ $admin->admin_image }}" class="img-circle elevation-2">
             </div>
             <div class="info">
                 <a href="#" class="d-block">

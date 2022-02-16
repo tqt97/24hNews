@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Libraries\CategoryRecursive;
 use App\Models\Category;
+
 class CategoryController extends Controller
 {
     private $categoryRecursive;
@@ -36,6 +37,8 @@ class CategoryController extends Controller
     {
         $category = $this->category->create($request->validated() + ['author_id' => auth()->id()]);
 
+        $category->addFilePondMedia($request, $category, 'categories');
+
         return redirect()->route('admin.categories.index')->with($category->alertSuccess('store'));
     }
 
@@ -49,10 +52,12 @@ class CategoryController extends Controller
     {
         $category->update($request->validated());
 
+        $category->editFilePondMedia($request, $category, 'categories');
+
         return redirect()->route('admin.categories.index')->with($category->alertSuccess('update'));
     }
     public function destroy(Category $category)
     {
-        return $category->destroyModel($category);
+        return $category->destroyModelHasImage($category,'categories');
     }
 }

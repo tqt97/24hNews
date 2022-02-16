@@ -1,9 +1,10 @@
 @extends('layouts.admin')
 
-@section('title', 'Thêm vai trò')
-@section('styles')
-    <link rel="stylesheet" href="{{ asset('admin/plugins/select2/css/select2.min.css') }}">
-@endsection
+@push('title')
+    {{ __('Thêm vai trò') }}
+@endpush
+@push('styles')
+@endpush
 @section('content')
     <div class="content">
         @include('admin.partials.header',[$title = 'Thêm mới vai trò', $current_page = 'Thêm vai trò'])
@@ -87,8 +88,7 @@
         </div>
     </div>
 @endsection
-@section('scripts')
-    <script src="{{ asset('admin/plugins/select2/js/select2.full.min.js') }}"></script>
+@push('scripts')
     <script>
         $(function() {
             $(".select2_role").select2({
@@ -109,4 +109,4 @@
             });
         });
     </script>
-@endsection
+@endpush

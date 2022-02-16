@@ -24,7 +24,7 @@
                             <div class="col-lg-12">
                                 <div class="blog-post">
                                     <div class="blog-thumb">
-                                        <img src="{{ $post->post_image }}" alt="{{ $post->title }}">
+                                        <img src="{{ $post->getFirstMediaUrl('posts', 'main') }}" alt="{{ $post->title }}">
                                     </div>
                                     <div class="down-content">
                                         @foreach ($post->post_category as $item)

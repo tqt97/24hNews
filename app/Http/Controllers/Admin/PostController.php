@@ -46,19 +46,7 @@ class PostController extends Controller
 
             $post = Post::create($request->validated() + ['author_id' => auth()->id()]);
 
-            // $post->storeImage($request, $post, 'image', 'image_post');
-
-
-            // $post->addMedia(storage_path('app/public/avatars/tmp/' . $request->avatar . '/' . $temporaryFile->filename))
-            // ->toMediaCollection('avatars');
-            // dd($request->all() );
-            $temporaryFile = TemporaryFile::where('folder', $request->image)->first();
-            if ($temporaryFile) {
-                $post->addMedia(storage_path('app/public/images/tmp/' . $request->image . '/' . $temporaryFile->filename))
-                    ->toMediaCollection('image_post');
-                rmdir(storage_path('app/public/images/tmp/' . $request->image));
-                $temporaryFile->delete();
-            }
+            $post->addFilePondMedia($request, $post, 'posts');
 
             if (isset($request->categories)) {
                 $post->categories()->attach($request->categories);
@@ -95,7 +83,8 @@ class PostController extends Controller
 
             $post->update($request->validated());
 
-            $post->updateImage($request, $post, 'image', 'image_post');
+            $post->editFilePondMedia($request, $post, 'posts');
+
 
             if (isset($request->categories)) {
                 $post->categories()->sync($request->categories);
@@ -113,6 +102,6 @@ class PostController extends Controller
     }
     public function destroy(Post $post)
     {
-        return $post->destroyModelHasImage($post, 'image_post');
+        return $post->destroyModelHasImage($post, 'posts');
     }
 }

@@ -1,7 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', 'Thêm quyền')
-
+@push('title')
+    {{ __('Thêm quyền') }}
+@endpush
 @section('content')
     <div class="content">
         @include('admin.partials.header',[$title = 'Thêm mới quyền', $current_page = 'Thêm quyền'])
@@ -44,7 +45,7 @@
         </div>
     </div>
 @endsection
-@section('scripts')
+@push('scripts')
 
     <script>
         $(function() {
@@ -66,4 +67,4 @@
             });
         });
     </script>
-@endsection
+@endpush

@@ -35,7 +35,10 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('
 Route::group(['as' => 'admin.', 'middleware' => ['admin.auth']], function () {
 
     Route::get('dashboard', DashboardController::class)->name('dashboard');
-    Route::post('upload', [UploadController::class, 'store'])->name('upload');
+    Route::post('upload', [UploadController::class, 'store']);
+    // Route::patch('upload', [UploadController::class, 'update']);
+    Route::delete('upload/delete', [UploadController::class, 'destroy'])->name('destroy');
+    // Route::delete('/process', [FilepondController::class, 'delete'])->name('filepond.delete');
 
     // Route::prefix('categories')->group(function () {
     //     Route::get('', [CategoryController::class, 'index'])->name('categories.index')->middleware('can:category-read');

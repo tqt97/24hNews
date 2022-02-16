@@ -1,5 +1,7 @@
 @extends('layouts.admin')
-@section('title', 'Trang tổng quan')
+@push('title')
+    {{ __('Trang tổng quan') }}
+@endpush
 
 @section('content')
     <br>

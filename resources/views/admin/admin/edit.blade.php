@@ -1,13 +1,14 @@
 @extends('layouts.admin')
 
-@section('title', 'Cập nhật thông tin Admin')
-@section('styles')
-    <link rel="stylesheet" href="{{ asset('admin/plugins/select2/css/select2.min.css') }}">
-    <link href="{{ asset('admin/dist/css/handleUploadImageSingle.css') }}" rel="stylesheet">
-@endsection
+@push('title')
+    {{ __('Cập nhật thông tin người dùng') }}
+@endpush
+@push('styles')
+    @include('admin.partials.filepond-style')
+@endpush
 @section('content')
     <div class="content">
-        @include('admin.partials.header',[$title = 'Cập nhật thông tin Admin', $current_page = 'Cập nhật'])
+        @include('admin.partials.header',[$title = 'Cập nhật thông tin người dùng', $current_page = 'Cập nhật'])
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
@@ -103,32 +104,19 @@
                                     </select>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-2">
                                         <div class="form-group">
                                             <label>Ảnh đại diện:</label>
-                                            <div class="input-group">
-                                                <div class="custom-file">
-                                                </div>
-                                            </div>
-                                            <div class="my-3">
-                                                <img src="{{ $admin->imageUrl() }}"
-                                                    class="imageThumb" />
-                                            </div>
+                                            <img src="{{ $admin->admin_image }}" class="img"
+                                                alt="{{ $admin->name }}" style="display: block;border-radius: 5px"
+                                                width="120px">
                                         </div>
                                     </div>
-                                    <div class="col-sm-8">
+                                    <div class="col-sm-10">
                                         <div class="form-group">
-                                            <label>Chọn ảnh mới:</label>
-                                            <div class="input-group" id="divMainUpload">
-                                                <div class="custom-file">
-                                                    <input class="file-input" type="file" id="image" name="image" />
-                                                </div>
-                                            </div>
-                                            <div class="my-3">
-
-                                                <img id="blah" src="" width="150px" height="auto" />
-
-                                            </div>
+                                            <label>Chọn ảnh mới :</label>
+                                            <input type="file" name="image" id="image" multiple data-max-files="1"
+                                                data-max-files-message="Chỉ được chọn 1 file" accept="image/*" />
                                         </div>
                                     </div>
                                 </div>
@@ -141,9 +129,8 @@
         </div>
     </div>
 @endsection
-@section('scripts')
-    <script src="{{ asset('admin/plugins/select2/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('admin/dist/js/handleUploadImageSingle.js') }}"></script>
+@push('scripts')
+    @include('admin.partials.filepond-script')
 
     <script>
         $(function() {
@@ -153,4 +140,4 @@
             });
         });
     </script>
-@endsection
+@endpush

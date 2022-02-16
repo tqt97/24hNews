@@ -28,7 +28,6 @@ class StoreAdminRequest extends FormRequest
             'email' => 'required|unique:admins,email',
             'password' => 'required',
             'password_confirm' => 'required|same:password',
-            'image' =>  ['mimes:jpg,bmp,png,jpeg,gif,webp,svg', 'dimensions:max-width=500,max_height=500'],
             'address' =>  'string',
             'phone' =>  'regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
 

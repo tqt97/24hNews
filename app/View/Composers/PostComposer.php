@@ -10,6 +10,6 @@ class PostComposer
 {
     public function compose(View $view)
     {
-        $view->with('postView', Post::take(4)->latest()->get());
+        $view->with('postView', Post::with('media')->take(8)->latest()->get());
     }
 }

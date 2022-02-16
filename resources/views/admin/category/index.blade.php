@@ -1,8 +1,11 @@
 @extends('layouts.admin')
-@section('title', 'Quản lý danh mục')
-@section('styles')
+
+@push('title')
+    {{ __('Quản lý danh mục') }}
+@endpush
+@push('styles')
     @include('admin.partials.style-list')
-@endsection
+@endpush
 @section('content')
     @include('admin.partials.header',[$title = 'Danh sách danh mục', $current_page = 'Danh mục'])
     <section class="content">
@@ -81,7 +84,7 @@
         </div>
     </section>
 @endsection
-@section('scripts')
+@push('scripts')
     @include('admin.partials.script-list')
 
     <script>
@@ -188,4 +191,4 @@
             });
         });
     </script>
-@endsection
+@endpush

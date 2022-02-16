@@ -4,11 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Support\Collection;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use App\Traits\FilePondMedia;
 
-class Category extends BaseModel
+
+class Category extends BaseModel implements HasMedia
 {
-    use HasFactory, Sluggable;
+    use HasFactory, Sluggable, InteractsWithMedia,FilePondMedia;
 
     protected $fillable = ['name', 'author_id', 'parent_id', 'is_highlight', 'status', 'slug'];
 
@@ -34,24 +38,19 @@ class Category extends BaseModel
     }
     public function scopeGetCategory()
     {
-        return $this->where('status', 1);
+        return $this->with('media')->where('status', 1);
     }
 
-    public function imageUrl()
+    public function registerMediaConversions(Media $media = null): void
     {
-        return "/upload/category/" . $this->image;
+        $this->addMediaConversion('thumb')
+            ->width(540)
+            ->height(524);
+
+        $this->addMediaConversion('main')
+            ->width(1580)
+            ->height(300);
     }
-
-    // public function formatCreateAt()
-    // {
-    //     return \Carbon\Carbon::parse($this->created_at)->format('d/m/Y');
-    // }
-    // public function getFormattedDateAttribute()
-    // {
-    //     return $this->date->format('Y-m-d H:i:s');
-    // }
-
-    // protected $appends = ['formatted_date'];
     public function sluggable(): array
     {
         return [

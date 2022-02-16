@@ -1,10 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Sửa danh mục')
-@section('styles')
-    <link href="{{ asset('admin/dist/css/handleUploadImageSingle.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('admin/plugins/select2/css/select2.min.css') }}">
-@endsection
+@push('title')
+    {{ __('Sửa danh mục') }}
+@endpush
+@push('styles')
+    @include('admin.partials.filepond-style')
+@endpush
 @section('content')
     <div class="content">
         @include('admin.partials.header',[$title = 'Sửa danh mục', $current_page = 'Sửa danh mục'])
@@ -43,6 +44,23 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label>Ảnh đại diện:</label>
+                                            <img src="{{ $category->getFirstMediaUrl('categories', 'thumb') }}"
+                                                alt="{{ $category->name }}" style="display: block;border-radius: 5px"
+                                                width="120px">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <div class="form-group">
+                                            <label>Chọn ảnh mới :</label>
+                                            <input type="file" name="image" id="image" multiple data-max-files="1"
+                                                data-max-files-message="Chỉ được chọn 1 file" accept="image/*" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label class="form-check-label mb-2 font-weight-bold">Trạng thái :</label>
@@ -75,9 +93,9 @@
         </div>
     </div>
 @endsection
-@section('scripts')
-    <script src="{{ asset('admin/dist/js/handleUploadImageSingle.js') }}"></script>
-    <script src="{{ asset('admin/plugins/select2/js/select2.full.min.js') }}"></script>
+@push('scripts')
+    @include('admin.partials.filepond-script')
+
     <script>
         $(function() {
             $(".select2_category").select2({
@@ -86,4 +104,4 @@
             });
         });
     </script>
-@endsection
+@endpush

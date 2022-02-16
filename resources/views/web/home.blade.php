@@ -14,7 +14,7 @@
                                 <div class="col-lg-6">
                                     <div class="blog-post">
                                         <div class="blog-thumb">
-                                            <img src="{{ $post->getFirstMediaUrl('image_post', 'thumb-100') }}" alt="{{ $post->title }}">
+                                            <img src="{{ $post->getFirstMediaUrl('posts', 'thumb') }}" alt="{{ $post->title }}">
                                         </div>
                                         <div class="down-content">
                                             <a href="{{ route('posts.show', $post->slug) }}">

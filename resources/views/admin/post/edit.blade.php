@@ -1,11 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', 'Sửa bài viết')
-@section('styles')
-    <link href="{{ asset('admin/dist/css/handleUploadImageSingle.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('admin/plugins/select2/css/select2.min.css') }}">
+@push('title')
+    {{ __('Sửa bài viết') }}
+@endpush
+@push('styles')
     <link rel="stylesheet" href="{{ asset('admin/plugins/summernote/summernote-bs4.min.css') }}">
-@endsection
+    @include('admin.partials.filepond-style')
+@endpush
 @section('content')
     <div class="content">
         @include('admin.partials.header',[$title = 'Sửa mới bài viết', $current_page = 'Sửa bài viết'])
@@ -49,15 +50,22 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Hình ảnh <code>*</code> :</label>
-                                    <div class="input-group" id="divMainUpload">
-                                        <div class="custom-file">
-                                            <input class="form-control" type="file" id="image" name="image"
-                                                placeholder="Chọn hình ảnh" />
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label>Hình đại diện:</label>
+                                            <img src="{{ $post->getFirstMediaUrl('posts', 'thumb') }}"
+                                                alt="{{ $post->title }}" style="display: block;border-radius: 5px"
+                                                width="120px">
                                         </div>
                                     </div>
-
+                                    <div class="col-sm-10">
+                                        <div class="form-group">
+                                            <label>Chọn ảnh mới :</label>
+                                            <input type="file" name="image" id="image" multiple data-max-files="1"
+                                                data-max-files-message="Chỉ được chọn 1 file" accept="image/*" />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Mô tả ngắn <code>*</code> :</label>
@@ -119,10 +127,9 @@
         </div>
     </div>
 @endsection
-@section('scripts')
-    <script src="{{ asset('admin/dist/js/handleUploadImageSingle.js') }}"></script>
-    <script src="{{ asset('admin/plugins/select2/js/select2.full.min.js') }}"></script>
+@push('scripts')
     <script src="{{ asset('admin/plugins/summernote/summernote-bs4.min.js') }}"></script>
+    @include('admin.partials.filepond-script')
 
     <script>
         $(function() {
@@ -148,4 +155,4 @@
             });
         });
     </script>
-@endsection
+@endpush

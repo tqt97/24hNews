@@ -9,16 +9,16 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Support\Str;
 use App\Traits\HandleTag;
-use App\Traits\UploadMedia;
+use App\Traits\FilePondMedia;
 use Illuminate\Support\Facades\Cache;
-use Spatie\MediaLibrary\MediaCollections\File;
+// use Spatie\MediaLibrary\MediaCollections\File;
 
 class Post extends BaseModel  implements HasMedia
 {
     const LIMIT_TITLE = 50;
     const LIMIT_DESCRIPTION = 150;
 
-    use HasFactory, Sluggable,  InteractsWithMedia, HandleTag, UploadMedia;
+    use HasFactory, Sluggable,  InteractsWithMedia, HandleTag, FilePondMedia;
 
     protected $fillable = [
         'title','avatar', 'description', 'content', 'view_count', 'is_highlight', 'slug', 'author_id', 'category_id', 'status'
@@ -45,17 +45,16 @@ class Post extends BaseModel  implements HasMedia
     {
         return $this->hasMany(Comment::class);
     }
-    //     ->useFallbackUrl('/images/anonymous-user.jpg')
-    // ->useFallbackPath(public_path('/images/anonymous-user.jpg'));
+ 
     public function registerMediaConversions(Media $media = null): void
     {
-        $this->addMediaConversion('thumb-50')
-            ->width(50)
-            ->height(50);
+        $this->addMediaConversion('thumb')
+            ->width(350)
+            ->height(340);
 
-        $this->addMediaConversion('thumb-100')
-            ->width(100)
-            ->height(100);
+        $this->addMediaConversion('main')
+            ->width(730)
+            ->height(708);
     }
 
     public function getAuthorNameAttribute()
@@ -88,21 +87,14 @@ class Post extends BaseModel  implements HasMedia
             return $this->comments->count();
         });
     }
-    // public function scopeSearchCategory()
-    // {
-    //     return $this->when(request('category_id'), function ($query) {
-    //         return $query->whereHas('categories', function ($q) {
-    //             return $q->where('id', request('category_id'));
-    //         });
-    //     });
-    // }
+
     public function scopeGetPost()
     {
         return $this->where('status', 1);
     }
     public function scopeHighlightPost()
     {
-        return $this->where('status', 1)->where('is_highlight', 1);
+        return $this->with('media')->where('status', 1)->where('is_highlight', 1);
     }
     public function limitTitle()
     {
@@ -112,29 +104,6 @@ class Post extends BaseModel  implements HasMedia
     {
         return Str::limit($this->description,  self::LIMIT_DESCRIPTION);
     }
-
-
-    // public function getCategoriesLinksAttribute()
-    // {
-    //     $categories = $this->categories()->get()->map(function ($category) {
-    //         return '<a href="' . route('articles.index') . '?category_id=' . $category->id . '">' . $category->name . '</a>';
-    //     })->implode(' | ');
-
-    //     if ($categories == '') return 'none';
-
-    //     return $categories;
-    // }
-
-    // public function getTagsLinksAttribute()
-    // {
-    //     $tags = $this->tags()->get()->map(function ($tag) {
-    //         return '<a href="' . route('articles.index') . '?tag_id=' . $tag->id . '">' . $tag->name . '</a>';
-    //     })->implode(' | ');
-
-    //     if ($tags == '') return 'none';
-
-    //     return $tags;
-    // }
 
     public function formatCreateAt()
     {

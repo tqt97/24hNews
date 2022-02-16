@@ -1,10 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Thêm danh mục')
-@section('styles')
-    <link href="{{ asset('admin/dist/css/handleUploadImageSingle.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('admin/plugins/select2/css/select2.min.css') }}">
-@endsection
+@push('title')
+    {{ __('Thêm danh mục') }}
+@endpush
+@push('styles')
+    @include('admin.partials.filepond-style')
+@endpush
 @section('content')
     <div class="content">
         @include('admin.partials.header',[$title = 'Thêm mới danh mục', $current_page = 'Thêm danh mục'])
@@ -19,17 +20,15 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label">Tên danh mục <code>*</code> :</label>
+                                            <label>Tên danh mục <code>*</code> :</label>
                                                 <input type="text" name="name"
                                                     class="form-control @error('name') is-invalid @enderror"
-                                                    value="{{ old('name') }}" placeholder="Điền tên danh mục" autofocus
-                                                    required>
+                                                    value="{{ old('name') }}" placeholder="Điền tên danh mục" autofocus>
                                                 @error('name')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                 @enderror
-
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -39,6 +38,15 @@
                                                 <option value="0">|-- Danh mục gốc</option>
                                                 {!! $htmlOption !!}
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Hình đại diện :</label>
+                                            <input type="file" name="image" id="image" multiple data-max-files="1"
+                                                data-max-files-message="Chỉ được chọn 1 file" accept="image/*" />
                                         </div>
                                     </div>
                                 </div>
@@ -59,9 +67,9 @@
         </div>
     </div>
 @endsection
-@section('scripts')
-    <script src="{{ asset('admin/dist/js/handleUploadImageSingle.js') }}"></script>
-    <script src="{{ asset('admin/plugins/select2/js/select2.full.min.js') }}"></script>
+@push('scripts')
+    @include('admin.partials.filepond-script')
+
     <script>
         $(function() {
             $(".select2_category").select2({
@@ -70,4 +78,4 @@
             });
         });
     </script>
-@endsection
+@endpush

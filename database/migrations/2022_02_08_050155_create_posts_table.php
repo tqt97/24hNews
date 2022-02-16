@@ -18,7 +18,6 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->longText('description')->nullable();
             $table->longText('content');
-            $table->string('image')->nullable();
             $table->integer('view_count')->default(0);
             $table->boolean('is_highlight')->default(0);
             $table->string('slug');

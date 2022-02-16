@@ -1,5 +1,7 @@
 @extends('layouts.admin')
-@section('title', 'Quản lý tags')
+@push('title')
+    {{ __('Quản lý tags') }}
+@endpush
 @section('styles')
     @include('admin.partials.style-list')
 @endsection
@@ -55,7 +57,7 @@
         </div>
     </section>
 @endsection
-@section('scripts')
+@push('scripts')
     @include('admin.partials.script-list')
 
     <script>
@@ -132,4 +134,4 @@
             });
         });
     </script>
-@endsection
+@endpush

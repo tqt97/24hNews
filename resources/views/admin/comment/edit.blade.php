@@ -1,12 +1,14 @@
 @extends('layouts.admin')
 
-@section('title', 'Chỉnh sửa vai trò')
-@section('styles')
-    <link rel="stylesheet" href="{{ asset('admin/plugins/select2/css/select2.min.css') }}">
-@endsection
+
+@push('title')
+    {{ __('Chỉnh sửa bình luận') }}
+@endpush
+@push('styles')
+@endpush
 @section('content')
     <div class="content">
-        @include('admin.partials.header',[$title = 'Chỉnh sửa vai trò', $current_page = 'Chỉnh sửa vai trò'])
+        @include('admin.partials.header',[$title = 'Chỉnh sửa bình luận', $current_page = 'Chỉnh sửa'])
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
@@ -86,7 +88,7 @@
         </div>
     </div>
 @endsection
-@section('scripts')
+@push('scripts')
     <script src="{{ asset('admin/plugins/select2/js/select2.full.min.js') }}"></script>
     <script>
         $(function() {
@@ -108,4 +110,4 @@
             });
         });
     </script>
-@endsection
+@endpush

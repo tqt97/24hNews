@@ -1,9 +1,10 @@
 @extends('layouts.admin')
 
-@section('title', 'Sửa tag')
-@section('styles')
-    <link href="{{ asset('admin/dist/css/handleUploadImageSingle.css') }}" rel="stylesheet">
-@endsection
+@push('title')
+    {{ __('Sửa tag') }}
+@endpush
+@push('styles')
+@endpush
 @section('content')
     <div class="content">
         @include('admin.partials.header',[$title = 'Sửa tag', $current_page = 'Sửa tag'])
@@ -36,6 +37,5 @@
         </div>
     </div>
 @endsection
-@section('scripts')
-    <script src="{{ asset('admin/dist/js/handleUploadImageSingle.js') }}"></script>
-@endsection
+@push('scripts')
+@endpush

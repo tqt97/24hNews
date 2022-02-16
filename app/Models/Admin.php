@@ -4,17 +4,21 @@ namespace App\Models;
 
 use App\Traits\AlertTrait;
 use App\Traits\DeleteModelTrait;
-use App\Traits\StorageImageTrait;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
+use App\Traits\FilePondMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Admin extends Authenticatable
+
+class Admin extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable, AlertTrait, DeleteModelTrait, StorageImageTrait;
+    use HasApiTokens, HasFactory, Notifiable, AlertTrait, DeleteModelTrait, FilePondMedia, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -67,5 +71,25 @@ class Admin extends Authenticatable
             }
         }
         return false;
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(150)
+            ->height(150);
+        // ->useFallbackUrl('/admin/dist/img/anonymous-user.png')
+        // ->useFallbackPath(public_path('/admin/dist/img/anonymous-user.png'));
+    }
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('admins')
+            ->useFallbackUrl('/admin/dist/img/anonymous-user.png')
+            ->useFallbackPath(public_path('/admin/dist/img/anonymous-user.png'));
+    }
+    public function getAdminImageAttribute()
+    {
+        return $this->getFirstMediaUrl('admins', 'thumb');
     }
 }

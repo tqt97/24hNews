@@ -1,24 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', 'Thêm bài viết')
-@section('styles')
-    <link href="{{ asset('admin/dist/css/handleUploadImageSingle.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('admin/plugins/select2/css/select2.min.css') }}">
+@push('title')
+    {{ __('Thêm bài viết') }}
+@endpush
+@push('styles')
     <link rel="stylesheet" href="{{ asset('admin/plugins/summernote/summernote-bs4.min.css') }}">
-
-    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
-
-@endsection
-{{-- @push('styles')
-    @once
-        <link href="{{ asset('admin/dist/css/handleUploadImageSingle.css') }}" rel="stylesheet">
-        <link rel="stylesheet" href="{{ asset('admin/plugins/select2/css/select2.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('admin/plugins/summernote/summernote-bs4.min.css') }}">
-
-        <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
-        <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
-    @endonce
-@endpush --}}
+    @include('admin.partials.filepond-style')
+@endpush
 @section('content')
     <div class="content">
         @include('admin.partials.header',[$title = 'Thêm mới bài viết', $current_page = 'Thêm bài viết'])
@@ -57,26 +45,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{-- <div class="form-group">
-                                    <label>Hình ảnh <code>*</code> :</label>
-                                    <div class="input-group" id="divMainUpload">
-                                        <div class="custom-file">
-                                            <input class="form-control @error('image') is-invalid @enderror" type="file"
-                                                id="image" name="image" accept="image/*" />
-                                        </div>
-                                        @error('image')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div> --}}
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label>Avatar: <code>*</code> :</label>
-                                            <input type="file" name="image" id="image" >
-                                            {{-- <input type="file" name="avatars" id="avatars" multiple data-max-files="2"> --}}
+                                            <label>Hình đại diện: <code>*</code> :</label>
+                                            <input type="file" name="image" id="image" multiple data-max-files="1"
+                                                data-max-files-message="Chỉ được chọn 1 file" accept="image/*" />
                                         </div>
                                     </div>
                                 </div>
@@ -127,31 +101,9 @@
         </div>
     </div>
 @endsection
-@section('scripts')
-    {{-- @once --}}
-    <script src="{{ asset('admin/dist/js/handleUploadImageSingle.js') }}"></script>
-    <script src="{{ asset('admin/plugins/select2/js/select2.full.min.js') }}"></script>
+@push('scripts')
     <script src="{{ asset('admin/plugins/summernote/summernote-bs4.min.js') }}"></script>
-
-    {{-- <script src="https://unpkg.com/filepond/dist/filepond.js"></script> --}}
-    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
-    <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
-    {{-- <script src="https://unpkg.com/filepond/dist/filepond.js"></script> --}}
-    <script>
-        const inputElement = document.querySelector('input[id="image"]');
-        const pond = FilePond.create(inputElement);
-        FilePond.setOptions({
-            server: {
-                url: '/admin/upload',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            }
-        });
-    </script>
-
+    @include('admin.partials.filepond-script')
     <script>
         $(function() {
             $(".select2_tag").select2({
@@ -164,12 +116,6 @@
                 tokenSeparators: [',', ' '],
                 allowClear: true
             });
-            // $('#description').summernote({
-            //     height: 80,
-            //     codemirror: {
-            //         theme: 'monokai'
-            //     }
-            // });
             $('#content').summernote({
                 height: 150,
                 codemirror: {
@@ -178,6 +124,4 @@
             });
         });
     </script>
-
-    {{-- @endonce --}}
-@endsection
+@endpush
