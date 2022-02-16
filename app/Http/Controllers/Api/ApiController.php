@@ -9,6 +9,7 @@ use App\Models\Comment;
 use App\Models\Contact;
 use App\Models\Post;
 use App\Models\Role;
+use App\Models\Slider;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 
@@ -75,6 +76,15 @@ class ApiController extends Controller
     public function getComments()
     {
         $query = Comment::select('id', 'content', 'status', 'created_at');
+        if (request('date_filter')) {
+            $filter_date = now()->subDays(request('date_filter'))->toDateString();
+            $query->where('created_at', '>=', $filter_date);
+        }
+        return datatables($query)->toJson();
+    }
+    public function getSliders()
+    {
+        $query = Slider::select('id', 'title', 'status', 'created_at');
         if (request('date_filter')) {
             $filter_date = now()->subDays(request('date_filter'))->toDateString();
             $query->where('created_at', '>=', $filter_date);

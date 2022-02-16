@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SliderController;
 use App\Http\Controllers\Web\AboutController;
 use App\Http\Controllers\Web\CategoryController;
 use App\Http\Controllers\web\CommentController;
@@ -21,21 +22,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('web.home');
-});
-Route::get('/about-us', function () {
-    return view('web.about-us');
-});
-Route::get('/category', function () {
-    return view('web.category');
-});
-Route::get('/detail', function () {
-    return view('web.detail');
-});
-Route::get('/contact', function () {
-    return view('web.contact');
-});
+// Route::get('/', function () {
+//     return view('web.home');
+// });
+// Route::get('/about-us', function () {
+//     return view('web.about-us');
+// });
+// Route::get('/category', function () {
+//     return view('web.category');
+// });
+// Route::get('/detail', function () {
+//     return view('web.detail');
+// });
+// Route::get('/contact', function () {
+//     return view('web.contact');
+// });
 // Route::get('/admin/dashboard', function () {
 //     return view('admin.dashboard');
 // });

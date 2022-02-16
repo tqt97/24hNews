@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UploadController;
 
@@ -66,6 +67,7 @@ Route::group(['as' => 'admin.', 'middleware' => ['admin.auth']], function () {
         'tags' => TagController::class,
         'admins' => AdminController::class,
         'roles' => RoleController::class,
+        'sliders' => SliderController::class,
     ]);
 
     Route::prefix('permissions')->group(function () {

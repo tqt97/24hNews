@@ -2,7 +2,8 @@
 @section('styles')
     <link rel="stylesheet" href="{{ asset('web/assets/css/custom.css') }}">
 @endsection
-@section('content') @include('web.partials.banner')
+@section('content')
+    @include('web.partials.banner')
     <section class="blog-posts">
         <div class="container">
             <div class="row">
@@ -14,7 +15,8 @@
                                 <div class="col-lg-6">
                                     <div class="blog-post">
                                         <div class="blog-thumb">
-                                            <img src="{{ $post->getFirstMediaUrl('posts', 'thumb') }}" alt="{{ $post->title }}">
+                                            <img src="{{ $post->getFirstMediaUrl('posts', 'thumb') }}"
+                                                alt="{{ $post->title }}">
                                         </div>
                                         <div class="down-content">
                                             <a href="{{ route('posts.show', $post->slug) }}">

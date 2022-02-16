@@ -27,7 +27,7 @@
                             <div class="col-lg-6">
                                 <div class="blog-post">
                                     <div class="blog-thumb">
-                                        {{-- <img src="{{ $post->post_image }}" alt="{{ $post->title }}"> --}}
+                                        <img src="{{ $category->cate_image }}" alt="{{ $category->name }}">
                                     </div>
                                     <div class="down-content">
                                         <a href="{{ route('categories.show', $category->slug) }}">

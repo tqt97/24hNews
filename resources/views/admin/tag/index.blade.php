@@ -2,9 +2,9 @@
 @push('title')
     {{ __('Quản lý tags') }}
 @endpush
-@section('styles')
+@push('styles')
     @include('admin.partials.style-list')
-@endsection
+@endpush
 @section('content')
     @include('admin.partials.header',[$title = 'Danh sách tags', $current_page = 'Danh mục'])
     <section class="content">

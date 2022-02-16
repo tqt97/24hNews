@@ -23,6 +23,6 @@ Route::get('/v1/posts', [ApiController::class, 'getPosts'])->name('api.posts.ind
 Route::get('/v1/tags', [ApiController::class, 'getTags'])->name('api.tags.index');
 Route::get('/v1/admins', [ApiController::class, 'getAdmins'])->name('api.admins.index');
 Route::get('/v1/roles', [ApiController::class, 'getRoles'])->name('api.roles.index');
-
 Route::get('/v1/contacts', [ApiController::class, 'getContacts'])->name('api.contacts.index');
 Route::get('/v1/comments', [ApiController::class, 'getComments'])->name('api.comments.index');
+Route::get('/v1/sliders', [ApiController::class, 'getSliders'])->name('api.sliders.index');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\Slider;
 
 class HomeController extends Controller
 {
@@ -26,7 +27,7 @@ class HomeController extends Controller
         // ->take(8)->latest()->get();
         // ->paginate(2);
 
-        // $posts = Post::highlight()->take(8)->latest()->get();
-        return view('web.home', compact('posts'));
+        $sliders = Slider::getSlider()->take(8)->latest()->get();
+        return view('web.home', compact('posts','sliders'));
     }
 }

@@ -50,6 +50,14 @@
         </a>
     </li>
     <li class="nav-item">
+        <a href="{{ route('admin.sliders.index') }}" class="nav-link {{ (request()->segment(2) == 'sliders') ? 'active' : '' }}">
+            <i class="nav-icon fa fa-sliders-h"></i>
+            <p>
+                Quản lý slider
+            </p>
+        </a>
+    </li>
+    <li class="nav-item">
         <a href="{{ route('admin.admins.index') }}" class="nav-link {{ (request()->segment(2) == 'admins') ? 'active' : '' }}">
             <i class="nav-icon fas fa-user-friends"></i>
             <p>

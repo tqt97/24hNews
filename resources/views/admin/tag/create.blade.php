@@ -3,7 +3,7 @@
 @push('title')
     {{ __('Thêm tag') }}
 @endpush
-@push('content')
+@section('content')
     <div class="content">
         @include('admin.partials.header',[$title = 'Thêm mới tag', $current_page = 'Thêm tag'])
         <div class="container-fluid">
@@ -33,4 +33,4 @@
             </div>
         </div>
     </div>
-@endpush
+@endsection

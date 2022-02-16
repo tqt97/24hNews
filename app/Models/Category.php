@@ -8,11 +8,11 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use App\Traits\FilePondMedia;
-
+use Illuminate\Support\Facades\Cache;
 
 class Category extends BaseModel implements HasMedia
 {
-    use HasFactory, Sluggable, InteractsWithMedia,FilePondMedia;
+    use HasFactory, Sluggable, InteractsWithMedia, FilePondMedia;
 
     protected $fillable = ['name', 'author_id', 'parent_id', 'is_highlight', 'status', 'slug'];
 
@@ -39,6 +39,12 @@ class Category extends BaseModel implements HasMedia
     public function scopeGetCategory()
     {
         return $this->with('media')->where('status', 1);
+    }
+    public function getCateImageAttribute()
+    {
+        // return Cache::remember('cate_post', 15, function () {
+            return $this->getFirstMediaUrl('categories', 'main');
+        // });
     }
 
     public function registerMediaConversions(Media $media = null): void

@@ -78,8 +78,6 @@ class Admin extends Authenticatable implements HasMedia
         $this->addMediaConversion('thumb')
             ->width(150)
             ->height(150);
-        // ->useFallbackUrl('/admin/dist/img/anonymous-user.png')
-        // ->useFallbackPath(public_path('/admin/dist/img/anonymous-user.png'));
     }
     public function registerMediaCollections(): void
     {
