@@ -12,35 +12,16 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-primary card-outline">
-                        <form action="{{ route('admin.roles.update', $role->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
+                        <x-form.form action="{{ route('admin.roles.update', $role->id) }}" modMethod="PUT">
                             <div class="card-body">
-                                @include('admin.components.warning-top')
+                                <x-form.warning />
+
                                 <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>Tên vai trò <code>*</code> :</label>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" placeholder="Nhập tên vai trò"
-                                            value="{{ $role->name }}">
-                                        @error('name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
+                                    <x-form.input label="Tên vai trò :" name="name" placeholder="Nhập tên vai trò"
+                                        value="{{ $role->name }}" />
 
-                                    <div class="form-group">
-                                        <label>Mô tả vai trò <code>*</code> :</label>
-                                        <textarea class="form-control @error('display_name') is-invalid @enderror" name="display_name"
-                                            rows="4">{{ $role->display_name }}</textarea>
-                                        @error('display_name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-
+                                    <x-form.textarea label="Mô tả vai trò :" name="display_name"
+                                        value="{{ $role->display_name }}" />
                                 </div>
                                 <div class="col-md-12">
                                     <div class="row">
@@ -79,8 +60,8 @@
                                     </div>
                                 </div>
                             </div>
-                            @include('admin.components.card-footer-edit')
-                        </form>
+                            <x-form.submit submit="Cập nhật" reset="Làm mới" />
+                        </x-form.form>
                     </div>
                 </div>
             </div>

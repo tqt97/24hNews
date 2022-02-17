@@ -13,54 +13,36 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-primary card-outline">
-                        <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
+                        <x-form.form action="{{ route('admin.categories.store') }}" hasFile>
                             <div class="card-body">
-                                @include('admin.components.warning-top')
+                                <x-form.warning/>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Tên danh mục <code>*</code> :</label>
-                                                <input type="text" name="name"
-                                                    class="form-control @error('name') is-invalid @enderror"
-                                                    value="{{ old('name') }}" placeholder="Điền tên danh mục" autofocus>
-                                                @error('name')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                        </div>
+                                        <x-form.input label="Tên danh mục :"  name="name" required/>
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Chọn danh mục (Mặc định là danh mục gốc) <code>*</code> :</label>
-                                            <select class="form-control select2_category" name="parent_id">
-                                                <option value="0">|-- Danh mục gốc</option>
+                                        <x-form.select label="Chọn danh mục (Mặc định là danh mục gốc) :"  name="parent_id" required class="select2_category">
+                                            <option value="0">|-- Danh mục gốc</option>
                                                 {!! $htmlOption !!}
-                                            </select>
-                                        </div>
+                                        </x-form.select>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Hình đại diện :</label>
-                                            <input type="file" name="image" id="image" multiple data-max-files="1"
-                                                data-max-files-message="Chỉ được chọn 1 file" accept="image/*" />
-                                        </div>
+                                        <x-form.file label="Hình đại diện :"  name="image" required/>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        @include('admin.components.form.status-create')
+                                        <x-form.status label="Trạng thái :"  name="status" display="Hiển thị" checked/>
                                     </div>
                                     <div class="col-sm-6">
-                                        @include('admin.components.form.is-highlight-create')
+                                        <x-form.status label="Nổi bật :" name="is_highlight" display="Nổi bật"/>
                                     </div>
                                 </div>
                             </div>
-                            @include('admin.components.card-footer-create')
-                        </form>
+                            <x-form.submit  submit="Thêm mới" reset="Làm mới"/>
+                        </x-form.form>
                     </div>
                 </div>
             </div>

@@ -10,43 +10,30 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">Trang chủ
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/about-us">Về chúng tôi</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('posts.index') }}">Bài viết</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('categories.index') }}">Danh mục</a>
-                    </li>
-                    {{-- <li class="nav-item dropdown"> --}}
-                    {{-- <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            Danh mục
-                        </a> --}}
-                    {{-- <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="/category" id="abc" data-toggle="dropdown">Category 1</a>
-                            <div class="dropdown-menu" aria-labelledby="abc">
-                                <a class="dropdown-item" href="/category">Category 1</a>
-                                <a class="dropdown-item" href="#">Category 2</a>
-                                <a class="dropdown-item" href="#">Category 3</a>
-                            </div>
-                            <a class="dropdown-item" href="#">Category 2</a>
-                            <a class="dropdown-item" href="#">Category 3</a>
-                        </div> --}}
-                    {{-- </li> --}}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/contact">Liên hệ</a>
-                    </li>
+                    <x-nav-item>
+                        <x-slot name="route"> {{ url('/') }} </x-slot>
+                        Trang chủ
+                    </x-nav-item>
+                    <x-nav-item>
+                        <x-slot name="route"> {{ url('/about-us') }} </x-slot>
+                        Về chúng tôi
+                    </x-nav-item>
+                    <x-nav-item>
+                        <x-slot name="route"> {{ url('/posts') }} </x-slot>
+                        Bài viết
+                    </x-nav-item>
+                    <x-nav-item>
+                        <x-slot name="route"> {{ url('/categories') }} </x-slot>
+                        Danh mục
+                    </x-nav-item>
+                    <x-nav-item>
+                        <x-slot name="route"> {{ url('/contacts') }} </x-slot>
+                        Liên hệ
+                    </x-nav-item>
                     @auth
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                                 document.getElementById('logout-form').submit();">
+                                                                     document.getElementById('logout-form').submit();">
                                 <i class="fa fa-sign-in"></i>
                                 {{ Auth::user()->name }}
                             </a>

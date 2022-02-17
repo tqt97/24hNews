@@ -29,9 +29,9 @@
                                                 value="{{ $admin->name }}" placeholder="Điền tên người dùng" autofocus
                                                 required>
                                             @error('name')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                                <x-form.alert>
+                                                    {{ $message }}
+                                                </x-form.alert>
                                             @enderror
                                         </div>
                                     </div>
@@ -42,9 +42,9 @@
                                                 class="form-control @error('email') is-invalid @enderror"
                                                 value="{{ $admin->email }}" placeholder="Điền email người dùng" required>
                                             @error('email')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                                <x-form.alert>
+                                                    {{ $message }}
+                                                </x-form.alert>
                                             @enderror
                                         </div>
                                     </div>
@@ -72,9 +72,9 @@
                                             <input type="password" name="password"
                                                 class="form-control @error('password') is-invalid @enderror">
                                             @error('password')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                                <x-form.alert>
+                                                    {{ $message }}
+                                                </x-form.alert>
                                             @enderror
                                         </div>
                                     </div>
@@ -84,9 +84,9 @@
                                             <input type="password" name="password_confirm"
                                                 class="form-control @error('password_confirm') is-invalid @enderror">
                                             @error('password_confirm')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                                <x-form.alert>
+                                                    {{ $message }}
+                                                </x-form.alert>
                                             @enderror
                                         </div>
                                     </div>

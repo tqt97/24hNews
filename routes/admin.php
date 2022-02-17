@@ -41,15 +41,15 @@ Route::group(['as' => 'admin.', 'middleware' => ['admin.auth']], function () {
     Route::delete('upload/delete', [UploadController::class, 'destroy'])->name('destroy');
     // Route::delete('/process', [FilepondController::class, 'delete'])->name('filepond.delete');
 
-    // Route::prefix('categories')->group(function () {
-    //     Route::get('', [CategoryController::class, 'index'])->name('categories.index')->middleware('can:category-read');
-    //     Route::get('create', [CategoryController::class, 'create'])->name('categories.create')->middleware('can:category-create');
-    //     Route::post('store', [CategoryController::class, 'store'])->name('categories.store');
-    //     Route::get('edit/{category}', [CategoryController::class, 'edit'])->name('categories.edit')->middleware('can:category-update');
-    //     Route::put('update/{category}', [CategoryController::class, 'update'])->name('categories.update');
-    //     Route::delete('destroy/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy')->middleware('can:category-delete');
-    // });
-    // Route::resource('category', CategoryController::class);
+    Route::prefix('categories')->group(function () {
+        Route::get('', [CategoryController::class, 'index'])->name('categories.index')->middleware('can:category-read');
+        Route::get('create', [CategoryController::class, 'create'])->name('categories.create')->middleware('can:category-create');
+        Route::post('store', [CategoryController::class, 'store'])->name('categories.store');
+        Route::get('edit/{category}', [CategoryController::class, 'edit'])->name('categories.edit')->middleware('can:category-update');
+        Route::put('update/{category}', [CategoryController::class, 'update'])->name('categories.update');
+        Route::delete('destroy/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy')->middleware('can:category-delete');
+    });
+    Route::resource('category', CategoryController::class);
 
     // Route::prefix('post')->group(function () {
     //     Route::get('', [PostController::class, 'index'])->name('post.index');

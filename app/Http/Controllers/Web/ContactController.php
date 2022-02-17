@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
+    public function index()
+    {
+        return view('web.contact');
+    }
     public function store(ContactStoreRequest $request)
     {
         Contact::create($request->validated());

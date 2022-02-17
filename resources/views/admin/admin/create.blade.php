@@ -25,12 +25,11 @@
                                             <label>Tên người dùng <code>*</code> :</label>
                                             <input type="text" name="name"
                                                 class="form-control @error('name') is-invalid @enderror"
-                                                value="{{ old('name') }}" placeholder="Nhập tên người dùng" autofocus
-                                                required>
+                                                value="{{ old('name') }}" placeholder="Nhập tên người dùng">
                                             @error('name')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                                <x-form.alert>
+                                                    {{ $message }}
+                                                </x-form.alert>
                                             @enderror
                                         </div>
                                     </div>
@@ -41,9 +40,9 @@
                                                 class="form-control @error('email') is-invalid @enderror"
                                                 value="{{ old('email') }}" placeholder="Nhập email người dùng" required>
                                             @error('email')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                                <x-form.alert>
+                                                    {{ $message }}
+                                                </x-form.alert>
                                             @enderror
                                         </div>
                                     </div>
@@ -56,9 +55,9 @@
                                                 class="form-control @error('address') is-invalid @enderror"
                                                 value="{{ old('address') }}" placeholder="Nhập địa chỉ">
                                             @error('address')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                                <x-form.alert>
+                                                    {{ $message }}
+                                                </x-form.alert>
                                             @enderror
                                         </div>
                                     </div>
@@ -68,11 +67,9 @@
                                             <input type="text" name="phone"
                                                 class="form-control @error('phone') is-invalid @enderror"
                                                 value="{{ old('phone') }}" placeholder="Nhập số điện thoại">
-                                            @error('phone')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
+                                            <x-form.alert>
+                                                {{ $message }}
+                                            </x-form.alert>
                                         </div>
                                     </div>
                                 </div>
@@ -83,9 +80,9 @@
                                             <input type="password" name="password"
                                                 class="form-control @error('password') is-invalid @enderror" required>
                                             @error('password')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                                <x-form.alert>
+                                                    {{ $message }}
+                                                </x-form.alert>
                                             @enderror
                                         </div>
                                     </div>
@@ -96,9 +93,9 @@
                                                 class="form-control @error('password_confirm') is-invalid @enderror"
                                                 required>
                                             @error('password_confirm')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                                <x-form.alert>
+                                                    {{ $message }}
+                                                </x-form.alert>
                                             @enderror
                                         </div>
                                     </div>

@@ -12,25 +12,13 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-primary card-outline">
-                        <form action="{{ route('admin.tags.update',$tag->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
+                        <x-form.form action="{{ route('admin.tags.update', $tag->id) }}" modMethod="PUT">
                             <div class="card-body">
-                                @include('admin.components.warning-top')
-
-                                <div class="form-group">
-                                    <label>Tên tag <code>*</code> :</label>
-                                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-                                       value="{{ $tag->name }}" autofocus required>
-                                    @error('name')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
+                                <x-form.warning />
+                                <x-form.input label="Tên tag :" name="name" value="{{ $tag->name }}" required />
                             </div>
-                            @include('admin.components.card-footer-edit')
-                        </form>
+                            <x-form.submit submit="Thêm mới" reset="Làm mới" />
+                        </x-form.form>
                     </div>
                 </div>
             </div>

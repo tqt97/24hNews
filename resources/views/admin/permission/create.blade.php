@@ -10,8 +10,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-primary-outline">
-                        <form action="{{ route('admin.permissions.store') }}" method="POST">
-                            @csrf
+                        <x-form.form action="{{ route('admin.permissions.store') }}">
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Chọn module :</label>
@@ -37,8 +36,8 @@
                                     </div>
                                 </div>
                             </div>
-                            @include('admin.components.card-footer-create')
-                        </form>
+                            <x-form.submit submit="Thêm mới" reset="Làm mới" />
+                        </x-form.form>
                     </div>
                 </div>
             </div>

@@ -14,113 +14,59 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-primary card-outline">
-                        <form action="{{ route('admin.posts.update', $post->id) }}" method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
+                        <x-form.form action="{{ route('admin.posts.update', $post->id) }}" hasFile modMethod="PUT">
                             <div class="card-body">
-                                @include('admin.components.warning-top')
+                                <x-form.warning />
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Tên bài viết <code>*</code> :</label>
-                                            <input type="text" name="title"
-                                                class="form-control @error('title') is-invalid @enderror"
-                                                value="{{ $post->title }}" placeholder="Điền tên bài viết" autofocus
-                                                required>
-                                            @error('title')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
+                                        <x-form.input label="Tên bài viết :" name="title" value="{{ $post->title }}" />
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Chọn danh mục bài viết <code>*</code> :</label>
-                                            <select class="select2_category" multiple="multiple" name="categories[]"
-                                                style="width: 100%;">
-                                                @foreach ($categories as $category)
-                                                    <option value="{{ $category->id }}"
-                                                        {{ $categoryOfPost->contains('id', $category->id) ? 'selected' : '' }}>
-                                                        {{ $category->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
+                                        <x-form.select label="Chọn danh mục bài viết :" name="categories[]"
+                                            class="select2_category w-100" required multiple>
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}"
+                                                    {{ $categoryOfPost->contains('id', $category->id) ? 'selected' : '' }}>
+                                                    {{ $category->name }}
+                                                </option>
+                                            @endforeach
+                                        </x-form.select>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-2">
-                                        <div class="form-group">
-                                            <label>Hình đại diện:</label>
-                                            <img src="{{ $post->getFirstMediaUrl('posts', 'thumb') }}"
-                                                alt="{{ $post->title }}" style="display: block;border-radius: 5px"
-                                                width="120px">
-                                        </div>
+                                        <x-form.show-image label="Hình đại diện :"
+                                            src="{{ $post->getFirstMediaUrl('posts', 'thumb') }}"
+                                            alt="{{ $post->title }}" />
                                     </div>
                                     <div class="col-sm-10">
-                                        <div class="form-group">
-                                            <label>Chọn ảnh mới :</label>
-                                            <input type="file" name="image" id="image" multiple data-max-files="1"
-                                                data-max-files-message="Chỉ được chọn 1 file" accept="image/*" />
-                                        </div>
+                                        <x-form.file label="Chọn ảnh mới :" name="image" />
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Mô tả ngắn <code>*</code> :</label>
-                                    <textarea class="form-control" id="description"
-                                        name="description">{!! $post->description !!}</textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label>Chi tiết bài viết <code>*</code> :</label>
-                                    <textarea class="form-control @error('content') is-invalid @enderror" id="content"
-                                        name="content">{!! $post->content !!}</textarea>
-                                    @error('content')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label>Tags :</label>
-                                    <select class="select2_tag" multiple="multiple" name="tags[]"
-                                        data-placeholder="Thêm tag cho bài viết" style="width: 100%;">
-                                        @foreach ($tags as $tag)
-                                            <option value="{{ $tag->name }}"
-                                                {{ $tagOfPost->contains('id', $tag->id) ? 'selected' : '' }}>
-                                                {{ $tag->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                <x-form.textarea label="Mô tả ngắn :" name="description" value="{!! $post->description !!}" />
+                                <x-form.textarea label="Chi tiết bài viết :" name="content"
+                                    value="{!! $post->content !!}" />
+                                <x-form.select label="Tags :" name="tags[]" multiple class="select2_tag w-100" required>
+                                    @foreach ($tags as $tag)
+                                        <option value="{{ $tag->name }}"
+                                            {{ $tagOfPost->contains('id', $tag->id) ? 'selected' : '' }}>
+                                            {{ $tag->name }}
+                                        </option>
+                                    @endforeach
+                                </x-form.select>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="form-check-label mb-2 font-weight-bold">Trạng thái :</label>
-                                            <div class="form-check">
-                                                <input type="hidden" name="status" value="0">
-                                                <input class="form-check-input" type="checkbox" name="status" value="1"
-                                                    {{ old('status') || $post->status ? 'checked' : '' }}>
-                                                <label class="form-check-label">Hiện</label>
-                                            </div>
-                                        </div>
+                                        <x-form.checkbox label="Trạng thái :" name="status" display="Hiển thị"
+                                            isChecked="{{ $post->status == 1 ? 'checked' : '' }}" />
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label class="form-check-label mb-2 font-weight-bold">Nổi bật :</label>
-                                            <div class="form-check">
-                                                <input type="hidden" name="is_highlight" value="0">
-                                                <input class="form-check-input" type="checkbox" name="is_highlight"
-                                                    value="1"
-                                                    {{ old('is_highlight') || $post->is_highlight ? 'checked' : '' }}>
-                                            </div>
-                                        </div>
+                                        <x-form.checkbox label="Nổi bật :" name="is_highlight" display="Nổi bật"
+                                            isChecked="{{ $post->is_highlight == 1 ? 'checked' : '' }}" />
                                     </div>
                                 </div>
                             </div>
-                            @include('admin.components.card-footer-edit')
-                        </form>
+                            <x-form.submit submit="Cập nhật" reset="Làm mới" />
+                        </x-form.form>
                     </div>
                 </div>
             </div>

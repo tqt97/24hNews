@@ -22,9 +22,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('web.home');
-// });
+Route::get('/test', function () {
+    return view('test');
+});
 // Route::get('/about-us', function () {
 //     return view('web.about-us');
 // });
@@ -69,7 +69,9 @@ Route::prefix('tags')->group(function () {
 Route::prefix('search')->group(function () {
     Route::get('/', [SearchController::class, 'index'])->name('search');
 });
-Route::prefix('contact')->group(function () {
+Route::prefix('contacts')->group(function () {
+    Route::get('/', [ContactController::class, 'index'])->name('contact.index');
+
     Route::post('/store', [ContactController::class, 'store'])->name('contact.store');
 });
 

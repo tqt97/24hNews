@@ -27,7 +27,6 @@ class PostController extends Controller
     }
     public function index()
     {
-        // $posts = $this->post->all();
         $highlights = $this->post->all()->sortBy('is_highlight')->pluck('is_highlight')->unique();
         $status = $this->post->all()->sortBy('status')->pluck('status')->unique();
 

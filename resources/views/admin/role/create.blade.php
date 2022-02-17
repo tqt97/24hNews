@@ -12,33 +12,15 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-primary card-outline">
-                        <form action="{{ route('admin.roles.store') }}" method="POST">
+                        <x-form.form action="{{ route('admin.roles.store') }}">
                             @csrf
                             <div class="card-body">
-                                @include('admin.components.warning-top')
-
+                                <x-form.warning />
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Tên vai trò <code>*</code>:</label>
-                                            <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                                name="name" placeholder="Nhập tên vai trò" value="{{ old('name') }}">
-                                            @error('name')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Mô tả vai trò <code>*</code>:</label>
-                                            <textarea class="form-control @error('display_name') is-invalid @enderror"
-                                                name="display_name" rows="2">{{ old('display_name') }}</textarea>
-                                            @error('display_name')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
+                                        <x-form.input label="Tên vai trò :" name="name" placeholder="Nhập tên vai trò"
+                                            required />
+                                        <x-form.textarea label="Mô tả vai trò :" name="display_name" />
                                     </div>
                                 </div>
                                 <div class="row">
@@ -48,7 +30,6 @@
                                             CHỌN TẤT CẢ
                                         </label>
                                     </div>
-                                    {{-- <div class="col-sm-6"> --}}
                                     @foreach ($permissionsParent as $permissionsParentItem)
                                         <div class=" mb-3 col-md-6">
                                             <div class="card card-primary card-outline">
@@ -76,12 +57,11 @@
                                             </div>
                                         </div>
                                     @endforeach
-                                    {{-- </div> --}}
                                 </div>
 
                             </div>
-                            @include('admin.components.card-footer-create')
-                        </form>
+                            <x-form.submit submit="Thêm mới" reset="Làm mới" />
+                        </x-form.form>
                     </div>
                 </div>
             </div>

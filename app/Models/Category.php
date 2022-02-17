@@ -44,7 +44,7 @@ class Category extends BaseModel implements HasMedia
     {
         // return Cache::remember('cate_post', 15, function () {
             return $this->getFirstMediaUrl('categories', 'main');
-        // });
+        // }); 
     }
 
     public function registerMediaConversions(Media $media = null): void
