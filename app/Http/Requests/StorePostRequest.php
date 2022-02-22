@@ -27,8 +27,8 @@ class StorePostRequest extends FormRequest
             'title' =>  ['required', 'string','unique:posts,title'],
             'content' =>  'required',
             'description' =>  'required',
-            'is_highlight' =>  ['required', 'boolean'],
-            'status' =>  ['required', 'boolean'],
+            'is_highlight' =>  ['boolean'],
+            'status' =>  ['boolean'],
         ];
     }
     public function messages()

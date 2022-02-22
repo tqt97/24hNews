@@ -10,6 +10,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Support\Str;
 use App\Traits\HandleTag;
 use App\Traits\FilePondMedia;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
 // use Spatie\MediaLibrary\MediaCollections\File;
 
@@ -18,7 +19,7 @@ class Post extends BaseModel  implements HasMedia
     const LIMIT_TITLE = 50;
     const LIMIT_DESCRIPTION = 150;
 
-    use HasFactory, Sluggable,  InteractsWithMedia, HandleTag, FilePondMedia;
+    use HasFactory, Sluggable,  InteractsWithMedia, HandleTag, FilePondMedia,SoftDeletes;
 
     protected $fillable = [
         'title','avatar', 'description', 'content', 'view_count', 'is_highlight', 'slug', 'author_id', 'category_id', 'status'
@@ -34,18 +35,18 @@ class Post extends BaseModel  implements HasMedia
     }
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'post_category')->withTimestamps();
+        return $this->belongsToMany(Category::class, 'post_category');
     }
     public function tags()
     {
-        return $this->belongsToMany(Tag::class, 'post_tag')->withTimestamps();
+        return $this->belongsToMany(Tag::class, 'post_tag');
     }
 
     public function comments()
     {
         return $this->hasMany(Comment::class);
     }
- 
+
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')

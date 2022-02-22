@@ -17,7 +17,7 @@ class Role extends BaseModel
     }
     public function permissions()
     {
-        return $this->belongsToMany(Permission::class,'role_permission')->withTimestamps();
+        return $this->belongsToMany(Permission::class,'role_permission');
     }
 
     public function formatCreateAt()

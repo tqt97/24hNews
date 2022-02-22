@@ -22,7 +22,7 @@ class CreateCategoriesTable extends Migration
             $table->boolean('is_highlight')->default(0);
             $table->string('slug');
             $table->timestamps();
-            // $table->softDeletes();
+            $table->softDeletes();
         });
     }
 

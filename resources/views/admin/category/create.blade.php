@@ -51,7 +51,6 @@
 @endsection
 @push('scripts')
     @include('admin.partials.filepond-script')
-
     <script>
         $(function() {
             $(".select2_category").select2({

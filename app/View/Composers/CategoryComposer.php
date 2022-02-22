@@ -11,7 +11,6 @@ class CategoryComposer
     {
         $view->with(
             'categoryView',
-            // Category::with('childrens')->where('parent_id', 0)->latest('id')->get()
             Category::with('posts')->get()
         );
     }

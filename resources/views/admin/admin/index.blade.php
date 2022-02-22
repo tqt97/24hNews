@@ -13,6 +13,10 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body table-responsive p-2">
+                            <button style="margin-bottom: 12px" class="btn btn-danger mr-3 delete_all"
+                                data-url="{{ route('admin.admins.destroy.multiple') }}">
+                                <i class="fa fa-trash-alt"></i> Xóa danh mục đã chọn
+                            </button>
                             <a href="{{ route('admin.admins.create') }}" style="color:#fff">
                                 <btn class="btn btn-primary mb-3 mt-1">
                                     <i class="fa fa-plus"></i>
@@ -49,6 +53,7 @@
                             <table class="table table-hover table-border text-nowrap" id="datatable">
                                 <thead style="text-align:center">
                                     <tr>
+                                        <th width="50px"><input type="checkbox" id="master"></th>
                                         <th>ID</th>
                                         <th>Tên người dùng</th>
                                         <th>Email</th>
@@ -81,6 +86,15 @@
                 },
                 "columns": [{
                         'data': 'id',
+                        render: function(data, type, row) {
+                            return `<input type="checkbox" class="sub_chk" data-id="${row.id}">`;
+                        }
+                    },
+                    {
+                        'data': 'id',
+                        render: function(data, type, row) {
+                            return `${row.id}`;
+                        }
                     },
                     {
                         'data': 'name',
@@ -93,15 +107,6 @@
                     },
                     {
                         'data': 'created_at',
-                    },
-                ],
-                "pageLength": 10,
-                "lengthMenu": [10, 15, 25, 50, 75, 100],
-                "order": [
-                    [4, 'desc']
-                ],
-                columnDefs: [{
-                        targets: 4,
                         render: function(data, type, row) {
                             var d = new Date(row.created_at);
                             var options = {
@@ -113,8 +118,18 @@
                             return `${ d.toLocaleDateString('vi-Vi',options) }`;
                         }
                     },
+                ],
+                "pageLength": 10,
+                "lengthMenu": [10, 15, 25, 50, 75, 100],
+                "order": [
+                    [4, 'desc']
+                ],
+                columnDefs: [{
+                        "targets": 0,
+                        "orderable": false
+                    },
                     {
-                        targets: 5,
+                        targets: 6,
                         render: function(data, type, row) {
                             var urlEdit = '{{ route('admin.admins.edit', ':id') }}';
                             var urlDestroy = '{{ route('admin.admins.destroy', ':id') }}';

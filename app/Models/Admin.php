@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 // use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\FilePondMedia;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -18,7 +19,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Admin extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable, AlertTrait, DeleteModelTrait, FilePondMedia, InteractsWithMedia;
+    use HasApiTokens, HasFactory, Notifiable, AlertTrait, DeleteModelTrait, FilePondMedia, InteractsWithMedia,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -59,7 +60,7 @@ class Admin extends Authenticatable implements HasMedia
     }
     public function roles()
     {
-        return $this->belongsToMany(Role::class)->withTimestamps();
+        return $this->belongsToMany(Role::class);
     }
     public function checkPermissionAccess($permissionCheck)
     {

@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Models\TemporaryFile;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -102,5 +103,57 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         return $post->destroyModelHasImage($post, 'posts');
+    }
+    public function destroyMultiple(Request $request)
+    {
+        $ids = explode(",", $request->ids);
+
+        $this->post->whereIn('id', $ids)->delete();
+        return response()->json([
+            'code' => 200,
+            'message' => 'success'
+        ], 200);
+    }
+    public function forceDestroy(int $id)
+    {
+        $post = $this->post->withTrashed()->findOrFail($id);
+        $post->clearMediaCollection('posts');
+        $post =  $post->forceDelete();
+
+        return redirect()->back()->with($this->post->alertSuccess('success'));
+    }
+    public function forceDestroyMultiple(Request $request)
+    {
+        $ids = explode(",", $request->ids);
+        $posts = $this->post->whereIn('id', $ids)->withTrashed()->get();
+        foreach ($posts as $post) {
+            $post->clearMediaCollection('categories');
+            $post->forceDelete();
+        }
+        return response()->json([
+            'code' => 200,
+            'message' => 'success'
+        ], 200);
+    }
+    public function restore(int $id)
+    {
+        $post = $this->post->withTrashed()->findOrFail($id);
+        if ($post && $post->trashed()) {
+            $post->restore();
+            return redirect()->back()->with($post->alertSuccess('restore'));
+        }
+    }
+    public function restoreMultiple(Request $request)
+    {
+        $ids = explode(",", $request->ids);
+
+        $posts = $this->post->whereIn('id', $ids)->withTrashed()->get();
+        foreach ($posts as $post) {
+            $post->restore();
+        }
+        return response()->json([
+            'code' => 200,
+            'message' => 'success'
+        ], 200);
     }
 }

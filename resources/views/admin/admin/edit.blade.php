@@ -13,116 +13,58 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-primary card-outline">
-                        <form action="{{ route('admin.admins.update', $admin->id) }}" method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
+                        <x-form.form action="{{ route('admin.admins.update', $admin->id) }}" hasFile modMethod="PUT">
                             <div class="card-body">
-                                @include('admin.components.warning-top')
+                                <x-form.warning/>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <x-form.input label="Tên người dùng :" name="name" value="{{ $admin->name }}" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <x-form.input label="Email :" type="email" name="email"
+                                            value="{{ $admin->email }}" />
 
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Tên người dùng <code>*</code> :</label>
-                                            <input type="text" name="name"
-                                                class="form-control @error('name') is-invalid @enderror"
-                                                value="{{ $admin->name }}" placeholder="Điền tên người dùng" autofocus
-                                                required>
-                                            @error('name')
-                                                <x-form.alert>
-                                                    {{ $message }}
-                                                </x-form.alert>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Email <code>*</code> :</label>
-                                            <input type="email" name="email"
-                                                class="form-control @error('email') is-invalid @enderror"
-                                                value="{{ $admin->email }}" placeholder="Điền email người dùng" required>
-                                            @error('email')
-                                                <x-form.alert>
-                                                    {{ $message }}
-                                                </x-form.alert>
-                                            @enderror
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Địa chỉ :</label>
-                                            <input type="pass" name="address" class="form-control"
-                                                value="{{ $admin->address }}">
-                                        </div>
+                                        <x-form.input label="Địa chỉ :" name="address" value="{{ $admin->address }}" />
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Điện thoại :</label>
-                                            <input type="text" name="phone" class="form-control"
-                                                value="{{ $admin->phone }}">
-                                        </div>
+                                        <x-form.input label="Địa chỉ :" name="address" value="{{ $admin->phone }}" />
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Mật khẩu :</label>
-                                            <input type="password" name="password"
-                                                class="form-control @error('password') is-invalid @enderror">
-                                            @error('password')
-                                                <x-form.alert>
-                                                    {{ $message }}
-                                                </x-form.alert>
-                                            @enderror
-                                        </div>
+                                        <x-form.input label="Mật khẩu :" type="password" name="password" />
+
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Nhập lại mật khẩu :</label>
-                                            <input type="password" name="password_confirm"
-                                                class="form-control @error('password_confirm') is-invalid @enderror">
-                                            @error('password_confirm')
-                                                <x-form.alert>
-                                                    {{ $message }}
-                                                </x-form.alert>
-                                            @enderror
-                                        </div>
+                                        <x-form.input label="Nhập lại mật khẩu :" type="password" name="password_confirm" />
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Chọn vai trò :</label>
-                                    <select name="role_id[]" class="form-control select2_role" multiple>
-                                        <option></option>
-                                        @foreach ($roles as $role)
-                                            <option value="{{ $role->id }}"
-                                                {{ $roleOfAdmin->contains('id', $role->id) ? 'selected' : '' }}>
-                                                {{ $role->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                <x-form.select label="Chọn vai trò :" name="role_id[]" class="select2_role" multiple
+                                    required>
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role->id }}"
+                                            {{ $roleOfAdmin->contains('id', $role->id) ? 'selected' : '' }}>
+                                            {{ $role->name }}
+                                        </option>
+                                    @endforeach
+                                </x-form.select>
                                 <div class="row">
                                     <div class="col-sm-2">
-                                        <div class="form-group">
-                                            <label>Ảnh đại diện:</label>
-                                            <img src="{{ $admin->admin_image }}" class="img"
-                                                alt="{{ $admin->name }}" style="display: block;border-radius: 5px"
-                                                width="120px">
-                                        </div>
+                                        <x-form.show-image label="Ảnh đại diện :"
+                                            src="{{ $admin->admin_image }}"
+                                            alt="{{ $admin->name }}" />
                                     </div>
                                     <div class="col-sm-10">
-                                        <div class="form-group">
-                                            <label>Chọn ảnh mới :</label>
-                                            <input type="file" name="image" id="image" multiple data-max-files="1"
-                                                data-max-files-message="Chỉ được chọn 1 file" accept="image/*" />
-                                        </div>
+                                        <x-form.file label="Chọn ảnh mới :" name="image" />
                                     </div>
                                 </div>
                             </div>
-                            @include('admin.components.card-footer-edit')
-                        </form>
+                            <x-form.submit submit="Cập nhật" reset="Làm mới" />
+                        </x-form.form>
                     </div>
                 </div>
             </div>

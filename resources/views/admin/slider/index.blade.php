@@ -16,6 +16,10 @@
                         {{-- @can('category-create') --}}
                         {{-- @endcan --}}
                         <div class="card-body table-responsive p-2">
+                            <button style="margin-bottom: 12px" class="btn btn-danger mr-3 delete_all"
+                                data-url="{{ route('admin.sliders.destroy.multiple') }}">
+                                <i class="fa fa-trash-alt"></i> Xóa danh mục đã chọn
+                            </button>
                             <a href="{{ route('admin.sliders.create') }}" style="color:#fff">
                                 <btn class="btn btn-primary mb-3 mt-1">
                                     <i class="fa fa-plus"></i>
@@ -25,6 +29,7 @@
                             <table class="table table-hover table-border text-nowrap" id="datatable">
                                 <thead>
                                     <tr style="text-align:center;">
+                                        <th width="50px"><input type="checkbox" id="master"></th>
                                         <th>ID</th>
                                         <th>Tiều đề</th>
                                         <th>Hình ảnh</th>
@@ -37,13 +42,15 @@
                                 <tbody style="text-align:center">
                                     @forelse ($sliders as $slider)
                                         <tr>
+                                            <td><input type="checkbox" class="sub_chk" data-id="{{ $slider->id }}">
+                                            </td>
                                             <td>{{ $slider->id }}</td>
                                             <td>{{ $slider->title }}</td>
                                             <td>
                                                 <img src="{{ $slider->slider_image_thumb }}" alt="{{ $slider->title }}">
                                             </td>
                                             <td>
-                                                <a href="{{ $slider->url }}" target="_blank" title="{{ $slider->url }}"
+                                                <a href=" {{ $slider->url }}" target="_blank" title="{{ $slider->url }}"
                                                     <i class="fa fa-link"></i>
                                                 </a>
                                             </td>

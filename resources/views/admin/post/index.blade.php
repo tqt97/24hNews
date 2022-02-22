@@ -14,11 +14,15 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body table-responsive p-2">
+                            <button style="margin-bottom: 12px" class="btn btn-danger mr-3 delete_all"
+                                data-url="{{ route('admin.posts.destroy.multiple') }}">
+                                <i class="fa fa-trash-alt"></i> Xóa danh mục đã chọn
+                            </button>
                             <a href="{{ route('admin.posts.create') }}" style="color:#fff">
-                                <btn class="btn btn-primary px-3 mb-3 mt-1">
+                                <button class="btn btn-primary px-3 mb-3 mt-1">
                                     <i class="fa fa-plus"></i>
                                     Thêm mới
-                                </btn>
+                                </button>
                             </a>
                             <div class="row">
                                 <div class="form-group col-sm-2">
@@ -64,6 +68,7 @@
                             <table class="table table-hover table-border text-nowrap" id="datatable">
                                 <thead>
                                     <tr style="text-align:center">
+                                        <th width="50px"><input type="checkbox" id="master"></th>
                                         <th>ID</th>
                                         <th>Tên bài viết</th>
                                         <th>Nổi bật</th>
@@ -95,39 +100,36 @@
                 },
                 "columns": [{
                         'data': 'id',
+                        "render": function(data, type, row) {
+                            return `<input type="checkbox" class="sub_chk" data-id="${row.id}">`;
+                        }
+                    },
+                    {
+                        'data': 'id',
+                        "render": function(data, type, row) {
+                            return `${row.id}`;
+                        }
                     },
                     {
                         'data': 'title',
+                        "render": function(data, type, row) {
+                            return `${data}`;
+                        }
                     },
                     {
                         'data': 'is_highlight',
-                    },
-                    {
-                        'data': 'status',
-                    },
-                    {
-                        'data': 'created_at',
-                    },
-                ],
-                "pageLength": 10,
-                "lengthMenu": [10, 15, 25, 50, 75, 100],
-                "order": [
-                    [4, 'desc']
-                ],
-                columnDefs: [{
-                        targets: 2,
-                        render: function(data, type, row) {
+                        "render": function(data, type, row) {
                             return `${row.is_highlight == 1 ? '<span class="badge badge-success"><i class="fa fa-check"></i></span>' : '<span class="badge badge-secondary"><i class="fa fa-times"></span>'}`;
                         }
                     },
                     {
-                        targets: 3,
+                        'data': 'status',
                         render: function(data, type, row) {
                             return `${row.status == 1 ? '<span class="badge badge-success"><i class="fa fa-check"></i></span>' : '<span class="badge badge-secondary"><i class="fa fa-times"></span>'}`;
                         }
                     },
                     {
-                        targets: 4,
+                        'data': 'created_at',
                         render: function(data, type, row) {
                             var d = new Date(row.created_at);
                             var options = {
@@ -140,21 +142,29 @@
                             return `${ d.toLocaleDateString('vi-Vi',options) }`;
                         }
                     },
+                ],
+                "pageLength": 10,
+                "lengthMenu": [10, 15, 25, 50, 75, 100],
+                "order": [
+                    [4, 'desc']
+                ],
+                columnDefs: [
                     {
-                        targets: 5,
-                        render: function(data, type, row) {
-                            var urlEdit = '{{ route('admin.posts.edit', ':id') }}';
-                            var urlDestroy = '{{ route('admin.posts.destroy', ':id') }}';
-                            urlEdit = urlEdit.replace(':id', row.id);
-                            urlDestroy = urlDestroy.replace(':id', row.id);
-                            return '<a href="' + urlEdit +
-                                '" class="btn btn-outline-primary mr-2 btn-sm"><i class="fas fa-edit"></i></a>' +
-                                '<a href="" class="btn btn-outline-danger btn-sm action_delete" data-target="#deleteModal" data-url="' +
-                                urlDestroy + '"><i class="fas fa-trash-alt"></i></a>';
-                        }
-                    },
-
-                ]
+                        "targets": 0,
+                        "orderable": false
+                    },{
+                    targets: 6,
+                    render: function(data, type, row) {
+                        var urlEdit = '{{ route('admin.posts.edit', ':id') }}';
+                        var urlDestroy = '{{ route('admin.posts.destroy', ':id') }}';
+                        urlEdit = urlEdit.replace(':id', row.id);
+                        urlDestroy = urlDestroy.replace(':id', row.id);
+                        return '<a href="' + urlEdit +
+                            '" class="btn btn-outline-primary mr-2 btn-sm"><i class="fas fa-edit"></i></a>' +
+                            '<a href="" class="btn btn-outline-danger btn-sm action_delete" data-target="#deleteModal" data-url="' +
+                            urlDestroy + '"><i class="fas fa-trash-alt"></i></a>';
+                    }
+                }, ]
             });
             $('.filter-input').keyup(function() {
                 table.column($(this).data('column'))

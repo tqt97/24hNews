@@ -7,6 +7,9 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Libraries\CategoryRecursive;
 use App\Models\Category;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 
 class CategoryController extends Controller
 {
@@ -21,6 +24,7 @@ class CategoryController extends Controller
 
     public function index()
     {
+
         $highlights = $this->category->all()->sortBy('is_highlight')->pluck('is_highlight')->unique();
         $status = $this->category->all()->sortBy('status')->pluck('status')->unique();
 
@@ -58,6 +62,58 @@ class CategoryController extends Controller
     }
     public function destroy(Category $category)
     {
-        return $category->destroyModelHasImage($category,'categories');
+        return $category->destroyModelHasImage($category, 'categories');
+    }
+    public function destroyMultiple(Request $request)
+    {
+        $ids = explode(",", $request->ids);
+
+        $this->category->whereIn('id', $ids)->delete();
+        return response()->json([
+            'code' => 200,
+            'message' => 'success'
+        ], 200);
+    }
+    public function forceDestroy(int $id)
+    {
+        $category = $this->category->withTrashed()->findOrFail($id);
+        $category->clearMediaCollection('categories');
+        $category =  $category->forceDelete();
+
+        return redirect()->back()->with($this->category->alertSuccess('success'));
+    }
+    public function forceDestroyMultiple(Request $request)
+    {
+        $ids = explode(",", $request->ids);
+        $categories = $this->category->whereIn('id', $ids)->withTrashed()->get();
+        foreach ($categories as $category) {
+            $category->clearMediaCollection('categories');
+            $category->forceDelete();
+        }
+        return response()->json([
+            'code' => 200,
+            'message' => 'success'
+        ], 200);
+    }
+    public function restore(int $id)
+    {
+        $category = $this->category->withTrashed()->findOrFail($id);
+        if ($category && $category->trashed()) {
+            $category->restore();
+            return redirect()->back()->with($category->alertSuccess('restore'));
+        }
+    }
+    public function restoreMultiple(Request $request)
+    {
+        $ids = explode(",", $request->ids);
+
+        $categories = $this->category->whereIn('id', $ids)->withTrashed()->get();
+        foreach ($categories as $category) {
+            $category->restore();
+        }
+        return response()->json([
+            'code' => 200,
+            'message' => 'success'
+        ], 200);
     }
 }

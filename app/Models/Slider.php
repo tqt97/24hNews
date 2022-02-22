@@ -7,11 +7,12 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use App\Traits\FilePondMedia;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
 
 class Slider extends BaseModel implements HasMedia
 {
-    use HasFactory, InteractsWithMedia, FilePondMedia;
+    use HasFactory, InteractsWithMedia, FilePondMedia,SoftDeletes;
     protected $fillable = ['title', 'description', 'url', 'order', 'status'];
 
     public function registerMediaConversions(Media $media = null): void

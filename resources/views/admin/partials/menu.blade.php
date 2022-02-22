@@ -66,6 +66,14 @@
         </a>
     </li>
     <li class="nav-item">
+        <a href="{{ route('admin.history.index') }}" class="nav-link {{ (request()->segment(2) == 'history') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-history"></i>
+            <p>
+                Lịch sử
+            </p>
+        </a>
+    </li>
+    <li class="nav-item">
         <a href="{{ route('admin.roles.index') }}" class="nav-link {{ (request()->segment(2) == 'roles') ? 'active' : '' }}">
             <i class="nav-icon fa fa-check-square"></i>
             <p>

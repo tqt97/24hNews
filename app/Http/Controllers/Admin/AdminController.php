@@ -61,7 +61,6 @@ class AdminController extends Controller
 
         $roleOfAdmin = $admin->roles;
 
-
         return view('admin.admin.edit', compact('admin', 'roles', 'roleOfAdmin'));
     }
     public function update(UpdateAdminRequest $request, Admin $admin)
@@ -82,7 +81,6 @@ class AdminController extends Controller
                 $data['password'] = bcrypt($request->password);
             }
 
-            // dd($data);
             $admin->update($data);
 
             $admin->roles()->sync($request->role_id);
@@ -99,5 +97,57 @@ class AdminController extends Controller
     public function destroy(Admin $admin)
     {
         return $admin->destroyModelHasImage($admin, 'admins');
+    }
+    public function destroyMultiple(Request $request)
+    {
+        $ids = explode(",", $request->ids);
+
+        $this->admin->whereIn('id', $ids)->delete();
+        return response()->json([
+            'code' => 200,
+            'message' => 'success'
+        ], 200);
+    }
+    public function forceDestroy(int $id)
+    {
+        $admin = $this->admin->withTrashed()->findOrFail($id);
+        $admin->clearMediaCollection('admins');
+        $admin =  $admin->forceDelete();
+
+        return redirect()->back()->with($this->admin->alertSuccess('success'));
+    }
+    public function forceDestroyMultiple(Request $request)
+    {
+        $ids = explode(",", $request->ids);
+        $admins = $this->admin->whereIn('id', $ids)->withTrashed()->get();
+        foreach ($admins as $admin) {
+            $admin->clearMediaCollection('admins');
+            $admin->forceDelete();
+        }
+        return response()->json([
+            'code' => 200,
+            'message' => 'success'
+        ], 200);
+    }
+    public function restore(int $id)
+    {
+        $admin = $this->admin->withTrashed()->findOrFail($id);
+        if ($admin && $admin->trashed()) {
+            $admin->restore();
+            return redirect()->back()->with($admin->alertSuccess('restore'));
+        }
+    }
+    public function restoreMultiple(Request $request)
+    {
+        $ids = explode(",", $request->ids);
+
+        $admins = $this->admin->whereIn('id', $ids)->withTrashed()->get();
+        foreach ($admins as $admin) {
+            $admin->restore();
+        }
+        return response()->json([
+            'code' => 200,
+            'message' => 'success'
+        ], 200);
     }
 }

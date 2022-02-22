@@ -24,8 +24,7 @@ class CreatePostsTable extends Migration
             $table->boolean('status')->default(1);
             $table->foreignId('author_id')->constrained('admins');
             $table->timestamps();
-            // $table->softDeletes();
-
+            $table->softDeletes();
         });
     }
 
