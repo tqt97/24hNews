@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\SaveLocaleMiddleware;
 use App\View\Composers\CategoryComposer;
 use App\View\Composers\PostComposer;
 use App\View\Composers\TagComposer;
@@ -18,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        require_once __DIR__ . '/../Helpers/Helpers.php';
     }
 
     /**
@@ -30,11 +31,17 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
 
+        $this->registerLocaleMiddleware();
+
         View::composer('web.partials.sidebar', CategoryComposer::class);
         View::composer('web.partials.sidebar', TagComposer::class);
         View::composer('web.partials.sidebar', PostComposer::class);
         // View::composer('*', function ($view) {
         //     $view->with('categories', Category::where('parent_id',0)->get());
         // });
+    }
+    public function registerLocaleMiddleware()
+    {
+        $this->app['router']->pushMiddlewareToGroup('web', SaveLocaleMiddleware::class);
     }
 }

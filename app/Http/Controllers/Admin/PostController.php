@@ -85,7 +85,6 @@ class PostController extends Controller
 
             $post->editFilePondMedia($request, $post, 'posts');
 
-
             if (isset($request->categories)) {
                 $post->categories()->sync($request->categories);
             }

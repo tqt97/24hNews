@@ -1,65 +1,39 @@
 @extends('layouts.admin')
 @push('title')
-    {{ __('Quản lý người dùng') }}
+    {{ __('User management') }}
 @endpush
 @push('styles')
     @include('admin.partials.style-list')
 @endpush
 @section('content')
-    @include('admin.partials.header',[$title = 'Danh sách người dùng', $current_page = 'Danh mục'])
+    <x-admin.header title="{{ __('User management') }}" page="{{ __('User management') }}" />
     <section class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body table-responsive p-2">
-                            <button style="margin-bottom: 12px" class="btn btn-danger mr-3 delete_all"
-                                data-url="{{ route('admin.admins.destroy.multiple') }}">
-                                <i class="fa fa-trash-alt"></i> Xóa danh mục đã chọn
-                            </button>
-                            <a href="{{ route('admin.admins.create') }}" style="color:#fff">
-                                <btn class="btn btn-primary mb-3 mt-1">
-                                    <i class="fa fa-plus"></i>
-                                    Thêm mới
-                                </btn>
-                            </a>
+
+                            <x-action.delele-multiple route="{{ route('admin.admins.destroy.multiple') }}" />
+                            <x-action.add-new route="{{ route('admin.admins.create') }}" />
                             <div class="row">
-                                <div class="form-group col-sm-2">
-                                    <select class="col-sm form-control select2_date" name="filter-date" id="filter-date">
-                                        <option value="">Lọc theo ngày</option>
-                                        <option value="7">7 ngày trước</option>
-                                        <option value="14">14 ngày trước</option>
-                                        <option value="30">30 ngày trước</option>
-                                        <option value="60">60 ngày trước</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-sm-2">
-                                    <input type="text" class="form-control select2 filter-input"
-                                        placeholder="Tìm kiếm theo ID" data-column="0">
-                                </div>
-                                <div class="form-group col-sm-2">
-                                    <input type="text" class="form-control filter-input" placeholder="Tìm kiếm theo tên"
-                                        data-column="1">
-                                </div>
-                                <div class="form-group col-sm-2">
-                                    <input type="text" class="form-control filter-input" placeholder="Tìm kiếm theo email"
-                                        data-column="2">
-                                </div>
-                                <div class="form-group col-sm-2">
-                                    <input type="text" class="form-control filter-input" placeholder="Tìm kiếm theo SĐT"
-                                        data-column="3">
-                                </div>
+                                <x-search.select-date />
+
+                                <x-search.input placeholder="{{ __('Filter by ID') }}" column="1" />
+                                <x-search.input placeholder="{{ __('Filter by name') }}" column="2" />
+                                <x-search.input placeholder="{{ __('Filter by email') }}" column="3" />
+                                <x-search.input placeholder="{{ __('Filter by phone') }}" column="4" />
                             </div>
                             <table class="table table-hover table-border text-nowrap" id="datatable">
                                 <thead style="text-align:center">
                                     <tr>
                                         <th width="50px"><input type="checkbox" id="master"></th>
-                                        <th>ID</th>
-                                        <th>Tên người dùng</th>
-                                        <th>Email</th>
-                                        <th>Điện thoại</th>
-                                        <th>Ngày tạo</th>
-                                        <th>Thao tác </th>
+                                        <th>{{ __('ID') }}</th>
+                                        <th>{{ __('Name') }}</th>
+                                        <th>{{ __('Email') }}</th>
+                                        <th>{{ __('Phone') }}</th>
+                                        <th>{{ __('Created at') }}</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody style="text-align:center">
@@ -110,12 +84,12 @@
                         render: function(data, type, row) {
                             var d = new Date(row.created_at);
                             var options = {
-                                weekday: 'long',
+                                // weekday: 'long',
                                 year: 'numeric',
                                 month: 'long',
                                 day: 'numeric'
                             };
-                            return `${ d.toLocaleDateString('vi-Vi',options) }`;
+                            return `${ d.toLocaleDateString(options) }`;
                         }
                     },
                 ],
@@ -159,7 +133,7 @@
             });
             $(function() {
                 $(".select2_date").select2({
-                    placeholder: "-- Lọc theo theo ngày --",
+                    placeholder: "{{ __('Filter by date') }}",
                     allowClear: true
                 });
             });

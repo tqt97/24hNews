@@ -6,7 +6,7 @@
         </li>
         <li class="nav-item d-none d-sm-inline-block">
             <a href="{{ route('home') }}" class="nav-link" target="_blank">
-                <i class="fa fa-share" ></i> Trang chủ
+                <i class="fa fa-share"></i>  {{ __('Home page') }}
             </a>
         </li>
         {{-- <li class="nav-item d-none d-sm-inline-block">
@@ -46,12 +46,12 @@
                 <i class="fa fa-caret-down"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a href="#" class="dropdown-item">
-                    Tiếng việt <i class="fa fa-globe-asia"></i>
+                <a href="{{ route('admin.change.language','vi') }}" class="dropdown-item">
+                   {{ __('Vietnamese') }}
                 </a>
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    Tiếng anh <i class="fa fa-globe-europe"></i>
+                <a href="{{ route('admin.change.language','en') }}" class="dropdown-item">
+                    {{ __('English') }}
                 </a>
             </div>
         </li>
@@ -65,15 +65,15 @@
             <div class="dropdown-menu dropdown-menu-right">
                 <div class="dropdown-divider"></div>
                 <a href="{{ route('admin.profiles.edit', auth()->user()->id) }}" class="dropdown-item">
-                    <i class="fas fa-user mr-2"></i> Hồ sơ
+                    <i class="fas fa-user mr-2"></i>  {{ __('Profile') }}
                 </a>
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item">
-                    <i class="fas fa-cogs mr-2"></i> Cài đặt
+                    <i class="fas fa-cogs mr-2"></i>  {{ __('Setting') }}
                 </a>
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item">
-                    <i class="fas fa-sign-out-alt mr-2"></i> Đăng xuất
+                    <i class="fas fa-sign-out-alt mr-2"></i>  {{ __('Logout') }}
                 </a>
                 <div class="dropdown-divider"></div>
 

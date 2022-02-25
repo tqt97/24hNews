@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
 @push('title')
-    {{ __('Quản lý danh mục') }}
+    {{ __('Manage category') }}
 @endpush
 @push('styles')
     @include('admin.partials.style-list')
 @endpush
 @section('content')
-    @include('admin.partials.header',[$title = 'Danh sách danh mục', $current_page = 'Danh mục'])
+    <x-admin.header title="{{ __('Manage category') }}" page="{{ __('Manage category') }}" />
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -16,67 +16,37 @@
                         {{-- @can('category-create') --}}
                         {{-- @endcan --}}
                         <div class="card-body table-responsive p-2">
-                            <button style="margin-bottom: 12px" class="btn btn-danger mr-3 delete_all"
-                                data-url="{{ route('admin.categories.destroy.multiple') }}">
-                                <i class="fa fa-trash-alt"></i> Xóa danh mục đã chọn
-                            </button>
-                            <a href="{{ route('admin.categories.create') }}" style="color:#fff">
-                                <btn class="btn btn-primary mb-3 mt-1">
-                                    <i class="fa fa-plus"></i>
-                                    Thêm mới
-                                </btn>
-                            </a>
+                            <x-action.delele-multiple route="{{ route('admin.categories.destroy.multiple') }}" />
+                            <x-action.add-new route="{{ route('admin.categories.create') }}" />
                             <div class="row">
-                                <div class="form-group col-sm-2">
-                                    <select class="col-sm form-control select2_date" name="filter-date" id="filter-date">
-                                        <option value="">Lọc theo ngày</option>
-                                        <option value="7">7 ngày trước</option>
-                                        <option value="14">14 ngày trước</option>
-                                        <option value="30">30 ngày trước</option>
-                                        <option value="60">60 ngày trước</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-sm-2">
-                                    <input type="text" class="form-control select2 filter-input"
-                                        placeholder="Tìm kiếm theo ID" data-column="0">
-                                </div>
-                                <div class="form-group col-sm-2">
-                                    <input type="text" class="form-control filter-input" placeholder="Tìm kiếm theo tên"
-                                        data-column="1">
-                                </div>
-                                <div class="form-group col-sm-2">
-                                    <select data-column="2" class="form-control select2_highlight filter-select"
-                                        style="width:100%">
-                                        <option value=""></option>
-                                        @foreach ($highlights as $item)
-                                            <option value="{{ $item }}">
-                                                {{ $item == 1 ? 'Nổi bật' : 'Không' }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group col-sm-2">
-                                    <select data-column="3" class="form-control select2_status filter-select"
-                                        style="width:100%">
-                                        <option value="">-- Tìm kiếm theo trạng thái --</option>
-                                        @foreach ($status as $item)
-                                            <option value="{{ $item }}">
-                                                {{ $item == 1 ? 'Hiện' : 'Ẩn' }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                <x-search.select-date />
+                                <x-search.input placeholder="{{ __('Filter by ID') }}" column="1" />
+                                <x-search.input placeholder="{{ __('Filter by name') }}" column="2" />
+                                <x-search.select-foreach column="3">
+                                    @foreach ($highlights as $item)
+                                        <option value="{{ $item }}">
+                                            {{ $item == 1 ? __('Highlight') : __('None') }}
+                                        </option>
+                                    @endforeach
+                                </x-search.select-foreach>
+                                <x-search.select-foreach column="4">
+                                    @foreach ($status as $item)
+                                        <option value="{{ $item }}">
+                                            {{ $item == 1 ? __('Show') : __('Hide') }}
+                                        </option>
+                                    @endforeach
+                                </x-search.select-foreach>
                             </div>
                             <table class="table table-hover table-border text-nowrap" id="datatable">
                                 <thead>
                                     <tr style="text-align:center;">
                                         <th width="50px"><input type="checkbox" id="master"></th>
-                                        <th>ID</th>
-                                        <th>Tên danh mục</th>
-                                        <th>Nổi bật</th>
-                                        <th>Trạng thái</th>
-                                        <th>Ngày tạo</th>
-                                        <th>Thao tác</th>
+                                        <th>{{ __('ID') }}</th>
+                                        <th>{{ __('Category name') }}</th>
+                                        <th>{{ __('Highlight') }}</th>
+                                        <th>{{ __('Status') }}</th>
+                                        <th>{{ __('Created at') }}</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody style="text-align:center">
@@ -115,6 +85,10 @@
                     },
                     {
                         'data': 'name',
+                        render: function(data, type, row) {
+                            var locate = '{!! config('app.locale') !!}';
+                            return `${locate == 'en' ? row.name.en : row.name.vi}`;
+                        }
                     },
                     {
                         'data': 'is_highlight',
@@ -133,12 +107,12 @@
                         render: function(data, type, row) {
                             var d = new Date(row.created_at);
                             var options = {
-                                weekday: 'long',
+                                // weekday: 'long',
                                 year: 'numeric',
                                 month: 'long',
                                 day: 'numeric'
                             };
-                            return `${ d.toLocaleDateString('vi-Vi',options) }`;
+                            return `${ d.toLocaleDateString(options) }`;
                         }
                     },
                 ],
@@ -181,18 +155,17 @@
             });
             $(function() {
                 $(".select2_status").select2({
-                    placeholder: "-- Tìm kiếm theo trạng thái --",
+                    placeholder: "{{ __('Filter by status') }}",
                     tokenSeparators: [',', ' '],
                     allowClear: true
                 });
                 $(".select2_highlight").select2({
-                    placeholder: "-- Tìm kiếm theo nổi bật --",
+                    placeholder: "{{ __('Filter by highlight') }}",
                     tokenSeparators: [',', ' '],
                     allowClear: true
                 });
                 $(".select2_date").select2({
-                    placeholder: "-- Tìm kiếm theo ngày --",
-                    // tokenSeparators: [',', ' '],
+                    placeholder: "{{ __('Filter by date') }}",
                     allowClear: true
                 });
             });

@@ -1,148 +1,85 @@
 @extends('layouts.admin')
 
 @push('title')
-    {{ __('Cập nhật thông tin') }}
+    {{ __('Edit user') }}
 @endpush
 @push('styles')
-
+    @include('admin.partials.filepond-style')
 @endpush
 @section('content')
     <div class="content">
-        @include('admin.partials.header',[$title = 'Cập nhật thông tin Admin', $current_page = 'Cập nhật'])
+        <x-admin.header title="{{ __('Edit user') }}" page="{{ __('Edit user') }}" />
         <div class="container-fluid">
+            <x-form.warning />
             <div class="row">
                 <div class="col-md-6">
                     <div class="card card-primary card-outline">
-                        <form action="{{ route('admin.profiles.update.information', $admin->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
+                        <x-form.form action="{{ route('admin.profiles.update.information', $admin->id) }}" hasFile
+                            modMethod="PUT">
                             <div class="card-body">
-                                @include('admin.components.warning-top')
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Tên người dùng <code>*</code> :</label>
-                                            <input type="text" name="name"
-                                                class="form-control @error('name') is-invalid @enderror"
-                                                value="{{ $admin->name }}" placeholder="Điền tên người dùng" autofocus
-                                                required>
-                                            @error('name')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
+                                        <x-form.input label="{{ __('Name') }}" name="name"
+                                            value="{{ $admin->name }}" />
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Email <code>*</code> :</label>
-                                            <input type="email" name="email"
-                                                class="form-control @error('email') is-invalid @enderror"
-                                                value="{{ $admin->email }}" placeholder="Điền email người dùng" required>
-                                            @error('email')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
+                                        <x-form.input label="{{ __('Email') }}" type="email" name="email"
+                                            value="{{ $admin->email }}" />
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Địa chỉ :</label>
-                                            <input type="pass" name="address" class="form-control"
-                                                value="{{ $admin->address }}">
-                                        </div>
+                                        <x-form.input label="{{ __('Address') }}" name="address"
+                                            value="{{ $admin->address }}" />
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Điện thoại :</label>
-                                            <input type="text" name="phone" class="form-control"
-                                                value="{{ $admin->phone }}">
-                                        </div>
+                                        <x-form.input label="{{ __('Phone') }}" name="phone"
+                                            value="{{ $admin->phone }}" />
                                     </div>
                                 </div>
                             </div>
-                            @include('admin.components.card-footer-edit')
-                        </form>
+                            <x-form.submit submit="{{ __('Update') }}" reset="{{ __('Refresh') }}" />
+                        </x-form.form>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="card card-primary card-outline">
-                        <form action="{{ route('admin.profiles.update.image', auth()->user()->id) }}" method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
+                        <x-form.form action="{{ route('admin.profiles.update.image', $admin->id) }}" hasFile
+                            modMethod="PUT">
+
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-4">
-                                        <div class="form-group">
-                                            <label>Ảnh đại diện:</label>
-                                            <div class="input-group">
-                                                <div class="custom-file">
-                                                </div>
-                                            </div>
-                                            <div class="my-3">
-                                                <img src="{{ $admin->imageUrl() }}" class="imageThumb" />
-                                            </div>
-                                        </div>
+                                        <x-form.show-image label="{{ __('Image') }}" src="{{ $admin->admin_image }}"
+                                            alt="{{ $admin->name }}" />
                                     </div>
                                     <div class="col-sm-8">
-                                        <div class="form-group">
-                                            <label>Chọn ảnh mới:</label>
-                                            <div class="input-group" id="divMainUpload">
-                                                <div class="custom-file">
-                                                    <input class="file-input" type="file" id="image" name="image" />
-                                                </div>
-                                            </div>
-                                            <div class="my-3">
-                                                <img id="blah" src="" width="150px" height="auto" />
-                                            </div>
-                                        </div>
+                                        <x-form.file label="{{ __('Choose new image') }}" name="image" />
                                     </div>
                                 </div>
                             </div>
-                            @include('admin.components.card-footer-edit')
-                        </form>
+                            <x-form.submit submit="{{ __('Update') }}" reset="{{ __('Refresh') }}" />
+                        </x-form.form>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="card card-primary card-outline">
-                        <form action="{{ route('admin.profiles.update.password', $admin->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
+                        <x-form.form action="{{ route('admin.profiles.update.password', $admin->id) }}" hasFile
+                            modMethod="PUT">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Mật khẩu :</label>
-                                            <input type="password" name="password"
-                                                class="form-control @error('password') is-invalid @enderror">
-                                            @error('password')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
+                                        <x-form.input label="{{ __('Password') }}" type="password" name="password" />
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Nhập lại mật khẩu :</label>
-                                            <input type="password" name="password_confirm"
-                                                class="form-control @error('password_confirm') is-invalid @enderror">
-                                            @error('password_confirm')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
+                                        <x-form.input label="{{ __('Confirm Password') }}" type="password"
+                                            name="password_confirm" />
                                     </div>
                                 </div>
                             </div>
                     </div>
-                    @include('admin.components.card-footer-edit')
-                    </form>
+                    <x-form.submit submit="{{ __('Update') }}" reset="{{ __('Refresh') }}" />
+                    </x-form.form>
                 </div>
             </div>
         </div>
@@ -150,15 +87,5 @@
     </div>
 @endsection
 @push('scripts')
-    <script src="{{ asset('admin/plugins/select2/js/select2.full.min.js') }}"></script>
-    <script src="{{ asset('admin/dist/js/handleUploadImageSingle.js') }}"></script>
-
-    <script>
-        $(function() {
-            $(".select2_role").select2({
-                placeholder: "--- Chọn role ---",
-                allowClear: true
-            });
-        });
-    </script>
+    @include('admin.partials.filepond-script')
 @endpush

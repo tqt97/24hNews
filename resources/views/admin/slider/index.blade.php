@@ -1,13 +1,14 @@
 @extends('layouts.admin')
 
 @push('title')
-    {{ __('Quản lý slider') }}
+    {{ __('Slider management') }}
 @endpush
 @push('styles')
     @include('admin.partials.style-list')
 @endpush
 @section('content')
-    @include('admin.partials.header',[$title = 'Danh sách slider', $current_page = 'Danh mục'])
+    <x-admin.header title="{{ __('Slider management') }}" page="{{ __('Slider management') }}" />
+
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -16,27 +17,19 @@
                         {{-- @can('category-create') --}}
                         {{-- @endcan --}}
                         <div class="card-body table-responsive p-2">
-                            <button style="margin-bottom: 12px" class="btn btn-danger mr-3 delete_all"
-                                data-url="{{ route('admin.sliders.destroy.multiple') }}">
-                                <i class="fa fa-trash-alt"></i> Xóa danh mục đã chọn
-                            </button>
-                            <a href="{{ route('admin.sliders.create') }}" style="color:#fff">
-                                <btn class="btn btn-primary mb-3 mt-1">
-                                    <i class="fa fa-plus"></i>
-                                    Thêm mới
-                                </btn>
-                            </a>
+                            <x-action.delele-multiple route="{{ route('admin.sliders.destroy.multiple') }}" />
+                            <x-action.add-new route="{{ route('admin.sliders.create') }}" />
                             <table class="table table-hover table-border text-nowrap" id="datatable">
                                 <thead>
                                     <tr style="text-align:center;">
                                         <th width="50px"><input type="checkbox" id="master"></th>
-                                        <th>ID</th>
-                                        <th>Tiều đề</th>
-                                        <th>Hình ảnh</th>
-                                        <th>Link liên kết</th>
-                                        <th>Trạng thái</th>
-                                        <th>Ngày tạo</th>
-                                        <th>Thao tác</th>
+                                        <th>{{ __('ID') }}</th>
+                                        <th>{{ __('Title') }}</th>
+                                        <th>{{ __('Image') }}</th>
+                                        <th>{{ __('URL') }}</th>
+                                        <th>{{ __('Status') }}</th>
+                                        <th>{{ __('Created at') }}</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody style="text-align:center">
@@ -45,20 +38,25 @@
                                             <td><input type="checkbox" class="sub_chk" data-id="{{ $slider->id }}">
                                             </td>
                                             <td>{{ $slider->id }}</td>
-                                            <td>{{ $slider->title }}</td>
                                             <td>
-                                                <img src="{{ $slider->slider_image_thumb }}" alt="{{ $slider->title }}">
+                                                {{ $slider->title }}
+                                            </td>
                                             </td>
                                             <td>
-                                                <a href=" {{ $slider->url }}" target="_blank" title="{{ $slider->url }}"
-                                                    <i class="fa fa-link"></i>
+                                                <img src="{{ $slider->slider_image_thumb }}"
+                                                    alt="{{ $slider->title }}">
+                                            </td>
+                                            <td>
+                                                <a href=" {{ $slider->url }}" target="_blank"
+                                                    title="{{ $slider->url }}">
+                                                    <i class="fa fa-link"></i>{{ $slider->url }}
                                                 </a>
                                             </td>
                                             <td>
                                                 @if ($slider->status == 1)
-                                                    <span class="badge badge-success">Hiển thị</span>
+                                                    <span class="badge badge-success">{{ __('Show') }}</span>
                                                 @else
-                                                    <span class="badge badge-secondary">Ẩn</span>
+                                                    <span class="badge badge-secondary">{{ __('Hide') }}</span>
                                                 @endif
                                             </td>
                                             <td>{{ $slider->created_at }}</td>
@@ -74,7 +72,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="6">Không có dữ liệu !</td>
+                                            <td colspan="6">{{ __('No Data') }}</td>
                                         </tr>
                                     @endforelse
 

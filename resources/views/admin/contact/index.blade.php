@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
 @push('title')
-    {{ __('Quản lý liên hệ') }}
+    {{ __('Contact management') }}
 @endpush
 @push('styles')
     @include('admin.partials.style-list')
 @endpush
 @section('content')
-    @include('admin.partials.header',[$title = 'Danh sách liên hệ', $current_page = 'Danh sách'])
+    <x-admin.header title=" {{ __('Contact management') }}" page=" {{ __('Contact management') }}" />
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -15,35 +15,16 @@
                     <div class="card">
                         <div class="card-body table-responsive p-2">
                             <div class="row">
-                                <div class="form-group col-sm-2">
-                                    <select class="col-sm form-control select2_date" name="filter-date" id="filter-date">
-                                        <option value="">Lọc theo ngày</option>
-                                        <option value="7">7 ngày trước</option>
-                                        <option value="14">14 ngày trước</option>
-                                        <option value="30">30 ngày trước</option>
-                                        <option value="60">60 ngày trước</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-sm-2">
-                                    <input type="text" class="form-control select2 filter-input"
-                                        placeholder="Tìm kiếm theo ID" data-column="0">
-                                </div>
-                                <div class="form-group col-sm-2">
-                                    <input type="text" class="form-control filter-input" placeholder="Tìm kiếm theo tên"
-                                        data-column="1">
-                                </div>
-                                <div class="form-group col-sm-2">
-                                    <input type="text" class="form-control filter-input" placeholder="Tìm kiếm theo email"
-                                        data-column="2">
-                                </div>
-                                <div class="form-group col-sm-2">
-                                    <input type="text" class="form-control filter-input" placeholder="Tìm kiếm theo sđt"
-                                        data-column="3">
-                                </div>
+                                <x-search.select-date />
+                                <x-search.input placeholder="{{ __('Filter by ID') }}" column="0" />
+                                <x-search.input placeholder="{{ __('Filter by name') }}" column="1" />
+                                <x-search.input placeholder="{{ __('Filter by email') }}" column="2" />
+                                <x-search.input placeholder="{{ __('Filter by phone') }}" column="3" />
+
                             </div>
                             <table class="table table-hover table-border text-nowrap" id="datatable">
                                 <thead style="text-align:center">
-                                    <tr >
+                                    <tr>
                                         <th>ID</th>
                                         <th>Tên</th>
                                         <th>Email</th>
@@ -142,13 +123,12 @@
             });
             $(function() {
                 $(".select2_status").select2({
-                    placeholder: "-- Lọc theo trạng thái --",
+                    placeholder: "{{ __('Filter by status') }}",
                     tokenSeparators: [',', ' '],
                     allowClear: true
                 });
                 $(".select2_date").select2({
-                    placeholder: "-- Lọc theo ngày --",
-                    // tokenSeparators: [',', ' '],
+                    placeholder: "{{ __('Filter by date') }}",
                     allowClear: true
                 });
             });

@@ -9,7 +9,7 @@
         @if ($placeholder ?? null) placeholder="{{ $placeholder ?? '' }}" @endif
         @if ($multiple ?? null) multiple="{{ $multiple ?? '' }}" @endif
         @if ($value ?? null) value="{{ old($name, $value ?? '') }}" @endif
-        {{ $required ?? false ? 'required' : '' }}>
+        {{ $required ?? false ? 'required' : '' }} style="width: 100%;">
 
         {{ $slot }}
 

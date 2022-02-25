@@ -9,11 +9,18 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use App\Traits\FilePondMedia;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
+use App\Traits\TranslatableTrait;
+
+
 
 class Slider extends BaseModel implements HasMedia
 {
-    use HasFactory, InteractsWithMedia, FilePondMedia,SoftDeletes;
+    use HasFactory, InteractsWithMedia, FilePondMedia,SoftDeletes, TranslatableTrait;
+
     protected $fillable = ['title', 'description', 'url', 'order', 'status'];
+
+    public $translatable = ['title','description'];
+
 
     public function registerMediaConversions(Media $media = null): void
     {

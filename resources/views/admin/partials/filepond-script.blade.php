@@ -14,13 +14,14 @@
         FilePondPluginImageValidateSize
     );
     const pond = FilePond.create(inputElement, {
-        labelIdle: `Kéo và thả hình vào đây hoặc <span class="filepond--label-action">Chọn từ thiết bị</span>`,
+        // labelIdle: `Kéo và thả hình vào đây hoặc <span class="filepond--label-action">Chọn từ thiết bị</span>`,
+        labelIdle: `{{ __('Drag and drop your files or browse your computer') }}`,
 
-        
-        labelFileProcessing: 'Đang xử lý...',
-        labelFileProcessingComplete:'Tải ảnh lên thành công',
-        labelTapToUndo:'Chạm để hoàn tác',
-        labelTapToCancel:'Chạm để hủy',
+
+        labelFileProcessing: `{{ __('Processing...') }}`,
+        labelFileProcessingComplete: `{{ __('Upload successfully') }}`,
+        labelTapToUndo: `{{ __('Touch to undo') }}`,
+        labelTapToCancel: `{{ __('Touch to cancel') }}`,
 
 
         imagePreviewHeight: 100,
@@ -34,7 +35,7 @@
         styleButtonProcessItemPosition: 'right bottom',
 
         acceptedFileTypes: ['image/*'],
-        labelFileTypeNotAllowed: 'Tệp tin không đúng định dạng jpg, png, gif, jpeg',
+        labelFileTypeNotAllowed: "{{ __('Image type must beImage type must be') }} jpg, png, gif, jpeg",
         imageValidateSizeMaxWidth: 2000,
         imageValidateSizeMaxHeight: 1000,
         imageValidateSizeMinWidth: 300,

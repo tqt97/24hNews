@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
 @push('title')
-    {{ __('Thêm quyền') }}
+    {{ __('Permission management') }}
 @endpush
 @section('content')
     <div class="content">
-        @include('admin.partials.header',[$title = 'Thêm mới quyền', $current_page = 'Thêm quyền'])
+        <x-admin.header title="{{ __('Permission management') }}" page="{{ __('Permission management') }}" />
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
@@ -13,7 +13,7 @@
                         <x-form.form action="{{ route('admin.permissions.store') }}">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label>Chọn module :</label>
+                                    <label>{{ __('Choose module') }}</label>
                                     <select class="form-control select2_permission" name="module_parent">
                                         <option></option>
                                         @foreach (config('permissions.table_module') as $moduleItem)
@@ -36,7 +36,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <x-form.submit submit="Thêm mới" reset="Làm mới" />
+                            <x-form.submit submit="{{ __('Add new') }}" reset="{{ __('Refresh') }}" />
                         </x-form.form>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
     <script>
         $(function() {
             $(".select2_permission").select2({
-                placeholder: "--- Chọn module ---",
+                placeholder: "{{ __('Choose module') }}",
                 allowClear: true
             });
         });

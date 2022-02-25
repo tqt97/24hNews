@@ -9,6 +9,7 @@ use App\Http\Controllers\admin\CommentController;
 use App\Http\Controllers\admin\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\admin\HistoryController;
+use App\Http\Controllers\admin\LanguageController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProfileController;
@@ -45,12 +46,12 @@ Route::group(['as' => 'admin.', 'middleware' => ['admin.auth']], function () {
             Route::get('destroy/force/{id}',  'forceDestroy')->name('destroy.force');
             Route::delete('destroy/force/multiple',  'forceDestroyMultiple')->name('destroy.force.multiple');
 
-            Route::get('',  'index')->name('index'); //->middleware('can:category-read');
-            Route::get('create',  'create')->name('create'); //->middleware('can:category-create');
-            Route::post('store',  'store')->name('store');
-            Route::get('edit/{category}',  'edit')->name('edit'); //->middleware('can:category-update');
-            Route::put('update/{category}',  'update')->name('update');
-            Route::delete('destroy/{category}',  'destroy')->name('destroy'); //->middleware('can:category-delete');
+            Route::get('', 'index')->name('index'); //->middleware('can:category-read');
+            Route::get('create', 'create')->name('create'); //->middleware('can:category-create');
+            Route::post('store', 'store')->name('store');
+            Route::get('edit/{category}', 'edit')->name('edit'); //->middleware('can:category-update');
+            Route::put('update/{category}', 'update')->name('update');
+            Route::delete('destroy/{category}', 'destroy')->name('destroy'); //->middleware('can:category-delete');
         });
 
     Route::controller(PostController::class)
@@ -156,4 +157,6 @@ Route::group(['as' => 'admin.', 'middleware' => ['admin.auth']], function () {
         });
 
     Route::get('history', [HistoryController::class, 'index'])->name('history.index');
+
+    Route::get('change-language/{locale}', [LanguageController::class, 'index'])->name('change.language');
 });

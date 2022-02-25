@@ -33142,7 +33142,7 @@ html.maximized-card {
 }
 
 .callout a:hover {
-  color: #e9ecef;
+  color: #000;
 }
 
 .callout p:last-child {
@@ -52414,5 +52414,10 @@ a.text-muted:hover {
 
 .dark-mode .dark-mode.accent-gray-dark .page-item .page-link:hover, .dark-mode .dark-mode.accent-gray-dark .page-item .page-link:focus {
   color: #3f474e;
+}
+.fixed {
+    bottom: 1.25rem;
+    position: fixed;
+    z-index: 1032;
 }
 /*# sourceMappingURL=adminlte.css.map */

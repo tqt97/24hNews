@@ -10,12 +10,16 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use App\Traits\FilePondMedia;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
+use App\Traits\TranslatableTrait;
+
 
 class Category extends BaseModel implements HasMedia
 {
-    use HasFactory, Sluggable, InteractsWithMedia, FilePondMedia,SoftDeletes;
+    use HasFactory, Sluggable, InteractsWithMedia, FilePondMedia,SoftDeletes,TranslatableTrait;
 
     protected $fillable = ['name', 'author_id', 'parent_id', 'is_highlight', 'status', 'slug'];
+
+    public $translatable = ['name'];
 
     protected $dates = [
         'created_at',

@@ -4,11 +4,7 @@
 @endpush
 
 @section('content')
-    <br>
-    <br>
-<x.form-alert>
-     {{ __('Trang tổng quan') }}
-</x.form-alert>
+    <x-admin.header title="{{ __('Dashboard') }}" />
     <section class="content">
         <div class="container-fluid">
             <div class="row">

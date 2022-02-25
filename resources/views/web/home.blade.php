@@ -20,7 +20,7 @@
                                         </div>
                                         <div class="down-content">
                                             <a href="{{ route('posts.show', $post->slug) }}">
-                                                <h4>{{ $post->limitTitle() }}</h4>
+                                                <h4>{{ $post->limitTitle() }}</h4> 
                                             </a>
                                             <ul class="post-info">
                                                 <li><i class="fa fa-clock-o"></i> {{ $post->created_at }}</li>

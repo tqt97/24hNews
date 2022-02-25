@@ -38,6 +38,8 @@ class AdminController extends Controller
         try {
             DB::beginTransaction();
 
+
+
             $admin = $this->admin->create($request->validated() + ['password' => bcrypt($request->password)]);
 
             $admin->roles()->attach($request->role_id);
@@ -67,12 +69,14 @@ class AdminController extends Controller
     {
         try {
             DB::beginTransaction();
+
             $data = [
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'address' => $request->address,
             ];
+
             if ($request->password) {
                 $request->validate([
                     'password' => 'required',
@@ -80,7 +84,7 @@ class AdminController extends Controller
                 ]);
                 $data['password'] = bcrypt($request->password);
             }
-
+            // dd($data);
             $admin->update($data);
 
             $admin->roles()->sync($request->role_id);

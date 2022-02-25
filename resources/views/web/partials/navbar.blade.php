@@ -12,7 +12,7 @@
                 <ul class="navbar-nav ml-auto">
                     <x-nav-item>
                         <x-slot name="route"> {{ url('/') }} </x-slot>
-                        Trang chủ
+                        {{ __('Home') }}
                     </x-nav-item>
                     <x-nav-item>
                         <x-slot name="route"> {{ url('/about-us') }} </x-slot>
@@ -30,10 +30,33 @@
                         <x-slot name="route"> {{ url('/contacts') }} </x-slot>
                         Liên hệ
                     </x-nav-item>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="#">
+                            Language
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="{{ route('admin.change.language', 'vi') }}" class="dropdown-item">
+                                {{ __('Vietnamese') }}
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="{{ route('admin.change.language', 'en') }}" class="dropdown-item">
+                                {{ __('English') }}
+                            </a>
+                        </div>
+                    </li>
+                    @foreach (LaravelLocalization::getLocalesOrder() as $localeCode => $properties)
+                        <li>
+                            <a href="{{ LaravelLocalization::localizeURL(Request::path(), $localeCode) }}">
+                                {{ $properties['native'] }}
+                            </a>
+                        </li>
+                    @endforeach
                     @auth
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                                     document.getElementById('logout-form').submit();">
+                            <a class="nav-link" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                                                             document.getElementById('logout-form').submit();">
                                 <i class="fa fa-sign-in"></i>
                                 {{ Auth::user()->name }}
                             </a>

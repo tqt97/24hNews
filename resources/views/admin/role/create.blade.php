@@ -1,33 +1,32 @@
 @extends('layouts.admin')
 
 @push('title')
-    {{ __('Thêm vai trò') }}
+    {{ __('Add role') }}
 @endpush
 @push('styles')
 @endpush
 @section('content')
     <div class="content">
-        @include('admin.partials.header',[$title = 'Thêm mới vai trò', $current_page = 'Thêm vai trò'])
+        <x-admin.header title="{{ __('Add role') }}" page="{{ __('Add role') }}" />
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-primary card-outline">
                         <x-form.form action="{{ route('admin.roles.store') }}">
-                            @csrf
                             <div class="card-body">
                                 <x-form.warning />
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <x-form.input label="Tên vai trò :" name="name" placeholder="Nhập tên vai trò"
+                                        <x-form.input label="{{ __('Name') }}" name="name" placeholder="{{ __('Fill role name') }}" />
                                             required />
-                                        <x-form.textarea label="Mô tả vai trò :" name="display_name" />
+                                        <x-form.textarea label="{{ __('Description') }}" name="display_name" />
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <label>
                                             <input type="checkbox" class="checkall">
-                                            CHỌN TẤT CẢ
+                                            {{ __('Select all') }}
                                         </label>
                                     </div>
                                     @foreach ($permissionsParent as $permissionsParentItem)
@@ -60,7 +59,7 @@
                                 </div>
 
                             </div>
-                            <x-form.submit submit="Thêm mới" reset="Làm mới" />
+                            <x-form.submit  submit="{{ __('Add new') }}" reset="{{ __('Refresh') }}"/>
                         </x-form.form>
                     </div>
                 </div>

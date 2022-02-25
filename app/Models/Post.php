@@ -12,18 +12,23 @@ use App\Traits\HandleTag;
 use App\Traits\FilePondMedia;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
+use App\Traits\TranslatableTrait;
 // use Spatie\MediaLibrary\MediaCollections\File;
+
 
 class Post extends BaseModel  implements HasMedia
 {
     const LIMIT_TITLE = 50;
     const LIMIT_DESCRIPTION = 150;
 
-    use HasFactory, Sluggable,  InteractsWithMedia, HandleTag, FilePondMedia,SoftDeletes;
+    use HasFactory, Sluggable,  InteractsWithMedia, HandleTag, FilePondMedia, SoftDeletes, TranslatableTrait;
 
     protected $fillable = [
-        'title','avatar', 'description', 'content', 'view_count', 'is_highlight', 'slug', 'author_id', 'category_id', 'status'
+        'title', 'avatar', 'description', 'content', 'view_count', 'is_highlight', 'slug', 'author_id', 'category_id', 'status'
     ];
+
+    public $translatable = ['title','description', 'content'];
+
 
     public function getFormattedDateAttribute()
     {

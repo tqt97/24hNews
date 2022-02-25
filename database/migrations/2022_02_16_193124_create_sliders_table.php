@@ -15,8 +15,8 @@ class CreateSlidersTable extends Migration
     {
         Schema::create('sliders', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
-            $table->string('description')->nullable();
+            $table->json('title')->nullable();
+            $table->json('description')->nullable();
             $table->string('url')->nullable();
             $table->integer('order')->nullable();
             $table->boolean('status')->default(1);

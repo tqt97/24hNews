@@ -25,21 +25,21 @@ class UpdateAdminRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            // 'name' => 'required',
             'email' => ['required', Rule::unique('admins')->ignore($this->admin->id)],
-            'address' =>  'string',
-            'phone' =>  'regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+            // 'address' =>  'string',
+            // 'phone' =>  'regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
 
         ];
     }
     public function messages()
     {
         return [
-            'name.required' => 'Tên người dùng không được để trống',
+            // 'name.required' => 'Tên người dùng không được để trống',
             'email.required' => 'Email không được để trống',
             'email.unique' => 'Email không được trùng',
-            'password.required' => 'Mật khẩu không được để trống',
-            'password_confirm.same' => 'Mật khẩu xác nhận không khớp',
+            // 'password.required' => 'Mật khẩu không được để trống',
+            // 'password_confirm.same' => 'Mật khẩu xác nhận không khớp',
         ];
     }
 }

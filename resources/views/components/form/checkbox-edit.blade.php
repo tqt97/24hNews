@@ -6,7 +6,9 @@
     @endif
     <div class="form-check">
         <input type="hidden" name="{{ $name }}" value="0">
-        {{ $slot }}
+        <input class="form-check-input" type="checkbox" name="{{ $name }}" id="{{ $name }}" value="1"
+            {{ old($name) ? 'checked' : '' }}
+            {{ $checked ?? $isChecked ? 'checked' : '' }}>
         <label class="form-check-label">{{ $display }}</label>
     </div>
 </div>

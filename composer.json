@@ -12,8 +12,10 @@
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "mcamara/laravel-localization": "^1.7",
         "sopamo/laravel-filepond": "^0.6.2",
         "spatie/laravel-medialibrary": "^9.0.0",
+        "spatie/laravel-translatable": "^4.6",
         "unisharp/laravel-filemanager": "^2.3",
         "yajra/laravel-datatables": "^1.5",
         "yajra/laravel-datatables-oracle": "~9.0"
@@ -24,6 +26,7 @@
         "beyondcode/laravel-query-detector": "^1.5",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
+        "laravel-lang/lang": "^10.4",
         "laravel/sail": "^1.0.1",
         "laravel/ui": "^3.4",
         "mockery/mockery": "^1.4.4",
@@ -35,7 +38,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Helpers/Helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

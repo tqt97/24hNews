@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Cviebrock\EloquentSluggable\Sluggable;
 
 
+
 class Tag extends BaseModel
 {
     use HasFactory,Sluggable;

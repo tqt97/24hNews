@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
 @push('title')
-    {{ __('Chỉnh sửa vai trò') }}
+    {{ __('Edit role') }}
 @endpush
 @push('styles')
 @endpush
 @section('content')
     <div class="content">
-        @include('admin.partials.header',[$title = 'Chỉnh sửa vai trò', $current_page = 'Chỉnh sửa vai trò'])
+        <x-admin.header title="{{ __('Edit role') }}" page="{{ __('Edit role') }}" />
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
@@ -15,12 +15,10 @@
                         <x-form.form action="{{ route('admin.roles.update', $role->id) }}" modMethod="PUT">
                             <div class="card-body">
                                 <x-form.warning />
-
                                 <div class="col-md-12">
-                                    <x-form.input label="Tên vai trò :" name="name" placeholder="Nhập tên vai trò"
-                                        value="{{ $role->name }}" />
+                                    <x-form.input label="{{ __('Name') }}" name="name" value="{{ $role->name }}" />
 
-                                    <x-form.textarea label="Mô tả vai trò :" name="display_name"
+                                    <x-form.textarea label="{{ __('Description') }}" name="display_name"
                                         value="{{ $role->display_name }}" />
                                 </div>
                                 <div class="col-md-12">
@@ -28,7 +26,7 @@
                                         <div class="col-md-12">
                                             <label>
                                                 <input type="checkbox" class="checkall">
-                                                CHỌN TẤT CẢ
+                                                {{ __('Select all') }}
                                             </label>
                                         </div>
 
@@ -60,7 +58,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <x-form.submit submit="Cập nhật" reset="Làm mới" />
+                            <x-form.submit submit="{{ __('Update') }}" reset="{{ __('Refresh') }}" />
                         </x-form.form>
                     </div>
                 </div>

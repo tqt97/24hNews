@@ -26,14 +26,17 @@
     <link rel="stylesheet" href="{{ asset('admin/dist/css/adminlte.min.css') }}">
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-footer-fixed layout-fixed">
     <div class="wrapper">
         @include('admin.partials.navbar')
         @include('admin.partials.sidebar')
         <div class="content-wrapper">
             @yield('content')
         </div>
-        @include('admin.partials.footer')
+        {{-- @include('admin.partials.footer') --}}
+        <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+            <i class="fas fa-chevron-up"></i>
+        </a>
     </div>
     <script src="{{ asset('admin/plugins/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -45,9 +48,9 @@
 
     <script>
         $.extend(true, $.fn.dataTable.defaults, {
-            "language": {
-                "url": "https://cdn.datatables.net/plug-ins/1.11.4/i18n/vi.json"
-            },
+            // "language": {
+            //     "url": "https://cdn.datatables.net/plug-ins/1.11.4/i18n/vi.json"
+            // },
             "processing": true,
             "serverSide": true,
         });
@@ -63,21 +66,21 @@
             @if (Session::has('message'))
                 var type="{{ Session::get('alert-type', 'info') }}"
                 switch(type){
-
+            
                 case 'info':
                 Toast.fire({
                 icon: 'info',
                 title: '{{ Session::get('message') }}'
                 })
                 break;
-
+            
                 case 'success':
                 Toast.fire({
                 icon: 'success',
                 title: '{{ Session::get('message') }}'
                 })
                 break;
-
+            
                 case 'warning':
                 Toast.fire({
                 icon: 'warning',
